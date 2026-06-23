@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
 import { mockArticles } from '@/data/mockData';
 
-const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:ue141n9fuwc6czgz@187.127.233.89:5433/postgres';
+const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:cugh0qsq8uaeawz5@187.127.233.89:5435/postgres';
 
 export const pool = new Pool({
   connectionString,
