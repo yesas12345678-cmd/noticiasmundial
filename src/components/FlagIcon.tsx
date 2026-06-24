@@ -246,6 +246,25 @@ export default function FlagIcon({ countryCode, className = 'h-4 w-6' }: FlagIco
           <rect fill="#fecc00" height="2" width="16" y="4" />
         </svg>
       );
+    case 'COL':
+      return (
+        <svg className={`${className} border border-zinc-900 rounded-sm`} viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg">
+          <rect fill="#FCD116" height="1" width="3" />
+          <rect fill="#003893" height="0.5" width="3" y="1" />
+          <rect fill="#CE1126" height="0.5" width="3" y="1.5" />
+        </svg>
+      );
+    case 'CRO':
+      return (
+        <svg className={`${className} border border-zinc-900 rounded-sm`} viewBox="0 0 2 1" xmlns="http://www.w3.org/2000/svg">
+          <rect fill="#FF0000" height="0.33" width="2" />
+          <rect fill="#FFFFFF" height="0.33" width="2" y="0.33" />
+          <rect fill="#0000FF" height="0.33" width="2" y="0.66" />
+          {/* Simplified coat of arms */}
+          <rect fill="#FF0000" height="0.2" width="0.16" x="0.92" y="0.23" />
+          <rect fill="#FFFFFF" height="0.1" width="0.16" x="0.92" y="0.33" />
+        </svg>
+      );
     case 'NOR':
       return (
         <svg className={`${className} border border-zinc-900 rounded-sm`} viewBox="0 0 22 16" xmlns="http://www.w3.org/2000/svg">

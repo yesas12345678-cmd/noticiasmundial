@@ -1,6 +1,7 @@
 import React from 'react';
 import { mockArticles, Article } from '../data/mockData';
 import BentoGridWrapper from '../components/BentoGridWrapper';
+import TournamentBracket from '../components/TournamentBracket';
 import { Target, AlertTriangle, ShieldCheck, Flame, Cpu, Eye, Network } from 'lucide-react';
 import Link from 'next/link';
 import { pool, initDB } from '@/lib/db';
@@ -143,6 +144,11 @@ export default async function Home({ searchParams }: PageProps) {
         {/* Dynamic Bento grid wrapper with client-side load-more pagination */}
         <BentoGridWrapper articles={filteredArticles} />
 
+      </section>
+
+      {/* Symmetrical Tournament Bracket */}
+      <section className="scroll-mt-20">
+        <TournamentBracket />
       </section>
 
       {/* Decorative floating tactical radar grid (Visual flair for background) */}
