@@ -5,6 +5,8 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CookieBanner from '@/components/CookieBanner';
 import WorldCupBackground from '@/components/WorldCupBackground';
+import Script from 'next/script';
+
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -46,6 +48,12 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
       <body className="min-h-full flex flex-col bg-zinc-950 text-zinc-100 font-sans selection:bg-purple-500/30 selection:text-purple-300">
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6737064906428173"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         
         {/* World Cup 2026 Concentric Stripes Background */}
         <WorldCupBackground />
