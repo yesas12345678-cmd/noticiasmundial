@@ -13,8 +13,8 @@ export interface Article {
 
 export interface LiveMatch {
   id: string;
-  homeTeam: { name: string; flag: string; short: string };
-  awayTeam: { name: string; flag: string; short: string };
+  homeTeam: { name: string; flag: string; short: string }; // flag is now a country code (e.g. 'ESP')
+  awayTeam: { name: string; flag: string; short: string }; // flag is now a country code
   homeScore: number;
   awayScore: number;
   status: 'LIVE' | 'UPCOMING' | 'FINISHED';
@@ -27,7 +27,7 @@ export interface PlayerStat {
   id: string;
   name: string;
   team: string;
-  flag: string;
+  flag: string; // flag is now a country code
   photo: string;
   position: 'DEL' | 'MED' | 'DEF' | 'POR';
   metrics: {
@@ -103,8 +103,8 @@ export const mockArticles: Article[] = [
 export const mockMatches: LiveMatch[] = [
   {
     id: 'm1',
-    homeTeam: { name: 'España', flag: '🇪🇸', short: 'ESP' },
-    awayTeam: { name: 'Alemania', flag: '🇩🇪', short: 'GER' },
+    homeTeam: { name: 'España', flag: 'ESP', short: 'ESP' },
+    awayTeam: { name: 'Alemania', flag: 'GER', short: 'GER' },
     homeScore: 2,
     awayScore: 1,
     status: 'LIVE',
@@ -113,8 +113,8 @@ export const mockMatches: LiveMatch[] = [
   },
   {
     id: 'm2',
-    homeTeam: { name: 'Argentina', flag: '🇦🇷', short: 'ARG' },
-    awayTeam: { name: 'Francia', flag: '🇫🇷', short: 'FRA' },
+    homeTeam: { name: 'Argentina', flag: 'ARG', short: 'ARG' },
+    awayTeam: { name: 'Francia', flag: 'FRA', short: 'FRA' },
     homeScore: 0,
     awayScore: 0,
     status: 'LIVE',
@@ -123,8 +123,8 @@ export const mockMatches: LiveMatch[] = [
   },
   {
     id: 'm3',
-    homeTeam: { name: 'Brasil', flag: '🇧🇷', short: 'BRA' },
-    awayTeam: { name: 'Inglaterra', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', short: 'ENG' },
+    homeTeam: { name: 'Brasil', flag: 'BRA', short: 'BRA' },
+    awayTeam: { name: 'Inglaterra', flag: 'ENG', short: 'ENG' },
     homeScore: 3,
     awayScore: 2,
     status: 'FINISHED',
@@ -132,8 +132,8 @@ export const mockMatches: LiveMatch[] = [
   },
   {
     id: 'm4',
-    homeTeam: { name: 'Uruguay', flag: '🇺🇾', short: 'URU' },
-    awayTeam: { name: 'Italia', flag: '🇮🇹', short: 'ITA' },
+    homeTeam: { name: 'Uruguay', flag: 'URU', short: 'URU' },
+    awayTeam: { name: 'Italia', flag: 'ITA', short: 'ITA' },
     homeScore: 0,
     awayScore: 0,
     status: 'UPCOMING',
@@ -147,7 +147,7 @@ export const mockPlayerStats: PlayerStat[] = [
     id: 'p1',
     name: 'Kylian Mbappé',
     team: 'Francia',
-    flag: '🇫🇷',
+    flag: 'FRA',
     photo: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&q=80&w=150',
     position: 'DEL',
     metrics: {
@@ -161,7 +161,7 @@ export const mockPlayerStats: PlayerStat[] = [
     id: 'p2',
     name: 'Lionel Messi',
     team: 'Argentina',
-    flag: '🇦🇷',
+    flag: 'ARG',
     photo: 'https://images.unsplash.com/photo-1544698310-74ea9d1c8258?auto=format&fit=crop&q=80&w=150',
     position: 'MED',
     metrics: {
@@ -175,7 +175,7 @@ export const mockPlayerStats: PlayerStat[] = [
     id: 'p3',
     name: 'Kevin De Bruyne',
     team: 'Bélgica',
-    flag: '🇧🇪',
+    flag: 'BEL',
     photo: 'https://images.unsplash.com/photo-1518152006812-edab29b069ac?auto=format&fit=crop&q=80&w=150',
     position: 'MED',
     metrics: {
@@ -189,7 +189,7 @@ export const mockPlayerStats: PlayerStat[] = [
     id: 'p4',
     name: 'Emiliano Martínez',
     team: 'Argentina',
-    flag: '🇦🇷',
+    flag: 'ARG',
     photo: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=150',
     position: 'POR',
     metrics: {

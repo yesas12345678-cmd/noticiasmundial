@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { mockMatches, LiveMatch } from '../data/mockData';
-import { Activity, Tv, ChevronRight, Award } from 'lucide-react';
+import { Activity, Tv, ChevronRight } from 'lucide-react';
+import FlagIcon from './FlagIcon';
 
 export default function LiveResultsWidget() {
   const [selectedMatch, setSelectedMatch] = useState<string | null>(mockMatches[0]?.id || null);
@@ -86,9 +87,7 @@ export default function LiveResultsWidget() {
                 <div className="grid grid-cols-7 items-center gap-1">
                   {/* Home Team */}
                   <div className="col-span-3 flex items-center gap-1.5">
-                    <span className="text-sm shrink-0" role="img" aria-label={match.homeTeam.name}>
-                      {match.homeTeam.flag}
-                    </span>
+                    <FlagIcon countryCode={match.homeTeam.flag} className="h-3 w-4.5 shrink-0" />
                     <span className="text-xs font-bold text-zinc-300 font-mono tracking-tight">
                       {match.homeTeam.short}
                     </span>
@@ -104,9 +103,7 @@ export default function LiveResultsWidget() {
                     <span className="text-xs font-bold text-zinc-300 font-mono tracking-tight">
                       {match.awayTeam.short}
                     </span>
-                    <span className="text-sm shrink-0" role="img" aria-label={match.awayTeam.name}>
-                      {match.awayTeam.flag}
-                    </span>
+                    <FlagIcon countryCode={match.awayTeam.flag} className="h-3 w-4.5 shrink-0" />
                   </div>
                 </div>
               </button>
@@ -123,7 +120,8 @@ export default function LiveResultsWidget() {
               <div>
                 <div className="text-[9px] font-mono text-emerald-500 uppercase tracking-widest mb-1">// ANÁLISIS DE COMBATE</div>
                 <div className="flex items-center justify-between gap-4 p-3 bg-zinc-900/40 border border-zinc-850 rounded-xl">
-                  <div className="text-center flex-1">
+                  <div className="text-center flex-1 flex flex-col items-center">
+                    <FlagIcon countryCode={activeMatch.homeTeam.flag} className="h-4.5 w-7 mb-1" />
                     <div className="text-2xl font-bold font-mono text-white mb-0.5">
                       {activeMatch.status === 'UPCOMING' ? '0' : activeMatch.homeScore}
                     </div>
@@ -131,10 +129,11 @@ export default function LiveResultsWidget() {
                       {activeMatch.homeTeam.name}
                     </div>
                   </div>
-                  <div className="font-mono text-xs text-zinc-600 font-bold bg-zinc-900 border border-zinc-800 px-2 py-1 rounded">
+                  <div className="font-mono text-xs text-zinc-650 font-bold bg-zinc-900 border border-zinc-800 px-2 py-1 rounded">
                     VS
                   </div>
-                  <div className="text-center flex-1">
+                  <div className="text-center flex-1 flex flex-col items-center">
+                    <FlagIcon countryCode={activeMatch.awayTeam.flag} className="h-4.5 w-7 mb-1" />
                     <div className="text-2xl font-bold font-mono text-white mb-0.5">
                       {activeMatch.status === 'UPCOMING' ? '0' : activeMatch.awayScore}
                     </div>
@@ -147,7 +146,7 @@ export default function LiveResultsWidget() {
 
               {/* Event Logs */}
               <div className="flex-grow flex flex-col justify-center py-2">
-                <span className="text-[9px] font-mono text-zinc-500 mb-2 block uppercase tracking-wider">// EVENTOS DE PARTIDO</span>
+                <span className="text-[9px] font-mono text-zinc-550 mb-2 block uppercase tracking-wider">// EVENTOS DE PARTIDO</span>
                 <div className="space-y-2 overflow-y-auto max-h-[120px] custom-scrollbar pr-1">
                   {activeMatch.status === 'UPCOMING' ? (
                     <div className="text-center py-4 text-xs font-mono text-zinc-500 italic">
@@ -172,7 +171,7 @@ export default function LiveResultsWidget() {
               {/* Action Call */}
               <div className="border-t border-zinc-900/60 pt-3 flex justify-between items-center text-[10px] font-mono">
                 <span className="text-zinc-500 uppercase">Señal limpia 1080p</span>
-                <button className="flex items-center gap-1 text-emerald-400 hover:text-emerald-300 transition-colors font-bold uppercase">
+                <button className="flex items-center gap-1 text-emerald-400 hover:text-emerald-350 transition-colors font-bold uppercase">
                   <span>Minuto a Minuto</span>
                   <ChevronRight className="h-3 w-3" />
                 </button>

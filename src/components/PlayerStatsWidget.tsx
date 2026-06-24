@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { mockPlayerStats, PlayerStat } from '../data/mockData';
 import { Award, Zap, Crosshair, TrendingUp } from 'lucide-react';
+import FlagIcon from './FlagIcon';
 
 type MetricKey = 'goals' | 'assists' | 'speedMax' | 'distanceRan';
 
@@ -82,15 +83,13 @@ export default function PlayerStatsWidget() {
               <span className="font-mono text-xs font-bold text-zinc-500 w-4">
                 0{index + 1}
               </span>
-              <div className="relative">
-                <span className="text-xl" role="img" aria-label={player.team}>
-                  {player.flag}
-                </span>
-                <span className="absolute -bottom-1 -right-1 text-[8px] font-mono font-bold bg-zinc-900 text-zinc-400 border border-zinc-800 px-0.5 rounded leading-none">
+              <div className="relative flex items-center">
+                <FlagIcon countryCode={player.flag} className="h-3.5 w-5 rounded-sm" />
+                <span className="absolute -bottom-1 -right-2 text-[7px] font-mono font-bold bg-zinc-900 text-zinc-400 border border-zinc-800 px-0.5 rounded leading-none">
                   {player.position}
                 </span>
               </div>
-              <div>
+              <div className="ml-1">
                 <h5 className="text-xs font-bold text-white tracking-tight leading-none">
                   {player.name}
                 </h5>
@@ -114,7 +113,7 @@ export default function PlayerStatsWidget() {
       </div>
       
       {/* Footer Info */}
-      <div className="border-t border-zinc-900 bg-zinc-950/60 p-3 flex justify-between items-center text-[8px] font-mono text-zinc-600">
+      <div className="border-t border-zinc-900 bg-zinc-950/60 p-3 flex justify-between items-center text-[8px] font-mono text-zinc-650">
         <span>ACTUALIZADO EN TIEMPO REAL</span>
         <span>SENSORES F.I.F.A. ACTIVOS</span>
       </div>
