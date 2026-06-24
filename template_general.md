@@ -37,7 +37,7 @@ Puedes utilizar este documento como plantilla maestra para cualquier proyecto we
 ---
 
 ### 3. Reglas de Contenido y Extensión
-*   **Extensión de Texto Real:** El artículo debe contener estrictamente entre **2.000 y 2.500 palabras de texto real** (sin contar las etiquetas HTML del código). Debe ser exhaustivo, con explicaciones detalladas, casos prácticos, tablas y elementos interactivos nativos.
+*   **Extensión de Texto Real:** El artículo debe contener estrictamente entre **2.500 y 3.500 palabras de texto real legible** (excluyendo por completo las etiquetas HTML del código). Bajo ninguna circunstancia el artículo debe bajar de **2.000 palabras de texto real**. Si es necesario, desarrolla cada apartado en profundidad, agrega secciones adicionales de análisis técnico, táctico, estadístico o histórico, y escribe párrafos largos y explicativos para garantizar superar este límite.
 *   **Idioma:** Español (castellano neutro, adaptado al público objetivo).
 *   **Cero Emojis:** Bajo ninguna circunstancia uses emojis en el artículo, títulos, metatítulos o metadescripciones para mantener un tono editorial profesional y serio.
 *   **Estructura SEO:** Introduce las palabras clave de forma natural en los primeros párrafos, en los encabezados principales (H2 y H3), y a lo largo de las explicaciones.
@@ -152,11 +152,11 @@ Utiliza el elemento nativo `<details>` estructurado con Tailwind CSS para añadi
 
 ---
 
-### 6. Estructura Sugerida del Artículo (Para alcanzar las 2.000+ palabras)
-1.  **Introducción Amplia (aprox. 250 palabras):** Planteamiento del tema, antecedentes y su relevancia actual.
-2.  **Sección 1 (aprox. 400 palabras):** Definición profunda de los conceptos centrales del tema con H2 y H3.
-3.  **Sección 2 (aprox. 450 palabras):** Casos prácticos, ejemplos de aplicación o clasificaciones. Uso de grillas de tarjetas.
-4.  **Sección 3 (aprox. 400 palabras):** Exclusiones comunes, errores frecuentes o precauciones (Caja de Alerta).
-5.  **Sección 4 (aprox. 300 palabras):** Tabla comparativa detallada usando la estructura de colores semánticos.
-6.  **Sección 5 (aprox. 200 palabras):** Bloque interactivo de preguntas frecuentes utilizando el acordeón de `<details>`.
-7.  **Sección 6 (aprox. 150 palabras):** Conclusión técnica con recomendaciones finales (Caja de Recomendación).
+### 6. Estructura Sugerida del Artículo (Para garantizar entre 2.500 y 3.500 palabras)
+1.  **Introducción Amplia (aprox. 350 palabras):** Planteamiento del tema, antecedentes históricos del Mundial y su relevancia actual al día 24 de Junio de 2026.
+2.  **Sección 1 (aprox. 550 palabras):** Análisis táctico y definición profunda de los conceptos centrales del tema con múltiples H2 y H3.
+3.  **Sección 2 (aprox. 600 palabras):** Casos prácticos, estadísticas detalladas de los jugadores o selecciones implicadas, ejemplos de aplicación o clasificaciones. Uso de grillas de tarjetas explicativas muy desarrolladas.
+4.  **Sección 3 (aprox. 500 palabras):** Exclusiones comunes, errores frecuentes, precauciones y datos críticos de rendimiento (Caja de Alerta) con explicaciones minuciosas de cada punto.
+5.  **Sección 4 (aprox. 450 palabras):** Tabla comparativa detallada usando la estructura de colores semánticos con descripciones extensas en cada fila.
+6.  **Sección 5 (aprox. 350 palabras):** Bloque interactivo de al menos 4-5 preguntas frecuentes detalladas utilizando el acordeón de `<details>`, desarrollando cada respuesta con un mínimo de 70 palabras.
+7.  **Sección 6 (aprox. 200 palabras):** Conclusión técnica con recomendaciones finales, próximos pasos y pronóstico de cara al resto del Mundial (Caja de Recomendación).

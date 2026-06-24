@@ -72,69 +72,105 @@ async function main() {
       promptText = promptText.replace('[OPCIONAL: INSERTAR DETALLES ADICIONALES]', `Detalles: Artículo real sobre el Mundial 2026 al día de hoy 24 de Junio de 2026.`);
 
       try {
-        console.log(`Calling DeepSeek API for "${article.title}"...`);
-        const response = await fetch('https://api.deepseek.com/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
-          },
-          body: JSON.stringify({
-            model: 'deepseek-chat',
-            messages: [
-              {
-                role: 'system',
-                content: 'Eres un redactor experto en SEO, redacción deportiva y EEAT. Debes responder únicamente con el objeto JSON solicitado, sin explicaciones ni markdown que lo envuelva.'
+        let parsed = null;
+        let attempt = 0;
+        const maxAttempts = 3;
+        let currentPrompt = promptText;
+
+        while (attempt < maxAttempts) {
+          attempt++;
+          try {
+            console.log(`Calling DeepSeek API for "${article.title}" (Attempt ${attempt}/${maxAttempts})...`);
+            const response = await fetch('https://api.deepseek.com/chat/completions', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
               },
-              {
-                role: 'user',
-                content: promptText
-              }
-            ],
-            response_format: {
-              type: 'json_object'
+              body: JSON.stringify({
+                model: 'deepseek-chat',
+                messages: [
+                  {
+                    role: 'system',
+                    content: 'Eres un redactor experto en SEO, redacción deportiva y EEAT. Debes responder únicamente con el objeto JSON solicitado, sin explicaciones ni markdown que lo envuelva. Tu artículo debe ser extremadamente detallado y tener obligatoriamente entre 2500 y 3500 palabras de texto legible (excluyendo etiquetas HTML).'
+                  },
+                  {
+                    role: 'user',
+                    content: currentPrompt
+                  }
+                ],
+                response_format: {
+                  type: 'json_object'
+                }
+              })
+            });
+
+            if (!response.ok) {
+              const errText = await response.text();
+              throw new Error(`HTTP Error: ${response.status} ${response.statusText} - ${errText}`);
             }
-          })
-        });
 
-        if (!response.ok) {
-          const errText = await response.text();
-          throw new Error(`HTTP Error: ${response.status} ${response.statusText} - ${errText}`);
+            const data = await response.json();
+            const rawContent = data.choices[0].message.content;
+
+            let cleaned = rawContent.trim();
+            if (cleaned.startsWith('```')) {
+              cleaned = cleaned.replace(/^```json\s*/i, '').replace(/```$/, '').trim();
+            }
+
+            parsed = JSON.parse(cleaned);
+
+            // Validation of required keys
+            if (!parsed.title || !parsed.meta_title || !parsed.meta_description || !parsed.excerpt || !parsed.content) {
+              throw new Error("Missing required JSON fields in API response.");
+            }
+
+            // Count words (excluding HTML tags)
+            const textOnly = parsed.content.replace(/<[^>]*>/g, ' ');
+            const wordCount = textOnly.trim().split(/\s+/).filter(w => w.length > 0).length;
+            console.log(`Actual legible text word count: ${wordCount} words.`);
+
+            if (wordCount < 2000) {
+              console.warn(`Warning: Word count ${wordCount} is below the required 2000 words limit.`);
+              if (attempt < maxAttempts) {
+                console.log(`Retrying generation with a stronger warning...`);
+                currentPrompt = `${promptText}\n\n[SISTEMA: El resultado anterior tenía solo ${wordCount} palabras. Es OBLIGATORIO que el artículo tenga entre 2500 y 3500 palabras de texto legible (excluyendo etiquetas HTML). Por favor, expande significativamente el contenido añadiendo análisis tácticos detallados de las jugadas, estadísticas pormenorizadas, comparativas extensas, FAQs amplias y descripciones de juego de al menos 400 palabras por sección para superar las 2000 palabras.]`;
+                continue; // try again
+              } else {
+                throw new Error(`Failed to generate an article with at least 2000 words after ${maxAttempts} attempts. Last word count was ${wordCount}.`);
+              }
+            }
+
+            // If we reached here, word count is >= 2000 and valid!
+            break; // exit while loop
+
+          } catch (err) {
+            console.error(`Attempt ${attempt} failed:`, err.message);
+            if (attempt >= maxAttempts) {
+              throw err;
+            }
+            await new Promise(resolve => setTimeout(resolve, 2000));
+          }
         }
 
-        const data = await response.json();
-        const rawContent = data.choices[0].message.content;
-
-        let cleaned = rawContent.trim();
-        if (cleaned.startsWith('```')) {
-          cleaned = cleaned.replace(/^```json\s*/i, '').replace(/```$/, '').trim();
+        // If we got parsed successfully, write to database
+        if (parsed) {
+          console.log("Updating database...");
+          await client.query(
+            `UPDATE articles 
+             SET title = $1, meta_title = $2, meta_description = $3, excerpt = $4, content = $5 
+             WHERE id = $6`,
+            [
+              parsed.title,
+              parsed.meta_title,
+              parsed.meta_description,
+              parsed.excerpt,
+              parsed.content,
+              article.id
+            ]
+          );
+          console.log(`Article ID ${article.id} successfully updated!`);
         }
-
-        const parsed = JSON.parse(cleaned);
-
-        console.log(`Parsing successful. Received fields: ${Object.keys(parsed).join(', ')}`);
-        console.log(`Generated content length: ${parsed.content ? parsed.content.length : 0} characters.`);
-
-        // Validation of required keys
-        if (!parsed.title || !parsed.meta_title || !parsed.meta_description || !parsed.excerpt || !parsed.content) {
-          throw new Error("Missing required JSON fields in API response.");
-        }
-
-        console.log("Updating database...");
-        await client.query(
-          `UPDATE articles 
-           SET title = $1, meta_title = $2, meta_description = $3, excerpt = $4, content = $5 
-           WHERE id = $6`,
-          [
-            parsed.title,
-            parsed.meta_title,
-            parsed.meta_description,
-            parsed.excerpt,
-            parsed.content,
-            article.id
-          ]
-        );
-        console.log(`Article ID ${article.id} successfully updated!`);
 
       } catch (err) {
         console.error(`Error processing article ID ${article.id}:`, err.message);
