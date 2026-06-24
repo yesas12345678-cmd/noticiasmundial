@@ -64,7 +64,7 @@ export default async function Home({ searchParams }: PageProps) {
         </div>
 
         <div className="max-w-3xl space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400">
             <Cpu className="h-3.5 w-3.5" />
             <span className="text-[10px] font-mono font-bold uppercase tracking-wider">
               Centro de Operaciones Informativas
@@ -72,7 +72,7 @@ export default async function Home({ searchParams }: PageProps) {
           </div>
 
           <h1 className="text-3xl md:text-5xl font-black tracking-tight text-white uppercase leading-none">
-            La Pizarra del <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500">Mundial</span> del Futuro
+            La Pizarra del <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-orange-400 to-red-500">Mundial</span> del Futuro
           </h1>
           
           <p className="text-sm text-zinc-400 max-w-2xl leading-relaxed">
@@ -94,13 +94,13 @@ export default async function Home({ searchParams }: PageProps) {
           </div>
           <div className="space-y-1">
             <span className="text-[9px] font-mono text-zinc-650 block uppercase">// PARTIDOS EN VIVO</span>
-            <div className="text-xl font-bold font-mono text-emerald-400">2 Jugándose</div>
-            <span className="text-[8px] font-mono text-emerald-500/65 block">Señales satelitales</span>
+            <div className="text-xl font-bold font-mono text-orange-400">3 Hoy</div>
+            <span className="text-[8px] font-mono text-orange-500/65 block">Señales satelitales</span>
           </div>
           <div className="space-y-1">
             <span className="text-[9px] font-mono text-zinc-650 block uppercase">// LECTORES ACTIVOS</span>
-            <div className="text-xl font-bold font-mono text-white">41.8k / min</div>
-            <span className="text-[8px] font-mono text-zinc-500 block">Red global abierta</span>
+            <div className="text-xl font-bold font-mono text-blue-400">41.8k / min</div>
+            <span className="text-[8px] font-mono text-blue-500/65 block">Red global abierta</span>
           </div>
         </div>
 
@@ -112,7 +112,7 @@ export default async function Home({ searchParams }: PageProps) {
         {/* Dynamic Category Breadcrumb */}
         <div className="flex items-center justify-between mb-4 px-1">
           <div className="flex items-center gap-2">
-            <Network className="h-4 w-4 text-emerald-500" />
+            <Network className="h-4 w-4 text-purple-500" />
             <h2 className="text-xs font-mono font-bold tracking-widest text-zinc-400 uppercase">
               VISTA ACTUAL: {activeCategory === 'todos' ? 'TODAS LAS NOTICIAS' : activeCategory.toUpperCase()}
             </h2>
@@ -120,7 +120,7 @@ export default async function Home({ searchParams }: PageProps) {
           {activeCategory !== 'todos' && (
             <Link 
               href="/"
-              className="text-[10px] font-mono text-emerald-400 hover:text-emerald-350 transition-colors uppercase font-bold"
+              className="text-[10px] font-mono text-purple-400 hover:text-purple-350 transition-colors uppercase font-bold"
             >
               [ Restablecer Vista ]
             </Link>
@@ -137,7 +137,7 @@ export default async function Home({ searchParams }: PageProps) {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f293704_1px,transparent_1px),linear-gradient(to_bottom,#1f293704_1px,transparent_1px)] bg-[size:32px_32px] -z-10" />
         <div className="space-y-1">
           <div className="flex items-center gap-1.5">
-            <Flame className="h-4 w-4 text-emerald-500" />
+            <Flame className="h-4 w-4 text-orange-500" />
             <span className="text-xs font-mono font-bold text-white uppercase tracking-wider">MODO ULTRA ANÁLISIS</span>
           </div>
           <p className="text-xs text-zinc-500 max-w-xl">
@@ -150,7 +150,7 @@ export default async function Home({ searchParams }: PageProps) {
             <span className="text-[8px] font-mono text-zinc-650 block mt-1">LATENCIA DE RED</span>
           </div>
           <div className="text-center bg-zinc-950 border border-zinc-900 p-3 rounded-xl min-w-[80px]">
-            <div className="text-lg font-mono font-black text-emerald-400 leading-none">99.8%</div>
+            <div className="text-lg font-mono font-black text-purple-400 leading-none">99.8%</div>
             <span className="text-[8px] font-mono text-zinc-650 block mt-1">PRECISIÓN VAR</span>
           </div>
         </div>

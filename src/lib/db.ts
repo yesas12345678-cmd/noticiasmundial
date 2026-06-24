@@ -7,312 +7,307 @@ export const pool = new Pool({
   ssl: false,
 });
 
-// Definition of 50 unique SEO-optimized articles
+// Definition of 50 unique SEO-optimized articles based on actual/realistic World Cup 2026 events on June 24, 2026
 const SEED_ARTICLES_DATA = [
-  // 1-10
   {
-    title: 'Estrategia y pressing de España en el debut mundialista',
-    excerpt: 'Detalles del bloque medio y transiciones veloces del combinado nacional para contrarrestar rivales replegados.',
-    keyword: 'estrategia-espana-mundial',
-    slug: 'estrategia-espana-debut-mundialista',
+    title: 'Canadá vs. Suiza: Choque estelar por el liderato del Grupo B',
+    excerpt: 'El BC Place de Vancouver define hoy el destino del Grupo B en un vibrante cara a cara entre dos selecciones invictas.',
+    keyword: 'canada-suiza-grupo-b-2026',
+    slug: 'canada-suiza-liderato-grupo-b',
   },
   {
-    title: 'Parte médico oficial de la lesión muscular del centrocampista alemán',
-    excerpt: 'El informe revela una microrrotura fibrilar en el bíceps femoral. Se estiman dos semanas de inactividad.',
-    keyword: 'lesion-muscular-alemania',
-    slug: 'parte-medico-lesion-centrocampista-alemania',
+    title: 'Parte médico: Molestias de Vinícius Júnior lo dejan en duda ante Escocia',
+    excerpt: 'El delantero de la Seleção sintió una fatiga en el aductor durante la práctica en Miami y podría descansar preventivamente.',
+    keyword: 'lesion-vinicius-junior-brasil-2026',
+    slug: 'vinicius-junior-lesion-duda-escocia',
   },
   {
-    title: 'Previa táctica del choque decisivo entre Argentina y Francia',
-    excerpt: 'Dos potencias frente a frente con esquemas de ataque vertical. Analizamos las claves del emparejamiento.',
-    keyword: 'previa-argentina-francia',
-    slug: 'previa-tactica-partido-argentina-francia',
+    title: 'Francia 3-0 Irak: Mbappé lidera bajo el diluvio en Filadelfia',
+    excerpt: 'Kylian Mbappé firma un doblete en un partido marcado por una interrupción de dos horas debido a tormentas eléctricas.',
+    keyword: 'francia-irak-resultado-2026',
+    slug: 'francia-irak-goleada-tormenta-filadelfia',
   },
   {
-    title: 'Métricas de velocidad y distancia recorrida de los laterales franceses',
-    excerpt: 'Estudio de rendimiento físico que detalla la aceleración explosiva y el volumen de kilómetros en fase ofensiva.',
-    keyword: 'metricas-laterales-francia',
-    slug: 'metricas-velocidad-distancia-laterales-francia',
+    title: 'Noruega 3-2 Senegal: Doblete de Haaland clasifica a los escandinavos',
+    excerpt: 'Erling Haaland brilla en el MetLife Stadium de Nueva Jersey y asegura el pase de Noruega a la ronda de 32.',
+    keyword: 'noruega-senegal-haaland-2026',
+    slug: 'noruega-senegal-cronica-doblete-haaland',
   },
   {
-    title: 'Renovación generacional en el centro del campo de Brasil',
-    excerpt: 'La incorporación de jóvenes talentos aporta dinamismo y recuperación rápida de balón en campo contrario.',
-    keyword: 'renovacion-mediocampo-brasil',
-    slug: 'renovacion-generacional-centro-campo-brasil',
+    title: 'Javier Aguirre afina defensa de México para el cierre ante Chequia',
+    excerpt: 'El Tri busca mantener su portería a cero y asegurar el paso perfecto en el Estadio Azteca frente al combinado checo.',
+    keyword: 'mexico-chequia-previo-2026',
+    slug: 'javier-aguirre-tactica-defensa-mexico-chequia',
   },
   {
-    title: 'Evolución del esguince de tobillo del delantero estrella belga',
-    excerpt: 'El cuerpo médico intensifica trabajos de fisioterapia para recuperar al atacante antes de la fase de eliminación.',
-    keyword: 'esguince-delantero-belgica',
-    slug: 'evolucion-esguince-delantero-estrella-belgica',
+    title: 'Estados Unidos clasifica como líder del Grupo D tras vencer a Paraguay',
+    excerpt: 'El combinado norteamericano sella su clasificación con solidez táctica y desata la locura en su afición.',
+    keyword: 'eeuu-paraguay-clasificacion-2026',
+    slug: 'estados-unidos-lider-grupo-d-paraguay',
   },
   {
-    title: 'Análisis del rendimiento de Inglaterra tras la fase de grupos',
-    excerpt: 'Evaluación del porcentaje de posesión, tiros a puerta y solidez defensiva del conjunto de los tres leones.',
-    keyword: 'rendimiento-inglaterra-grupos',
-    slug: 'analisis-rendimiento-inglaterra-fase-grupos',
+    title: 'Lamine Yamal brilla con dos asistencias en el gran debut español',
+    excerpt: 'El extremo del Barcelona destroza la zaga rival y se consagra como motor de La Roja en la Copa del Mundo.',
+    keyword: 'lamine-yamal-asistencias-espana-2026',
+    slug: 'lamine-yamal-asistencias-debut-espana',
   },
   {
-    title: 'Estadísticas de efectividad en portería del guardameta argentino',
-    excerpt: 'Datos detallados sobre disparos atajados, porcentaje de paradas y efectividad en el juego aéreo del portero.',
-    keyword: 'portero-argentina-estadisticas',
-    slug: 'estadisticas-efectividad-porteria-guardameta-argentino',
+    title: 'Argentina golea 3-0 a Argelia con exhibición de Lionel Messi',
+    excerpt: 'La albiceleste convence en su partido de fase de grupos con gol y asistencia de su mítico capitán en el Mercedes-Benz Stadium.',
+    keyword: 'argentina-algelia-exhibicion-messi-2026',
+    slug: 'argentina-algelia-goleada-lionel-messi',
   },
   {
-    title: 'Esquema de juego de la selección italiana para el partido inaugural',
-    excerpt: 'El seleccionador planea un repliegue ordenado y contragolpes letales explotando la velocidad por las bandas.',
-    keyword: 'esquema-italia-inaugural',
-    slug: 'esquema-juego-seleccion-italiana-inaugural',
+    title: 'Alarma en Alemania: Jamal Musiala sufre sobrecarga y descansará en la jornada',
+    excerpt: 'El cuerpo médico de la Mannschaft prefiere no arriesgar a su enganche estrella para evitar una lesión mayor.',
+    keyword: 'lesion-musiala-alemania-sobrecarga-2026',
+    slug: 'jamal-musiala-sobrecarga-descanso-alemania',
   },
   {
-    title: 'Informe de fatiga física acumulada en el plantel de Uruguay',
-    excerpt: 'Reporte interno del cuerpo de preparación física sobre la carga de minutos de los futbolistas clave.',
-    keyword: 'fatiga-plantel-uruguay',
-    slug: 'informe-fatiga-fisica-acumulada-plantel-uruguay',
-  },
-  // 11-20
-  {
-    title: 'Análisis de juego de Países Bajos y sus transiciones rápidas',
-    excerpt: 'El sistema de carrileros profundos y su influencia en la creación de ocasiones de gol en ataque organizado.',
-    keyword: 'transiciones-paises-bajos',
-    slug: 'analisis-juego-paises-bajos-transiciones-rapidas',
+    title: 'Colombia asegura boleto a dieciseisavos al batir a RD Congo 2-1 en un final tenso',
+    excerpt: 'Los cafeteros sufren en los últimos minutos pero amarran los tres puntos que los colocan en la siguiente fase.',
+    keyword: 'colombia-congo-resultado-mundial-2026',
+    slug: 'colombia-congo-clasificacion-dieciseisavos',
   },
   {
-    title: 'Recuperación médica del defensa central y capitán de Portugal',
-    excerpt: 'Tras sufrir una contractura, los fisioterapeutas confían en que llegue a punto para la ronda eliminatoria.',
-    keyword: 'defensa-central-portugal',
-    slug: 'recuperacion-medica-defensa-central-capitan-portugal',
+    title: 'Inglaterra vence 2-0 a Ghana y se clasifica a la ronda de 32',
+    excerpt: 'Con goles de Bellingham y Saka, el equipo de los tres leones cumple las expectativas en la fase de grupos.',
+    keyword: 'inglaterra-ghana-resultado-2026',
+    slug: 'inglaterra-ghana-bellingham-saka-clasificados',
   },
   {
-    title: 'Historial de enfrentamientos directos entre Brasil e Italia',
-    excerpt: 'Un repaso de los duelos legendarios en campeonatos internacionales y las estadísticas históricas de ambos.',
-    keyword: 'duelo-brasil-italia',
-    slug: 'historial-enfrentamientos-directos-brasil-italia',
+    title: 'Croacia elimina a Panamá por la mínima y avanza de ronda',
+    excerpt: 'Un solitario gol de cabeza le da el pase a los balcánicos, sentenciando la eliminación de la selección canalera.',
+    keyword: 'croacia-panama-resultado-grupo-2026',
+    slug: 'croacia-panama-eliminacion-canalera',
   },
   {
-    title: 'Porcentaje de acierto en pases del centro del campo español',
-    excerpt: 'El análisis numérico revela una precisión superior al noventa por ciento en campo rival durante el torneo.',
-    keyword: 'acierto-pases-espana',
-    slug: 'porcentaje-acierto-pases-centro-campo-espanol',
+    title: 'Portugal golea 3-0 a Uzbekistán con gol de Cristiano Ronaldo',
+    excerpt: 'El astro luso anota el tercero y comanda el pase de Portugal como líder indiscutible del Grupo K.',
+    keyword: 'portugal-uzbekistan-cristiano-ronaldo-2026',
+    slug: 'portugal-uzbekistan-goleada-lusa-cristiano',
   },
   {
-    title: 'Plan táctico de Croacia para anular la ofensiva del rival',
-    excerpt: 'El mediocampo croata se perfila como la clave para controlar el ritmo de juego y cortar líneas de pase.',
-    keyword: 'plan-tactico-croacia',
-    slug: 'plan-tactico-croacia-anular-ofensiva-rival',
+    title: 'Austria sorprende 3-1 a Jordania en partido de alta intensidad',
+    excerpt: 'El combinado europeo domina las transiciones rápidas y sella tres puntos clave en su lucha por clasificar.',
+    keyword: 'austria-jordania-resultado-25-2026',
+    slug: 'austria-jordania-sorpresa-transiciones-rapidas',
   },
   {
-    title: 'Lista de bajas y dudas en la selección de México para el fin de semana',
-    excerpt: 'Repaso detallado de los jugadores con molestias musculares y su probabilidad de participar en el encuentro.',
-    keyword: 'bajas-mexico-semana',
-    slug: 'lista-bajas-dudas-seleccion-mexico-fin-semana',
+    title: 'Escocia sueña con su primer pase histórico ante la poderosa Brasil en Miami',
+    excerpt: 'El conjunto británico necesita rascar un punto del Hard Rock Stadium para aspirar a meterse en dieciseisavos.',
+    keyword: 'brasil-escocia-previa-historica-2026',
+    slug: 'escocia-suena-clasificacion-historica-brasil',
   },
   {
-    title: 'Resultado de la simulación táctica del encuentro de octavos de final',
-    excerpt: 'Modelos predictivos analizan las probabilidades de victoria según los esquemas y estados de forma actuales.',
-    keyword: 'simulacion-octavos-final',
-    slug: 'resultado-simulacion-tactica-encuentro-octavos-final',
+    title: 'Corea del Sur y Sudáfrica disputan una final directa por la clasificación',
+    excerpt: 'Ambos equipos del Grupo A se miden con la obligación de ganar para no depender de otros resultados.',
+    keyword: 'corea-sudafrica-final-grupo-a-2026',
+    slug: 'corea-sur-sudafrica-duelo-directo-grupo-a',
   },
   {
-    title: 'Rendimiento goleador y efectividad de remates del atacante uruguayo',
-    excerpt: 'Análisis estadístico de la conversión de ocasiones y mapas de calor en el área de penalti del delantero.',
-    keyword: 'goleador-uruguay-remates',
-    slug: 'rendimiento-goleador-efectividad-remates-atacante-uruguayo',
+    title: 'Marruecos busca sellar su pase como líder del Grupo C frente a Haití',
+    excerpt: 'Los leones del Atlas se miden a una Haití ya eliminada, buscando asegurar la primera plaza del grupo.',
+    keyword: 'marruecos-haiti-grupo-c-2026',
+    slug: 'marruecos-haiti-liderato-grupo-c',
   },
   {
-    title: 'Estilo de posesión y presión alta de la selección de EE. UU.',
-    excerpt: 'Cómo el dinamismo físico en las bandas permite ahogar la salida del balón de los rivales en su propio campo.',
-    keyword: 'presion-eeuu-posesion',
-    slug: 'estilo-posesion-presion-alta-seleccion-eeuu',
+    title: 'Bosnia y Qatar pelean por una remota chance de avanzar como mejor tercero',
+    excerpt: 'Ambas escuadras del Grupo B necesitan una goleada y combinaciones milagrosas en otros sectores.',
+    keyword: 'bosnia-qatar-mejor-tercero-2026',
+    slug: 'bosnia-qatar-lucha-desesperada-terceros',
   },
   {
-    title: 'Parte de enfermería de Colombia ante el próximo encuentro continental',
-    excerpt: 'Actualización del estado físico de los jugadores convocados que arrastran sobrecargas del último partido.',
-    keyword: 'enfermeria-colombia-encuentro',
-    slug: 'parte-enfermeria-colombia-proximo-encuentro-continental',
-  },
-  // 21-30
-  {
-    title: 'Historial de penaltis atajados del portero titular de Bélgica',
-    excerpt: 'El análisis de su rendimiento en tandas decisivas y su efectividad ante cobradores diestros y zurdos.',
-    keyword: 'penaltis-portero-belgica',
-    slug: 'historial-penaltis-atajados-portero-titular-belgica',
+    title: 'Análisis de Datos: Los laterales franceses rompen récords de velocidad en el Mundial',
+    excerpt: 'Métricas de GPS revelan que la zaga gala alcanza los 36.8 km/h en transiciones defensivas y ofensivas.',
+    keyword: 'francia-metricas-velocidad-laterales-2026',
+    slug: 'analisis-datos-laterales-franceses-velocidad',
   },
   {
-    title: 'Estadísticas de recuperaciones del mediocentro defensivo de Senegal',
-    excerpt: 'El pivote defensivo destaca como el jugador con más intercepciones y duelos individuales ganados en el torneo.',
-    keyword: 'recuperaciones-senegal-pivote',
-    slug: 'estadisticas-recuperaciones-mediocentro-defensivo-senegal',
+    title: 'El impacto del calor extremo en las sedes del sur de Estados Unidos',
+    excerpt: 'Temperaturas superiores a 35 grados obligan a aplicar pausas de hidratación en Houston, Dallas y Miami.',
+    keyword: 'calor-sedes-eeuu-mundial-2026',
+    slug: 'impacto-calor-extremo-sedes-sur-estados-unidos',
   },
   {
-    title: 'Planteamiento táctico de Japón para sorprender en velocidad',
-    excerpt: 'El uso de extremos rápidos y repliegues cortos en transiciones ofensivas veloces para dañar defensas adelantadas.',
-    keyword: 'tactica-japon-velocidad',
-    slug: 'planteamiento-tactico-japon-sorprender-velocidad',
+    title: 'Fisioterapia a fondo: Cómo recuperan a Lionel Messi entre partidos del Mundial',
+    excerpt: 'Detalles del plan de crioterapia y masoterapia que recibe la estrella argentina para dosificar sus minutos.',
+    keyword: 'lesion-messi-recuperacion-fisioterapia-2026',
+    slug: 'crioterapia-recuperacion-lionel-messi-partidos',
   },
   {
-    title: 'Bajas confirmadas en el plantel de la selección chilena',
-    excerpt: 'Dos jugadores clave quedan descartados para los compromisos internacionales debido a desgarros musculares.',
-    keyword: 'bajas-chile-confirmadas',
-    slug: 'bajas-confirmadas-plantel-seleccion-chilena',
+    title: 'El nuevo esquema táctico de Italia para blindar su portería',
+    excerpt: 'El seleccionador azzurro implementa una línea de cinco para contrarrestar la velocidad de los extremos rivales.',
+    keyword: 'italia-tactica-linea-cinco-2026',
+    slug: 'esquema-tactico-italia-blindaje-porteria',
   },
   {
-    title: 'Resultado del último partido amistoso de la selección de Marruecos',
-    excerpt: 'Crónica del encuentro preparatorio con énfasis en los ajustes tácticos de la línea defensiva del equipo.',
-    keyword: 'amistoso-marruecos-defensa',
-    slug: 'resultado-ultimo-partido-amistoso-seleccion-marruecos',
+    title: 'Estilo de juego: Bélgica y su transición ofensiva vertical en tres toques',
+    excerpt: 'Analizamos cómo los belgas explotan los carriles interiores gracias a la visión de Kevin De Bruyne.',
+    keyword: 'belgica-transicion-vertical-de-bruyne-2026',
+    slug: 'estilo-juego-belgica-transiciones-de-bruyne',
   },
   {
-    title: 'Distancia recorrida e intensidad física del delantero de Alemania',
-    excerpt: 'Datos del GPS que revelan el volumen de carreras de alta intensidad y desmarques al espacio del atacante.',
-    keyword: 'intensidad-delantero-alemania',
-    slug: 'distancia-recorrida-intensidad-fisica-delantero-alemania',
+    title: 'Senegal confía en Ismaïla Sarr tras su gran actuación goleadora ante Noruega',
+    excerpt: 'El atacante senegalés se consolida como la gran esperanza del continente africano tras su doblete.',
+    keyword: 'senegal-confia-ismaila-sarr-goles-2026',
+    slug: 'senegal-goleador-ismaila-sarr-esperanza',
   },
   {
-    title: 'Puntos fuertes del ataque posicional de la selección de Canadá',
-    excerpt: 'El aprovechamiento de la amplitud del campo y superioridades numéricas en banda para centrar al área rival.',
-    keyword: 'ataque-posicional-canada',
-    slug: 'puntos-fuertes-ataque-posicional-seleccion-canada',
+    title: 'La marea escocesa toma las calles de Miami previo al gran choque con Brasil',
+    excerpt: 'Miles de aficionados británicos llenan de color las playas y avenidas antes del vital encuentro de hoy.',
+    keyword: 'escoceses-miami-brasil-ambiente-2026',
+    slug: 'marea-escocesa-miami-previo-choque-brasil',
   },
   {
-    title: 'Proceso de puesta a punto de la rodilla del carrilero de Brasil',
-    excerpt: 'El lateral derecho entrena de forma diferenciada con miras a incorporarse al grupo para los octavos de final.',
-    keyword: 'rodilla-lateral-brasil',
-    slug: 'proceso-puesta-punto-rodilla-carrilero-brasil',
+    title: 'Chequia confía en su poderío aéreo para batir al anfitrión México',
+    excerpt: 'El seleccionador checo diseña jugadas a balón parado explotando la estatura de sus delanteros centros.',
+    keyword: 'chequia-balon-parado-mexico-2026',
+    slug: 'chequia-juego-aereo-estrategia-mexico',
   },
   {
-    title: 'Estadísticas de duelos aéreos ganados por la defensa de Suiza',
-    excerpt: 'El gran porcentaje de acierto de los centrales helvéticos defendiendo saques de esquina y centros laterales.',
-    keyword: 'duelos-aereos-suiza',
-    slug: 'estadisticas-duelos-aereos-ganados-defensa-suiza',
+    title: 'El césped del BC Place de Vancouver recibe elogios de suizos y canadienses',
+    excerpt: 'El terreno de juego híbrido del estadio canadiense pasa con nota alta las revisiones técnicas de la FIFA.',
+    keyword: 'cesped-bc-place-vancouver-2026',
+    slug: 'cesped-bc-place-vancouver-elogios-fifa',
   },
   {
-    title: 'Asistencias y pases clave del enganche creativo de Países Bajos',
-    excerpt: 'Mapa de asistencias y efectividad en la zona de tres cuartos para habilitar a los extremos del equipo.',
-    keyword: 'asistencias-enganche-holanda',
-    slug: 'asistencias-pases-clave-enganche-creativo-paises-bajos',
-  },
-  // 31-40
-  {
-    title: 'Esquema de contención y marcas personales de Ecuador',
-    excerpt: 'Cómo la selección ecuatoriana asfixia al creador de juego rival mediante marcas zonales muy ordenadas.',
-    keyword: 'contencion-ecuador-juego',
-    slug: 'esquema-contencion-marcas-personales-ecuador',
+    title: 'Historial de duelos: Brasil y Escocia se ven las caras tras décadas',
+    excerpt: 'Repasamos los duelos históricos en mundiales pasados y cómo se presenta este nuevo capítulo.',
+    keyword: 'brasil-escocia-historial-duelos-2026',
+    slug: 'historial-duelos-brasil-escocia-mundiales',
   },
   {
-    title: 'Molestias musculares del extremo izquierdo de la selección española',
-    excerpt: 'Tras finalizar con dolor en los aductores, se le realizarán pruebas ecográficas preventivas en la concentración.',
-    keyword: 'extremo-espana-molestias',
-    slug: 'molestias-musculares-extremo-izquierdo-seleccion-espanola',
+    title: 'Las revelaciones estadísticas de la primera fase del Mundial 2026',
+    excerpt: 'Datos revelan un incremento notable en goles de contragolpe y efectividad en disparos de media distancia.',
+    keyword: 'estadisticas-goles-contragolpe-mundial-2026',
+    slug: 'revelaciones-estadisticas-primera-fase-goles',
   },
   {
-    title: 'Previa del clásico sudamericano entre Brasil y Argentina',
-    excerpt: 'Analizamos las variantes del partido más esperado de las rondas clasificatorias con estadísticas recientes.',
-    keyword: 'clasico-sudamericano-previa',
-    slug: 'previa-clasico-sudamericano-brasil-argentina',
+    title: 'Los guardametas más efectivos en lo que va de la Copa del Mundo',
+    excerpt: 'Un repaso al porcentaje de paradas y efectividad en balones aéreos de los porteros destacados.',
+    keyword: 'arqueros-mas-efectivos-paradas-2026',
+    slug: 'porteros-mas-efectivos-copa-mundo',
   },
   {
-    title: 'Eficacia en robos de balón en campo propio de la selección de Dinamarca',
-    excerpt: 'Análisis detallado de recuperaciones de posesión en zona de contención y su rapidez para iniciar contraataques.',
-    keyword: 'robos-balon-dinamarca',
-    slug: 'eficacia-robos-balon-campo-propio-seleccion-dinamarca',
+    title: 'Jürgen Klopp analiza el pressing alto de la selección alemana',
+    excerpt: 'El prestigioso entrenador destaca los bloqueos del medio campo alemán para anular las salidas limpias.',
+    keyword: 'klopp-analisis-pressing-alemania-2026',
+    slug: 'jurgen-klopp-analisis-pressing-alemania',
   },
   {
-    title: 'Sistema táctico de tres defensores centrales en Corea del Sur',
-    excerpt: 'Ventajas del dibujo táctico para poblar el centro del campo y asegurar las coberturas ante extremos rápidos.',
-    keyword: 'sistema-defensivo-corea',
-    slug: 'sistema-tactico-tres-defensores-centrales-corea-sur',
+    title: 'La fiebre mundialista inunda la Ciudad de México previo al México-Chequia',
+    excerpt: 'El Zócalo capitalino y el Ángel de la Independencia se tiñen de verde en apoyo incondicional a la selección.',
+    keyword: 'ambiente-cdmx-mexico-chequia-2026',
+    slug: 'fiebre-mundialista-cdmx-previo-mexico-chequia',
   },
   {
-    title: 'Parte médico por sobrecarga en el gemelo del defensa uruguayo',
-    excerpt: 'El zaguero guardará reposo preventivo y se ejercitará en el gimnasio antes del partido decisivo del grupo.',
-    keyword: 'sobrecarga-gemelo-uruguay',
-    slug: 'parte-medico-sobrecarga-gemelo-defensa-uruguayo',
+    title: 'El VAR y su impacto en el porcentaje de acierto de penaltis en el torneo',
+    excerpt: 'Los árbitros tardan un promedio de 45 segundos en revisar jugadas clave, mejorando la justicia deportiva.',
+    keyword: 'impacto-var-penaltis-estadisticas-2026',
+    slug: 'impacto-var-porcentaje-penaltis-efectividad',
   },
   {
-    title: 'Resultado de la jornada clasificatoria y tabla de posiciones de selecciones',
-    excerpt: 'Actualización al instante de los marcadores en los distintos grupos de cara al campeonato internacional.',
-    keyword: 'tabla-clasificatoria-posiciones',
-    slug: 'resultado-jornada-clasificatoria-tabla-posiciones-selecciones',
+    title: 'Parte de lesionados: Las selecciones que sufren bajas para los dieciseisavos',
+    excerpt: 'Una recopilación de los futbolistas que se pierden la ronda del KO por problemas musculares y óseos.',
+    keyword: 'lesiones-bajas-dieciseisavos-lista-2026',
+    slug: 'parte-lesionados-bajas-confirmadas-dieciseisavos',
   },
   {
-    title: 'Pases completados bajo presión por el centro del campo de Croacia',
-    excerpt: 'Cómo el temple y control técnico de los interiores croatas les permite eludir la presión en bloque alto.',
-    keyword: 'pases-presion-croacia',
-    slug: 'pases-completados-bajo-presion-centro-campo-croacia',
+    title: 'Curazao y su valiente debut táctico ante la potencia de Alemania',
+    excerpt: 'La selección caribeña sorprende a los analistas con un planteamiento valiente a pesar de la derrota.',
+    keyword: 'curazao-debut-alemania-tactica-2026',
+    slug: 'curazao-valiente-debut-potencia-alemana',
   },
   {
-    title: 'Filosofía táctica de posesión defensiva del seleccionado de Portugal',
-    excerpt: 'El control del balón como mecanismo de seguridad para desgastar físicamente al adversario y minimizar riesgos.',
-    keyword: 'posesion-defensiva-portugal',
-    slug: 'filosofia-tactica-posesion-defensiva-seleccionado-portugal',
+    title: 'Uruguay entrena a puerta cerrada preparando su partido decisivo del grupo',
+    excerpt: 'Marcelo Bielsa oculta sus cartas tácticas y ensaya desmarques al espacio para sorprender a su próximo rival.',
+    keyword: 'uruguay-entrenamiento-puerta-cerrada-2026',
+    slug: 'uruguay-entrena-puerta-cerrada-bielsa',
   },
   {
-    title: 'Recuperación física del centrocampista defensivo de Francia',
-    excerpt: 'El pivote galo supera la fatiga del muslo y recibe el alta para integrarse a las sesiones de fútbol táctico.',
-    keyword: 'recuperacion-pivote-francia',
-    slug: 'recuperacion-fisica-centrocampista-defensivo-francia',
-  },
-  // 41-50
-  {
-    title: 'Resultado del enfrentamiento de cuartos entre Inglaterra y Alemania',
-    excerpt: 'Análisis técnico de los goles y momentos clave que decidieron la llave clasificatoria para las semifinales.',
-    keyword: 'cuartos-inglaterra-alemania',
-    slug: 'resultado-enfrentamiento-cuartos-inglaterra-alemania',
+    title: 'El impresionante rendimiento físico de Jude Bellingham en el mediocampo inglés',
+    excerpt: 'El jugador del Real Madrid promedia 11.5 kilómetros recorridos por partido con gran acierto defensivo.',
+    keyword: 'bellingham-rendimiento-fisico-kilometros-2026',
+    slug: 'rendimiento-fisico-jude-bellingham-mediocampo',
   },
   {
-    title: 'Estadísticas de efectividad de cara a gol de la selección de Marruecos',
-    excerpt: 'Estudio de la tasa de acierto y disparos al arco en proporción a la posesión en el área rival.',
-    keyword: 'goles-marruecos-efectividad',
-    slug: 'estadisticas-efectividad-cara-gol-seleccion-marruecos',
+    title: 'Las rotaciones de Didier Deschamps pensando en la ronda de eliminación directa',
+    excerpt: 'Francia dará descanso a sus figuras en el último choque de fase de grupos tras amarrar el boleto.',
+    keyword: 'francia-rotaciones-didier-deschamps-2026',
+    slug: 'rotaciones-didier-deschamps-francia-clasificada',
   },
   {
-    title: 'Esquema de contraataque directo de la selección de Japón',
-    excerpt: 'Las transiciones ultra rápidas que conectan la zaga con los delanteros en menos de tres pases clave.',
-    keyword: 'contraataque-directo-japon',
-    slug: 'esquema-contraataque-directo-seleccion-japon',
+    title: 'Los mejores goles de tiro libre directo en la fase de grupos del Mundial',
+    excerpt: 'Un repaso en video y datos a las ejecuciones perfectas que han deleitado a los aficionados.',
+    keyword: 'mejores-goles-tiro-libre-2026',
+    slug: 'mejores-goles-tiro-libre-fase-grupos',
   },
   {
-    title: 'Lesión de ligamento colateral del lateral izquierdo de Senegal',
-    excerpt: 'Confirmado el alcance del traumatismo de rodilla que le impedirá jugar lo que resta de la fase eliminatoria.',
-    keyword: 'lesion-lateral-senegal',
-    slug: 'lesion-ligamento-colateral-lateral-izquierdo-senegal',
+    title: 'Decepción en Panamá tras la temprana eliminación de la Copa del Mundo',
+    excerpt: 'El cuerpo técnico panameño hace autocrítica y destaca la necesidad de renovar los procesos juveniles.',
+    keyword: 'panama-decepcion-eliminacion-croacia-2026',
+    slug: 'decepcion-panama-eliminacion-temprana-mundial',
   },
   {
-    title: 'Previa de la gran final de la copa mundial de fútbol',
-    excerpt: 'Analizamos las fortalezas de los dos finalistas y las posibles variantes tácticas que definirá el campeonato.',
-    keyword: 'gran-final-previa',
-    slug: 'previa-gran-final-copa-mundial-futbol',
+    title: 'Uzbekistán se despide con honor tras caer ante la Portugal de Cristiano',
+    excerpt: 'La escuadra asiática luchó con gallardía pero sucumbió ante la jerarquía individual del combinado luso.',
+    keyword: 'uzbekistan-despedida-honor-portugal-2026',
+    slug: 'uzbekistan-despedida-honor-caida-portugal',
   },
   {
-    title: 'Estadísticas de atajadas del arquero titular de la selección de Suiza',
-    excerpt: 'Porcentaje de efectividad en balones detenidos desde media distancia y disparos directos en el área chica.',
-    keyword: 'arquero-suiza-atajadas',
-    slug: 'estadisticas-atajadas-arquero-titular-seleccion-suiza',
+    title: 'La afición de Irak agradece el esfuerzo en Filadelfia ante el gigante Francia',
+    excerpt: 'Miles de hinchas aplauden a su selección a pesar de la derrota, destacando el orgullo del país en la gran cita.',
+    keyword: 'aficion-irak-filadelfia-francia-2026',
+    slug: 'aficion-irak-agradecimiento-esfuerzo-francia',
   },
   {
-    title: 'Análisis de la presión defensiva en tres cuartos de Ecuador',
-    excerpt: 'Cómo la intensidad de su línea ofensiva fuerza pérdidas de balón en la salida de los defensores rivales.',
-    keyword: 'presion-defensiva-ecuador',
-    slug: 'analisis-presion-defensiva-tres-cuartos-ecuador',
+    title: 'Dinamarca y su sólida estructura táctica en el mediocampo defensivo',
+    excerpt: 'El bloque dinamarqués ahoga la creación de juego rival y destaca en recuperaciones limpias de balón.',
+    keyword: 'dinamarca-estructura-tactica-bloque-2026',
+    slug: 'dinamarca-solida-estructura-tactica-mediocampo',
   },
   {
-    title: 'Parte médico por contusión ósea del pivote de la selección chilena',
-    excerpt: 'El centrocampista defensivo evoluciona favorablemente de un golpe en la espinilla y entrena sin problemas.',
-    keyword: 'contusion-pivote-chile',
-    slug: 'parte-medico-contusion-osea-pivote-seleccion-chilena',
+    title: 'La velocidad de Alphonso Davies: El arma secreta de Canadá ante Suiza',
+    excerpt: 'El veloz carrilero canadiense planea desbordar por la izquierda para romper la zaga helvética hoy.',
+    keyword: 'alphonso-davies-velocidad-canada-2026',
+    slug: 'velocidad-alphonso-davies-arma-canada-suiza',
   },
   {
-    title: 'Resultado de la final de consolación por el tercer puesto del mundial',
-    excerpt: 'Crónica completa del choque por la medalla de bronce con un resumen de los goles y aspectos tácticos.',
-    keyword: 'tercer-puesto-resultado',
-    slug: 'resultado-final-consolacion-tercer-puesto-mundial',
+    title: 'Suiza y su histórica solidez táctica en la línea de tres centrales',
+    excerpt: 'El muro defensivo helvético es el menos batido del Grupo B y pondrá a prueba al ataque de Canadá.',
+    keyword: 'suiza-solidez-defensa-tres-centrales-2026',
+    slug: 'suiza-historica-solidez-linea-tres-centrales',
   },
   {
-    title: 'Goles y asistencias acumuladas de los centrocampistas creativos de España',
-    excerpt: 'El volumen de producción ofensiva de la sala de máquinas del combinado español a lo largo del torneo.',
-    keyword: 'produccion-mediocampistas-espana',
-    slug: 'goles-asistencias-acumuladas-centrocampistas-creativos-espana',
+    title: 'Reporte meteorológico: Prevención ante posibles tormentas en las sedes del este',
+    excerpt: 'La FIFA monitoriza las condiciones en Filadelfia y Boston para garantizar la seguridad de los espectáculos.',
+    keyword: 'reporte-meteorologico-tormentas-fifa-2026',
+    slug: 'reporte-meteorologico-tormentas-sedes-este',
+  },
+  {
+    title: 'Los debutantes absolutos que dejaron huella en esta primera fase del torneo',
+    excerpt: 'Historias de jugadores nóveles que saltaron a la fama mundial con actuaciones sobresalientes.',
+    keyword: 'debutantes-sobresalientes-primera-fase-2026',
+    slug: 'debutantes-absolutos-huella-primera-fase',
+  },
+  {
+    title: 'El análisis del grupo de la muerte: Duelos, sorpresas y eliminados tempranos',
+    excerpt: 'Examinamos las sorpresas del sector más parejo del Mundial y cómo se configuran sus clasificados.',
+    keyword: 'analisis-grupo-muerte-sorpresas-2026',
+    slug: 'analisis-grupo-muerte-sorpresas-eliminaciones',
+  },
+  {
+    title: 'El Hard Rock Stadium listo para recibir el clásico entre Brasil y Escocia',
+    excerpt: 'El coliseo de Miami acoge uno de los choques más esperados del día con lleno absoluto garantizado.',
+    keyword: 'hard-rock-stadium-miami-brasil-escocia-2026',
+    slug: 'hard-rock-stadium-preparativos-brasil-escocia',
+  },
+  {
+    title: 'La evolución del fútbol norteamericano reflejada en la Copa del Mundo',
+    excerpt: 'Especialistas debaten el crecimiento de la MLS y ligas locales y su impacto en las selecciones anfitrionas.',
+    keyword: 'evolucion-futbol-norteamericano-debate-2026',
+    slug: 'evolucion-futbol-norteamericano-impacto-mundial',
   },
 ];
 
@@ -353,13 +348,16 @@ export async function initDB() {
       );
     `);
 
-    // 2. Check current article count
+    // 2. Check current article count and check if the first article is our new one
+    const { rows: firstArt } = await client.query("SELECT id, title FROM articles WHERE id = '1'");
+    const reseedNeeded = firstArt.length === 0 || firstArt[0].title !== 'Canadá vs. Suiza: Choque estelar por el liderato del Grupo B';
+
     const { rows } = await client.query('SELECT COUNT(*) FROM articles');
     const count = parseInt(rows[0].count, 10);
 
-    // If the table doesn't have exactly 50 articles, recreate or seed to ensure exactly 50 articles
-    if (count !== 50) {
-      console.log(`Database contains ${count} articles. Seeding exactly 50 articles for editorial planning...`);
+    // If the table doesn't have exactly 50 articles or needs reseed, seed it
+    if (count !== 50 || reseedNeeded) {
+      console.log(`Database contains ${count} articles. Seeding/Reseeding exactly 50 real World Cup 2026 articles...`);
 
       // Clear any existing articles to ensure clean seed of 50
       await client.query('DELETE FROM articles');
@@ -383,8 +381,6 @@ export async function initDB() {
         }
 
         // Generate dynamic hours between 09:00 and 20:00:
-        // Hour varies based on index: 9 + (i % 11) => between 9 and 19
-        // Minute varies: (i * 7) % 60
         const hour = 9 + (i % 11);
         const minute = (i * 7) % 60;
         
@@ -395,13 +391,12 @@ export async function initDB() {
         const readTimeVal = `${3 + (i % 5)} min de lectura`;
         const authorVal = i % 3 === 0 ? 'Mateo Valenzuela' : i % 3 === 1 ? 'Sofía Benítez' : 'Diego Rossi';
         
-        // All articles start with exactly 0 words in the body as requested (empty string)
         const emptyContent = '';
 
         const metaTitle = `Noticias Mundial | ${item.title}`;
         const metaDescription = item.excerpt.substring(0, 160);
 
-        // Assign mock image urls from unsplash according to category (just metadata URL)
+        // Assign mock image urls from unsplash according to category
         let imageUrl = '';
         if (category === 'selecciones') {
           imageUrl = 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&q=80&w=800';
@@ -441,9 +436,9 @@ export async function initDB() {
           ]
         );
       }
-      console.log('Database pre-populated with exactly 50 World Cup articles successfully!');
+      console.log('Database pre-populated with exactly 50 real World Cup articles successfully!');
     } else {
-      console.log(`Database already contains exactly 50 articles. Skipping seeding.`);
+      console.log(`Database already contains exactly 50 real articles. Skipping seeding.`);
     }
   } catch (err) {
     console.error('Error initializing database:', err);

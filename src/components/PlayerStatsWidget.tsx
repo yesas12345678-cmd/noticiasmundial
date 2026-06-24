@@ -41,12 +41,12 @@ export default function PlayerStatsWidget() {
       {/* Title Header */}
       <div className="flex items-center justify-between border-b border-zinc-900 px-4 py-3 bg-zinc-950/60">
         <div className="flex items-center gap-2">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping" />
+          <span className="h-1.5 w-1.5 rounded-full bg-purple-500 animate-ping" />
           <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400">
             MÉTRICAS TÁCTICAS // PLAYER HUD
           </span>
         </div>
-        <span className="text-[9px] font-mono text-emerald-500 uppercase tracking-widest font-bold">// DATA SENSOR</span>
+        <span className="text-[9px] font-mono text-purple-500 uppercase tracking-widest font-bold">// DATA SENSOR</span>
       </div>
 
       {/* Tabs */}
@@ -60,7 +60,7 @@ export default function PlayerStatsWidget() {
               onClick={() => setActiveMetric(tab.id)}
               className={`flex flex-col sm:flex-row items-center justify-center gap-1.5 py-2 px-1 rounded-lg font-mono text-[9px] font-bold uppercase tracking-wider transition-all border ${
                 isActive
-                  ? 'bg-zinc-900 border-zinc-800 text-emerald-400 shadow-inner'
+                  ? 'bg-zinc-900 border-zinc-800 text-purple-400 shadow-inner'
                   : 'border-transparent text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/30'
               }`}
             >
@@ -104,7 +104,7 @@ export default function PlayerStatsWidget() {
               <div className="text-sm font-mono font-bold text-white tracking-wider">
                 {getMetricValue(player, activeMetric)}
               </div>
-              <span className="text-[8px] font-mono font-bold text-emerald-500/80 uppercase block mt-0.5">
+              <span className="text-[8px] font-mono font-bold text-purple-500/80 uppercase block mt-0.5">
                 // REGISTRO
               </span>
             </div>

@@ -16,10 +16,10 @@ interface BentoCardProps {
 }
 
 const categoryDetails = {
-  selecciones: { label: 'Selecciones', color: 'text-blue-400 border-blue-950 bg-blue-950/20' },
+  selecciones: { label: 'Selecciones', color: 'text-purple-400 border-purple-950 bg-purple-950/20' },
   lesiones: { label: 'Lesiones & Bajas', color: 'text-red-400 border-red-950 bg-red-950/20' },
-  resultados: { label: 'Resultados', color: 'text-amber-400 border-amber-950 bg-amber-950/20' },
-  estadisticas: { label: 'Estadísticas', color: 'text-emerald-400 border-emerald-950 bg-emerald-950/20' },
+  resultados: { label: 'Resultados', color: 'text-orange-400 border-orange-950 bg-orange-950/20' },
+  estadisticas: { label: 'Estadísticas', color: 'text-lime-400 border-lime-950 bg-lime-950/20' },
 };
 
 export default function BentoCard({
@@ -39,14 +39,14 @@ export default function BentoCard({
 
   return (
     <div
-      className={`group relative overflow-hidden rounded-2xl border border-zinc-900 bg-zinc-950/30 backdrop-blur-sm transition-all duration-350 hover:-translate-y-1 hover:border-emerald-500/30 hover:bg-zinc-900/20 hover:shadow-2xl hover:shadow-emerald-500/5 flex flex-col justify-between ${className}`}
+      className={`group relative overflow-hidden rounded-2xl border border-zinc-900 bg-zinc-950/30 backdrop-blur-sm transition-all duration-350 hover:-translate-y-1 hover:border-purple-500/30 hover:bg-zinc-900/20 hover:shadow-2xl hover:shadow-purple-500/5 flex flex-col justify-between ${className}`}
     >
       
       {/* Brutalist Tech corners (Visible on Hover) */}
-      <span className="absolute top-0 left-0 w-2 h-2 border-t border-l border-emerald-500/0 group-hover:border-emerald-400/80 transition-all duration-300 pointer-events-none rounded-tl" />
-      <span className="absolute top-0 right-0 w-2 h-2 border-t border-r border-emerald-500/0 group-hover:border-emerald-400/80 transition-all duration-300 pointer-events-none rounded-tr" />
-      <span className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-emerald-500/0 group-hover:border-emerald-400/80 transition-all duration-300 pointer-events-none rounded-bl" />
-      <span className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-emerald-500/0 group-hover:border-emerald-400/80 transition-all duration-300 pointer-events-none rounded-br" />
+      <span className="absolute top-0 left-0 w-2 h-2 border-t border-l border-purple-500/0 group-hover:border-purple-400/80 transition-all duration-300 pointer-events-none rounded-tl" />
+      <span className="absolute top-0 right-0 w-2 h-2 border-t border-r border-purple-500/0 group-hover:border-purple-400/80 transition-all duration-300 pointer-events-none rounded-tr" />
+      <span className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-purple-500/0 group-hover:border-purple-400/80 transition-all duration-300 pointer-events-none rounded-bl" />
+      <span className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-purple-500/0 group-hover:border-purple-400/80 transition-all duration-300 pointer-events-none rounded-br" />
 
       {/* Cyberpunk grid overlay for cards */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f293708_1px,transparent_1px),linear-gradient(to_bottom,#1f293708_1px,transparent_1px)] bg-[size:16px_16px] -z-10 pointer-events-none" />
@@ -83,14 +83,14 @@ export default function BentoCard({
                 </span>
               )}
             </div>
-            <div className="rounded-full bg-zinc-900 border border-zinc-800 p-1.5 text-zinc-400 opacity-60 group-hover:opacity-100 group-hover:border-emerald-500/40 group-hover:text-emerald-400 transition-all duration-300">
+            <div className="rounded-full bg-zinc-900 border border-zinc-800 p-1.5 text-zinc-400 opacity-60 group-hover:opacity-100 group-hover:border-purple-500/40 group-hover:text-purple-400 transition-all duration-300">
               <ArrowUpRight className="h-3.5 w-3.5" />
             </div>
           </div>
 
           {/* Core Text (Title and description if provided) */}
           <div className="space-y-2 mt-auto">
-            <h4 className="text-sm font-bold tracking-tight text-white line-clamp-2 md:text-base group-hover:text-emerald-400 transition-colors leading-tight">
+            <h4 className="text-sm font-bold tracking-tight text-white line-clamp-2 md:text-base group-hover:text-purple-400 transition-colors leading-tight">
               {title}
             </h4>
             {excerpt && (

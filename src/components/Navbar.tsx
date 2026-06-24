@@ -27,18 +27,18 @@ function NavbarContent() {
           {/* Logo / Brand */}
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="relative flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 group-hover:border-emerald-500/50 transition-all duration-300">
+              <div className="relative flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-400 group-hover:border-purple-500/50 transition-all duration-300">
                 <Trophy className="h-5 w-5" />
                 <span className="absolute -top-1 -right-1 flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
                 </span>
               </div>
               <div className="flex flex-col">
                 <span className="text-sm font-mono font-bold tracking-widest text-white leading-none">
                   NOTICIAS
                 </span>
-                <span className="text-[10px] font-mono tracking-widest text-emerald-400 font-semibold leading-none mt-1">
+                <span className="text-[10px] font-mono tracking-widest text-purple-400 font-semibold leading-none mt-1">
                   MUNDIAL
                 </span>
               </div>
@@ -57,7 +57,7 @@ function NavbarContent() {
                   href={href}
                   className={`relative px-3.5 py-2 rounded-lg text-xs font-mono tracking-wide uppercase font-medium transition-all duration-200 border border-transparent ${
                     isActive
-                      ? 'text-emerald-400 bg-emerald-950/30 border-emerald-950/50 shadow-neon-green'
+                      ? 'text-purple-400 bg-purple-950/30 border-purple-950/50 shadow-neon-green'
                       : 'text-zinc-400 hover:text-white hover:bg-zinc-900/50'
                   }`}
                 >
@@ -109,7 +109,7 @@ function NavbarContent() {
                 onClick={() => setIsOpen(false)}
                 className={`w-full text-left flex items-center justify-between px-4 py-3 rounded-lg text-xs font-mono tracking-wider uppercase transition-all ${
                   isActive
-                    ? 'text-emerald-400 bg-emerald-950/20 border-emerald-950/30'
+                    ? 'text-purple-400 bg-purple-950/20 border-purple-950/30'
                     : 'text-zinc-400 hover:text-white hover:bg-zinc-900/50'
                 }`}
               >

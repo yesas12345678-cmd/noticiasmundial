@@ -132,6 +132,112 @@ export default function FlagIcon({ countryCode, className = 'h-4 w-6' }: FlagIco
           <rect fill="#eb3b5a" height="2.5" width="8" y="2.5" />
         </svg>
       );
+    case 'CAN':
+      return (
+        <svg className={`${className} border border-zinc-900 rounded-sm`} viewBox="0 0 500 250" xmlns="http://www.w3.org/2000/svg">
+          <rect fill="#d80621" height="250" width="500" />
+          <rect fill="#fff" height="250" width="250" x="125" />
+          {/* Simplified Maple Leaf */}
+          <path d="M 250,55 L 262,95 L 285,85 L 275,110 L 305,125 L 270,135 L 280,165 L 250,150 L 220,165 L 230,135 L 195,125 L 225,110 L 215,85 L 238,95 Z M 246,150 L 246,190 L 254,190 L 254,150 Z" fill="#d80621" />
+        </svg>
+      );
+    case 'SUI':
+      return (
+        <svg className={`${className} border border-zinc-900 rounded-sm`} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <rect fill="#d80621" height="100" width="100" />
+          <rect fill="#fff" height="60" width="20" x="40" y="20" />
+          <rect fill="#fff" height="20" width="60" x="20" y="40" />
+        </svg>
+      );
+    case 'POR':
+      return (
+        <svg className={`${className} border border-zinc-900 rounded-sm`} viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+          <rect fill="#d80621" height="400" width="600" />
+          <rect fill="#006600" height="400" width="240" />
+          <circle cx="240" cy="200" fill="#ffcc00" r="50" opacity="0.8" />
+        </svg>
+      );
+    case 'CZE':
+      return (
+        <svg className={`${className} border border-zinc-900 rounded-sm`} viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+          <rect fill="#d80621" height="400" width="600" />
+          <rect fill="#fff" height="200" width="600" />
+          <polygon fill="#11457e" points="0,0 300,200 0,400" />
+        </svg>
+      );
+    case 'RSA':
+      return (
+        <svg className={`${className} border border-zinc-900 rounded-sm`} viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+          <rect fill="#007a3d" height="400" width="600" />
+          <polygon fill="#002395" points="0,240 600,240 600,400 0,400" />
+          <polygon fill="#e51d2e" points="0,0 600,0 600,160 0,160" />
+          <polygon fill="#fff" points="0,0 240,160 240,240 0,400" />
+          <polygon fill="#007a3d" points="0,20 210,160 210,240 0,380" />
+          <polygon fill="#ffb81c" points="0,60 150,160 150,240 0,340" />
+          <polygon fill="#000" points="0,80 120,160 120,240 0,320" />
+        </svg>
+      );
+    case 'KOR':
+      return (
+        <svg className={`${className} border border-zinc-900 rounded-sm`} viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+          <rect fill="#fff" height="400" width="600" />
+          <circle cx="300" cy="200" fill="#cd2e3a" r="70" />
+          <path d="M 300,130 A 35,35 0 0,1 300,200 A 35,35 0 0,0 300,270 A 70,70 0 0,0 300,130 Z" fill="#0047a0" />
+          {/* Trigrams (simplified black bars) */}
+          <rect fill="#000" height="10" transform="rotate(-33.7, 180, 120)" width="50" x="155" y="115" />
+          <rect fill="#000" height="10" transform="rotate(33.7, 420, 120)" width="50" x="395" y="115" />
+          <rect fill="#000" height="10" transform="rotate(33.7, 180, 280)" width="50" x="155" y="275" />
+          <rect fill="#000" height="10" transform="rotate(-33.7, 420, 280)" width="50" x="395" y="275" />
+        </svg>
+      );
+    case 'BIH':
+      return (
+        <svg className={`${className} border border-zinc-900 rounded-sm`} viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+          <rect fill="#002395" height="300" width="600" />
+          <polygon fill="#fecb00" points="150,0 450,0 450,300" />
+          {/* White stars (simplified) */}
+          <circle cx="210" cy="60" fill="#fff" r="6" />
+          <circle cx="240" cy="100" fill="#fff" r="6" />
+          <circle cx="270" cy="140" fill="#fff" r="6" />
+          <circle cx="300" cy="180" fill="#fff" r="6" />
+          <circle cx="330" cy="220" fill="#fff" r="6" />
+        </svg>
+      );
+    case 'QAT':
+      return (
+        <svg className={`${className} border border-zinc-900 rounded-sm`} viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
+          <rect fill="#8a1538" height="240" width="600" />
+          <polygon fill="#fff" points="0,0 150,0 170,15 150,30 170,45 150,60 170,75 150,90 170,105 150,120 170,135 150,150 170,165 150,180 170,195 150,210 170,225 150,240 0,240" />
+        </svg>
+      );
+    case 'SCO':
+      return (
+        <svg className={`${className} border border-zinc-900 rounded-sm`} viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+          <rect fill="#0065bf" height="300" width="500" />
+          <polygon fill="#fff" points="0,0 40,0 500,270 500,300 460,300 0,30" />
+          <polygon fill="#fff" points="500,0 460,0 0,270 0,300 40,300 500,30" />
+        </svg>
+      );
+    case 'MAR':
+      return (
+        <svg className={`${className} border border-zinc-900 rounded-sm`} viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+          <rect fill="#c1272d" height="400" width="600" />
+          {/* Green Pentagram */}
+          <polygon fill="none" points="300,140 335,248 245,182 355,182 265,248" stroke="#006233" strokeWidth="12" />
+        </svg>
+      );
+    case 'HAI':
+      return (
+        <svg className={`${className} border border-zinc-900 rounded-sm`} viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+          <rect fill="#d80621" height="300" width="500" />
+          <rect fill="#00209f" height="150" width="500" />
+          {/* Square with palm tree emblem */}
+          <rect fill="#fff" height="60" width="70" x="215" y="120" />
+          <rect fill="#007a3d" height="10" width="50" x="225" y="160" />
+          <line stroke="#8b5a2b" strokeWidth="4" x1="250" x2="250" y1="130" y2="160" />
+          <circle cx="250" cy="130" fill="#007a3d" r="8" />
+        </svg>
+      );
     default:
       return (
         <svg className={`${className} border border-zinc-900 rounded-sm`} viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">

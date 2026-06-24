@@ -13,21 +13,24 @@ export default function LiveResultsWidget() {
   // Simulating events for selected match to look hyper-detailed
   const matchEventsMap: Record<string, Array<{ min: number; text: string; icon: string }>> = {
     'm1': [
-      { min: 34, text: 'Gol - Álvaro Morata (ESP)', icon: '⚽' },
-      { min: 56, text: 'Tarjeta Amarilla - Antonio Rüdiger (GER)', icon: '🟨' },
-      { min: 67, text: 'Gol - Florian Wirtz (GER)', icon: '⚽' },
-      { min: 75, text: 'Gol - Dani Olmo (ESP)', icon: '⚽' },
+      { min: 0, text: 'Calentamiento en el BC Place de Vancouver', icon: '⏱️' },
     ],
     'm2': [
-      { min: 8, text: 'Falta sobre Lionel Messi', icon: '⏱️' },
-      { min: 10, text: 'Remate desviado - Kylian Mbappé', icon: '👟' },
+      { min: 0, text: 'Equipos listos en el Hard Rock Stadium', icon: '⏱️' },
     ],
     'm3': [
-      { min: 12, text: 'Gol - Vinicius Jr (BRA)', icon: '⚽' },
-      { min: 25, text: 'Gol - Harry Kane (ENG)', icon: '⚽' },
-      { min: 45, text: 'Gol - Rodrygo (BRA)', icon: '⚽' },
-      { min: 61, text: 'Gol - Bukayo Saka (ENG)', icon: '⚽' },
-      { min: 88, text: 'Gol - Raphinha (BRA)', icon: '⚽' },
+      { min: 0, text: 'Expectación masiva en el Estadio Azteca', icon: '⏱️' },
+    ],
+    'm4': [
+      { min: 23, text: 'Gol - Jude Bellingham (ENG)', icon: '⚽' },
+      { min: 67, text: 'Gol - Bukayo Saka (ENG)', icon: '⚽' },
+      { min: 81, text: 'Tarjeta Amarilla - Thomas Partey (GHA)', icon: '🟨' },
+    ],
+    'm5': [
+      { min: 15, text: 'Gol - Rafael Leão (POR)', icon: '⚽' },
+      { min: 45, text: 'Gol - Bruno Fernandes (POR)', icon: '⚽' },
+      { min: 78, text: 'Gol - Cristiano Ronaldo (POR)', icon: '⚽' },
+      { min: 85, text: 'Tarjeta Amarilla - Eldor Shomurodov (UZB)', icon: '🟨' },
     ],
   };
 
@@ -38,7 +41,7 @@ export default function LiveResultsWidget() {
       case 'FINISHED':
         return 'text-zinc-500 border-zinc-900 bg-zinc-900/20';
       default:
-        return 'text-emerald-500 border-emerald-950 bg-emerald-950/20';
+        return 'text-purple-500 border-purple-950 bg-purple-950/20';
     }
   };
 
@@ -71,7 +74,7 @@ export default function LiveResultsWidget() {
                 onClick={() => setSelectedMatch(match.id)}
                 className={`w-full text-left p-3 rounded-xl border transition-all duration-200 ${
                   isSelected
-                    ? 'bg-zinc-900/60 border-emerald-500/40 shadow-md shadow-emerald-500/5'
+                    ? 'bg-zinc-900/60 border-purple-500/40 shadow-md shadow-purple-500/5'
                     : 'bg-zinc-950/30 border-zinc-900/40 hover:border-zinc-800 hover:bg-zinc-900/20'
                 }`}
               >
@@ -118,7 +121,7 @@ export default function LiveResultsWidget() {
               
               {/* Score display */}
               <div>
-                <div className="text-[9px] font-mono text-emerald-500 uppercase tracking-widest mb-1">// ANÁLISIS DE COMBATE</div>
+                <div className="text-[9px] font-mono text-purple-500 uppercase tracking-widest mb-1">// ANÁLISIS DE COMBATE</div>
                 <div className="flex items-center justify-between gap-4 p-3 bg-zinc-900/40 border border-zinc-850 rounded-xl">
                   <div className="text-center flex-1 flex flex-col items-center">
                     <FlagIcon countryCode={activeMatch.homeTeam.flag} className="h-4.5 w-7 mb-1" />
@@ -155,7 +158,7 @@ export default function LiveResultsWidget() {
                   ) : (matchEventsMap[activeMatch.id]?.length || 0) > 0 ? (
                     matchEventsMap[activeMatch.id].map((event, idx) => (
                       <div key={idx} className="flex items-start gap-2 text-[11px] font-mono bg-zinc-900/25 border border-zinc-900 p-1.5 rounded">
-                        <span className="text-emerald-500 font-bold">{event.min}'</span>
+                        <span className="text-purple-500 font-bold">{event.min}'</span>
                         <span className="text-zinc-500 shrink-0">{event.icon}</span>
                         <span className="text-zinc-300 truncate">{event.text}</span>
                       </div>
@@ -171,7 +174,7 @@ export default function LiveResultsWidget() {
               {/* Action Call */}
               <div className="border-t border-zinc-900/60 pt-3 flex justify-between items-center text-[10px] font-mono">
                 <span className="text-zinc-500 uppercase">Señal limpia 1080p</span>
-                <button className="flex items-center gap-1 text-emerald-400 hover:text-emerald-350 transition-colors font-bold uppercase">
+                <button className="flex items-center gap-1 text-purple-400 hover:text-purple-350 transition-colors font-bold uppercase">
                   <span>Minuto a Minuto</span>
                   <ChevronRight className="h-3 w-3" />
                 </button>

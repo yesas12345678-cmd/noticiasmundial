@@ -77,15 +77,15 @@ export default function BentoGridWrapper({ articles }: BentoGridWrapperProps) {
         </BentoCard>
 
         {/* 4. Sobre Nosotros (Integrated Bento Block) */}
-        <div className="group relative overflow-hidden rounded-2xl border border-emerald-900/40 bg-gradient-to-br from-emerald-950/20 to-zinc-950/80 p-5 flex flex-col justify-between md:col-span-1 md:row-span-1 shadow-neon-green/5 hover:border-emerald-500/40 transition-all duration-300">
+        <div className="group relative overflow-hidden rounded-2xl border border-purple-900/40 bg-gradient-to-br from-purple-950/20 to-zinc-950/80 p-5 flex flex-col justify-between md:col-span-1 md:row-span-1 shadow-neon-green/5 hover:border-purple-500/40 transition-all duration-300">
           <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
-            <ShieldCheck className="h-24 w-24 text-emerald-400" />
+            <ShieldCheck className="h-24 w-24 text-purple-400" />
           </div>
           
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[9px] font-mono font-bold tracking-widest text-emerald-400 uppercase">
+              <div className="h-1.5 w-1.5 rounded-full bg-purple-500 animate-pulse" />
+              <span className="text-[9px] font-mono font-bold tracking-widest text-purple-400 uppercase">
                 SOBRE NOSOTROS
               </span>
             </div>
@@ -97,9 +97,9 @@ export default function BentoGridWrapper({ articles }: BentoGridWrapperProps) {
             </p>
           </div>
           
-          <div className="flex items-center justify-between border-t border-emerald-950/40 pt-3 mt-4 text-[9px] font-mono text-zinc-500">
+          <div className="flex items-center justify-between border-t border-purple-950/40 pt-3 mt-4 text-[9px] font-mono text-zinc-500">
             <span>RED DE AUTORES PÚBLICA</span>
-            <span className="text-emerald-500 font-bold">100% INFORMATIVO</span>
+            <span className="text-purple-500 font-bold">100% INFORMATIVO</span>
           </div>
         </div>
 
@@ -136,7 +136,7 @@ export default function BentoGridWrapper({ articles }: BentoGridWrapperProps) {
             </span>
             <Link 
               href="/" 
-              className="text-xs font-mono text-emerald-400 hover:underline uppercase font-bold"
+            className="text-xs font-mono text-purple-400 hover:underline uppercase font-bold"
             >
               Volver a la frecuencia principal
             </Link>
@@ -150,9 +150,9 @@ export default function BentoGridWrapper({ articles }: BentoGridWrapperProps) {
         <div className="flex justify-center pt-4">
           <button
             onClick={handleLoadMore}
-            className="px-8 py-3.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-850 hover:border-zinc-700 text-white font-mono text-xs font-bold uppercase tracking-wider transition-all active:scale-[0.98] cursor-pointer shadow-lg hover:shadow-emerald-500/5 flex items-center gap-2"
+            className="px-8 py-3.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-850 hover:border-zinc-700 text-white font-mono text-xs font-bold uppercase tracking-wider transition-all active:scale-[0.98] cursor-pointer shadow-lg hover:shadow-purple-500/5 flex items-center gap-2"
           >
-            <RefreshCw className="h-4 w-4 text-emerald-500" />
+            <RefreshCw className="h-4 w-4 text-purple-500" />
             <span>Cargar más artículos</span>
           </button>
         </div>
