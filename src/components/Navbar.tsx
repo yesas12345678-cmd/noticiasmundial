@@ -20,6 +20,8 @@ function NavbarContent() {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-zinc-900 bg-zinc-950/70 backdrop-blur-md">
+      {/* Línea de acento de colores del Mundial 2026 */}
+      <div className="h-[3px] w-full bg-gradient-to-r from-purple-600 via-blue-500 via-emerald-400 via-yellow-400 via-orange-500 to-red-600" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo / Brand */}
@@ -77,7 +79,7 @@ function NavbarContent() {
           <div className="hidden md:flex items-center gap-3">
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-950/20 border border-red-950/40 text-[10px] font-mono font-bold uppercase text-red-400">
               <Activity className="h-3 w-3 animate-pulse" />
-              <span>Catar 2026 // LIVE</span>
+              <span>Mundial 2026 // LIVE</span>
             </div>
           </div>
 
@@ -124,7 +126,7 @@ function NavbarContent() {
           <div className="pt-2 pb-1 border-t border-zinc-900 mt-2">
             <div className="inline-flex items-center gap-1.5 w-full justify-center px-3 py-2 rounded-lg bg-red-950/20 border border-red-950/40 text-[10px] font-mono font-bold uppercase text-red-400">
               <Activity className="h-3 w-3 animate-pulse" />
-              <span>Catar 2026 // LIVE INDEX</span>
+              <span>Mundial 2026 // LIVE INDEX</span>
             </div>
           </div>
         </div>
