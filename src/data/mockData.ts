@@ -9,6 +9,7 @@ export interface Article {
   trending?: boolean;
   author: string;
   likes: number;
+  keyword?: string;
 }
 
 export interface LiveMatch {

@@ -22,7 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     );
     
     articleRoutes = rows.map((article) => ({
-      url: `${baseUrl}/?category=${article.category}&article=${article.id}`, // in our Bento UI page we route by search parameters
+      url: `${baseUrl}/articulo/${article.id}`,
       lastModified: article.published_at ? new Date(article.published_at) : new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.8,

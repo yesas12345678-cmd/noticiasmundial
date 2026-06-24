@@ -8,7 +8,7 @@ import { pool, initDB } from '@/lib/db';
 export const dynamic = 'force-dynamic';
 
 interface PageProps {
-  searchParams: Promise<{ category?: string }>;
+  searchParams: Promise<{ category?: string; search?: string }>;
 }
 
 export default async function Home({ searchParams }: PageProps) {
@@ -17,6 +17,7 @@ export default async function Home({ searchParams }: PageProps) {
 
   const resolvedParams = await searchParams;
   const activeCategory = resolvedParams.category || 'todos';
+  const searchQuery = resolvedParams.search || '';
 
   let articles: Article[] = [];
   try {
@@ -34,6 +35,7 @@ export default async function Home({ searchParams }: PageProps) {
         trending: row.trending,
         author: row.author,
         likes: row.likes,
+        keyword: row.keyword,
       }));
     } finally {
       client.release();
@@ -43,10 +45,19 @@ export default async function Home({ searchParams }: PageProps) {
     articles = mockArticles;
   }
 
-  // Filter articles based on active category
-  const filteredArticles = activeCategory === 'todos' 
+  // Filter articles based on active category and search query
+  let filteredArticles = activeCategory === 'todos' 
     ? articles 
     : articles.filter(art => art.category === activeCategory);
+
+  if (searchQuery) {
+    const query = searchQuery.toLowerCase();
+    filteredArticles = filteredArticles.filter(art => 
+      art.title.toLowerCase().includes(query) ||
+      (art.excerpt && art.excerpt.toLowerCase().includes(query)) ||
+      (art.keyword && art.keyword.toLowerCase().includes(query))
+    );
+  }
 
   return (
     <div className="flex-grow py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-8">
@@ -114,10 +125,12 @@ export default async function Home({ searchParams }: PageProps) {
           <div className="flex items-center gap-2">
             <Network className="h-4 w-4 text-purple-500" />
             <h2 className="text-xs font-mono font-bold tracking-widest text-zinc-400 uppercase">
-              VISTA ACTUAL: {activeCategory === 'todos' ? 'TODAS LAS NOTICIAS' : activeCategory.toUpperCase()}
+              {searchQuery 
+                ? `BÚSQUEDA: "${searchQuery.toUpperCase()}"` 
+                : `VISTA ACTUAL: ${activeCategory === 'todos' ? 'TODAS LAS NOTICIAS' : activeCategory.toUpperCase()}`}
             </h2>
           </div>
-          {activeCategory !== 'todos' && (
+          {(activeCategory !== 'todos' || searchQuery) && (
             <Link 
               href="/"
               className="text-[10px] font-mono text-purple-400 hover:text-purple-350 transition-colors uppercase font-bold"
