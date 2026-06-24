@@ -178,6 +178,14 @@ export default function TournamentBracket() {
   };
 
   // Symmetrical layout columns on Desktop. Scrollbar on small screens.
+  const getPathClass = (active: boolean) => {
+    return `transition-all duration-300 fill-none ${
+      active
+        ? 'stroke-purple-500 stroke-[2.5px] drop-shadow-[0_0_4px_rgba(168,85,247,0.7)]'
+        : 'stroke-zinc-800/60 stroke-[1.5px]'
+    }`;
+  };
+
   return (
     <div className="relative rounded-2xl border border-zinc-900 bg-zinc-950/40 p-6 backdrop-blur-md space-y-6">
       {/* Title */}
@@ -195,13 +203,15 @@ export default function TournamentBracket() {
 
       {/* Main Bracket Container with Horizontal Scroll support */}
       <div className="overflow-x-auto w-full pb-4 custom-scrollbar select-none">
-        <div className="min-w-[1280px] grid grid-cols-7 gap-4 items-center relative py-6">
+        <div className="min-w-[1280px] grid grid-cols-7 gap-6 items-center relative py-6">
           
           {/* COLUMN 1: LEFT OCTAVOS */}
-          <div className="space-y-12">
-            <h4 className="text-center font-mono text-[9px] text-zinc-550 uppercase tracking-widest">// OCTAVOS DE FINAL</h4>
+          <div className="relative flex flex-col justify-around h-[680px] pt-8 z-10">
+            <div className="absolute top-0 left-0 right-0 text-center">
+              <h4 className="font-mono text-[8px] text-purple-400/80 uppercase tracking-widest font-bold">// OCTAVOS DE FINAL</h4>
+            </div>
             {leftOctavos.map((match) => (
-              <div key={match.id} className="relative py-1">
+              <div key={match.id} className="relative h-[98px] flex flex-col justify-start">
                 {/* Match Box */}
                 <div className="rounded-xl border bg-zinc-950/40 divide-y divide-zinc-900/60 overflow-hidden shadow-lg transition-all duration-300">
                   {/* Team A */}
@@ -232,13 +242,28 @@ export default function TournamentBracket() {
                 <div className="text-[8px] font-mono text-zinc-650 text-center mt-1.5 uppercase tracking-wider">{match.details}</div>
               </div>
             ))}
+
+            {/* Connecting Lines to Column 2 */}
+            <svg className="absolute inset-y-0 right-[-24px] w-[24px] pointer-events-none overflow-visible z-0">
+              {/* Match 1 (winner GER) & Match 2 (winner ESP) to Match 9 (winner ESP) */}
+              <path d="M 0,102 L 12,102 L 12,183" className={getPathClass(hoveredTeam === 'GER')} />
+              <path d="M 0,264 L 12,264 L 12,183" className={getPathClass(hoveredTeam === 'ESP')} />
+              <path d="M 12,183 L 24,183" className={getPathClass(hoveredTeam === 'GER' || hoveredTeam === 'ESP')} />
+
+              {/* Match 3 (winner ENG) & Match 4 (winner ARG) to Match 10 (winner ARG) */}
+              <path d="M 0,426 L 12,426 L 12,507" className={getPathClass(hoveredTeam === 'ENG')} />
+              <path d="M 0,588 L 12,588 L 12,507" className={getPathClass(hoveredTeam === 'ARG')} />
+              <path d="M 12,507 L 24,507" className={getPathClass(hoveredTeam === 'ENG' || hoveredTeam === 'ARG')} />
+            </svg>
           </div>
 
           {/* COLUMN 2: LEFT CUARTOS */}
-          <div className="space-y-36">
-            <h4 className="text-center font-mono text-[9px] text-zinc-550 uppercase tracking-widest">// CUARTOS DE FINAL</h4>
+          <div className="relative flex flex-col justify-around h-[680px] pt-8 z-10">
+            <div className="absolute top-0 left-0 right-0 text-center">
+              <h4 className="font-mono text-[8px] text-purple-400/80 uppercase tracking-widest font-bold">// CUARTOS DE FINAL</h4>
+            </div>
             {leftCuartos.map((match) => (
-              <div key={match.id} className="relative py-1">
+              <div key={match.id} className="relative h-[98px] flex flex-col justify-start">
                 <div className="rounded-xl border bg-zinc-950/40 divide-y divide-zinc-900/60 overflow-hidden shadow-lg transition-all duration-300">
                   <div
                     onMouseEnter={() => setHoveredTeam(match.teamA.id)}
@@ -266,12 +291,22 @@ export default function TournamentBracket() {
                 <div className="text-[8px] font-mono text-zinc-650 text-center mt-1.5 uppercase tracking-wider">{match.details}</div>
               </div>
             ))}
+
+            {/* Connecting Lines to Column 3 */}
+            <svg className="absolute inset-y-0 right-[-24px] w-[24px] pointer-events-none overflow-visible z-0">
+              {/* Match 9 (winner ESP) & Match 10 (winner ARG) to Semifinal L (winner ARG) */}
+              <path d="M 0,183 L 12,183 L 12,345" className={getPathClass(hoveredTeam === 'ESP')} />
+              <path d="M 0,507 L 12,507 L 12,345" className={getPathClass(hoveredTeam === 'ARG')} />
+              <path d="M 12,345 L 24,345" className={getPathClass(hoveredTeam === 'ESP' || hoveredTeam === 'ARG')} />
+            </svg>
           </div>
 
           {/* COLUMN 3: LEFT SEMIFINAL */}
-          <div className="space-y-[450px]">
-            <h4 className="text-center font-mono text-[9px] text-zinc-550 uppercase tracking-widest">// SEMIFINAL L</h4>
-            <div className="relative py-1">
+          <div className="relative flex flex-col justify-around h-[680px] pt-8 z-10">
+            <div className="absolute top-0 left-0 right-0 text-center">
+              <h4 className="font-mono text-[8px] text-purple-400/80 uppercase tracking-widest font-bold">// SEMIFINAL</h4>
+            </div>
+            <div className="relative h-[98px] flex flex-col justify-start">
               <div className="rounded-xl border bg-zinc-950/40 divide-y divide-zinc-900/60 overflow-hidden shadow-lg transition-all duration-300">
                 <div
                   onMouseEnter={() => setHoveredTeam(leftSemifinal.teamA.id)}
@@ -298,30 +333,37 @@ export default function TournamentBracket() {
               </div>
               <div className="text-[8px] font-mono text-zinc-650 text-center mt-1.5 uppercase tracking-wider">{leftSemifinal.details}</div>
             </div>
+
+            {/* Connecting Lines to Column 4 */}
+            <svg className="absolute inset-y-0 right-[-24px] w-[24px] pointer-events-none overflow-visible z-0">
+              {/* Semifinal L (winner ARG) to Grand Final */}
+              <path d="M 0,345 L 24,345" className={getPathClass(hoveredTeam === 'ARG')} />
+            </svg>
           </div>
 
           {/* COLUMN 4: PODIUM & GRAND FINAL */}
-          <div className="flex flex-col items-center justify-center space-y-10">
-            {/* 1. Champion Podium block */}
-            <div className="flex flex-col items-center p-6 rounded-2xl border border-yellow-500/40 bg-yellow-950/10 shadow-xl shadow-yellow-500/5 max-w-[200px] w-full text-center">
-              <div className="p-3 bg-yellow-500/10 rounded-full border border-yellow-500/30 text-yellow-400 mb-3">
-                <Trophy className="h-8 w-8" />
+          <div className="relative flex flex-col justify-center h-[680px] pt-8 z-10">
+            <div className="absolute top-0 left-0 right-0 text-center">
+              <h4 className="font-mono text-[8px] text-amber-400 uppercase tracking-widest font-bold">// LA GRAN FINAL</h4>
+            </div>
+
+            {/* 1. Champion Podium block (Positioned absolutely above the centered match) */}
+            <div className="absolute top-[65px] left-1/2 transform -translate-x-1/2 flex flex-col items-center p-4 rounded-xl border border-yellow-500/30 bg-yellow-950/10 shadow-lg shadow-yellow-500/5 w-full max-w-[170px] text-center transition-all duration-300">
+              <div className="p-2 bg-yellow-500/10 rounded-full border border-yellow-500/30 text-yellow-400 mb-2">
+                <Trophy className="h-6 w-6" />
               </div>
               <span className="text-[8px] font-mono font-bold text-yellow-400 uppercase tracking-widest mb-1">
                 CAMPEÓN DEL MUNDO
               </span>
-              <div className="flex items-center gap-2 justify-center mb-1">
-                <FlagIcon countryCode={championTeam.flag} className="h-4.5 w-7 rounded-sm shadow-sm" />
-                <h3 className="text-sm font-mono font-black text-white uppercase">{championTeam.name}</h3>
+              <div className="flex items-center gap-1.5 justify-center mb-1">
+                <FlagIcon countryCode={championTeam.flag} className="h-3.5 w-5 rounded-sm shadow-sm" />
+                <h3 className="text-xs font-mono font-black text-white uppercase">{championTeam.name}</h3>
               </div>
-              <span className="text-[8px] font-mono text-zinc-550">// MONARCA GLOBAL</span>
+              <span className="text-[7px] font-mono text-zinc-500">// MONARCA GLOBAL</span>
             </div>
 
-            {/* 2. Grand Final Match */}
-            <div className="relative py-1 w-full max-w-[200px]">
-              <h4 className="text-center font-mono text-[9px] text-purple-400 uppercase tracking-widest mb-3 font-bold">
-                // LA GRAN FINAL
-              </h4>
+            {/* 2. Grand Final Match (Centered naturally by justify-center) */}
+            <div className="relative h-[98px] flex flex-col justify-start w-full max-w-[190px] mx-auto mt-[160px]">
               <div className="rounded-xl border border-purple-500/30 bg-zinc-950/40 divide-y divide-zinc-900/60 overflow-hidden shadow-lg transition-all duration-300">
                 <div
                   onMouseEnter={() => setHoveredTeam(finalMatch.teamA.id)}
@@ -351,9 +393,11 @@ export default function TournamentBracket() {
           </div>
 
           {/* COLUMN 5: RIGHT SEMIFINAL */}
-          <div className="space-y-[450px]">
-            <h4 className="text-center font-mono text-[9px] text-zinc-550 uppercase tracking-widest">// SEMIFINAL R</h4>
-            <div className="relative py-1">
+          <div className="relative flex flex-col justify-around h-[680px] pt-8 z-10">
+            <div className="absolute top-0 left-0 right-0 text-center">
+              <h4 className="font-mono text-[8px] text-purple-400/80 uppercase tracking-widest font-bold">// SEMIFINAL</h4>
+            </div>
+            <div className="relative h-[98px] flex flex-col justify-start">
               <div className="rounded-xl border bg-zinc-950/40 divide-y divide-zinc-900/60 overflow-hidden shadow-lg transition-all duration-300">
                 <div
                   onMouseEnter={() => setHoveredTeam(rightSemifinal.teamA.id)}
@@ -380,13 +424,21 @@ export default function TournamentBracket() {
               </div>
               <div className="text-[8px] font-mono text-zinc-650 text-center mt-1.5 uppercase tracking-wider">{rightSemifinal.details}</div>
             </div>
+
+            {/* Connecting Lines to Column 4 */}
+            <svg className="absolute inset-y-0 left-[-24px] w-[24px] pointer-events-none overflow-visible z-0">
+              {/* Semifinal R (winner BRA) to Grand Final */}
+              <path d="M 24,345 L 0,345" className={getPathClass(hoveredTeam === 'BRA')} />
+            </svg>
           </div>
 
           {/* COLUMN 6: RIGHT CUARTOS */}
-          <div className="space-y-36">
-            <h4 className="text-center font-mono text-[9px] text-zinc-550 uppercase tracking-widest">// CUARTOS DE FINAL</h4>
+          <div className="relative flex flex-col justify-around h-[680px] pt-8 z-10">
+            <div className="absolute top-0 left-0 right-0 text-center">
+              <h4 className="font-mono text-[8px] text-purple-400/80 uppercase tracking-widest font-bold">// CUARTOS DE FINAL</h4>
+            </div>
             {rightCuartos.map((match) => (
-              <div key={match.id} className="relative py-1">
+              <div key={match.id} className="relative h-[98px] flex flex-col justify-start">
                 <div className="rounded-xl border bg-zinc-950/40 divide-y divide-zinc-900/60 overflow-hidden shadow-lg transition-all duration-300">
                   <div
                     onMouseEnter={() => setHoveredTeam(match.teamA.id)}
@@ -414,13 +466,23 @@ export default function TournamentBracket() {
                 <div className="text-[8px] font-mono text-zinc-650 text-center mt-1.5 uppercase tracking-wider">{match.details}</div>
               </div>
             ))}
+
+            {/* Connecting Lines to Column 5 */}
+            <svg className="absolute inset-y-0 left-[-24px] w-[24px] pointer-events-none overflow-visible z-0">
+              {/* Match 11 (winner FRA) & Match 12 (winner BRA) to Semifinal R (winner BRA) */}
+              <path d="M 24,183 L 12,183 L 12,345" className={getPathClass(hoveredTeam === 'FRA')} />
+              <path d="M 24,507 L 12,507 L 12,345" className={getPathClass(hoveredTeam === 'BRA')} />
+              <path d="M 12,345 L 0,345" className={getPathClass(hoveredTeam === 'FRA' || hoveredTeam === 'BRA')} />
+            </svg>
           </div>
 
           {/* COLUMN 7: RIGHT OCTAVOS */}
-          <div className="space-y-12">
-            <h4 className="text-center font-mono text-[9px] text-zinc-550 uppercase tracking-widest">// OCTAVOS DE FINAL</h4>
+          <div className="relative flex flex-col justify-around h-[680px] pt-8 z-10">
+            <div className="absolute top-0 left-0 right-0 text-center">
+              <h4 className="font-mono text-[8px] text-purple-400/80 uppercase tracking-widest font-bold">// OCTAVOS DE FINAL</h4>
+            </div>
             {rightOctavos.map((match) => (
-              <div key={match.id} className="relative py-1">
+              <div key={match.id} className="relative h-[98px] flex flex-col justify-start">
                 <div className="rounded-xl border bg-zinc-950/40 divide-y divide-zinc-900/60 overflow-hidden shadow-lg transition-all duration-300">
                   <div
                     onMouseEnter={() => setHoveredTeam(match.teamA.id)}
@@ -448,6 +510,19 @@ export default function TournamentBracket() {
                 <div className="text-[8px] font-mono text-zinc-650 text-center mt-1.5 uppercase tracking-wider">{match.details}</div>
               </div>
             ))}
+
+            {/* Connecting Lines to Column 6 */}
+            <svg className="absolute inset-y-0 left-[-24px] w-[24px] pointer-events-none overflow-visible z-0">
+              {/* Match 5 (winner FRA) & Match 6 (winner POR) to Match 11 (winner FRA) */}
+              <path d="M 24,102 L 12,102 L 12,183" className={getPathClass(hoveredTeam === 'FRA')} />
+              <path d="M 24,264 L 12,264 L 12,183" className={getPathClass(hoveredTeam === 'POR')} />
+              <path d="M 12,183 L 0,183" className={getPathClass(hoveredTeam === 'FRA' || hoveredTeam === 'POR')} />
+
+              {/* Match 7 (winner BRA) & Match 8 (winner CAN) to Match 12 (winner BRA) */}
+              <path d="M 24,426 L 12,426 L 12,507" className={getPathClass(hoveredTeam === 'BRA')} />
+              <path d="M 24,588 L 12,588 L 12,507" className={getPathClass(hoveredTeam === 'CAN')} />
+              <path d="M 12,507 L 0,507" className={getPathClass(hoveredTeam === 'BRA' || hoveredTeam === 'CAN')} />
+            </svg>
           </div>
 
         </div>
