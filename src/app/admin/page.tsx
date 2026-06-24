@@ -476,7 +476,7 @@ export default function AdminPage() {
                           
                           {/* Ver */}
                           <Link
-                            href={art.category === 'todos' ? '/' : `/?category=${art.category}`}
+                            href={`/articulo/${art.id}`}
                             target="_blank"
                             className="p-1.5 text-zinc-400 hover:text-blue-400 hover:bg-zinc-900 rounded border border-transparent hover:border-zinc-850 transition-all"
                             title="Ver en Portal"
