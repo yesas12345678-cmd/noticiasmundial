@@ -70,7 +70,7 @@ export default function PlayerStatsWidget() {
       </div>
 
       {/* Players List */}
-      <div className="p-4 flex-grow space-y-3 max-h-[380px] overflow-y-auto custom-scrollbar">
+      <div className="p-4 flex-grow space-y-3 max-h-[610px] overflow-y-auto custom-scrollbar">
         {sortedPlayers.map((player, index) => (
           <div
             key={player.id}

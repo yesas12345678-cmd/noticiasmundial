@@ -72,7 +72,7 @@ export default function BentoGridWrapper({ articles }: BentoGridWrapperProps) {
         <BentoCard 
           title="Estadísticas de Jugadores" 
           category="estadisticas" 
-          className="md:col-span-2 md:row-span-2"
+          className="md:col-span-2 md:row-span-3"
         >
           <PlayerStatsWidget />
         </BentoCard>
