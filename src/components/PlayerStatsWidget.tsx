@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react';
 import { mockPlayerStats, PlayerStat } from '../data/mockData';
-import { Award, Zap, Crosshair, TrendingUp } from 'lucide-react';
+import { Award, TrendingUp } from 'lucide-react';
 import FlagIcon from './FlagIcon';
 
-type MetricKey = 'goals' | 'assists' | 'speedMax' | 'distanceRan';
+type MetricKey = 'goals' | 'assists';
 
 export default function PlayerStatsWidget() {
   const [activeMetric, setActiveMetric] = useState<MetricKey>('goals');
@@ -13,8 +13,6 @@ export default function PlayerStatsWidget() {
   const metricTabs: Array<{ id: MetricKey; label: string; icon: React.ComponentType<any> }> = [
     { id: 'goals', label: 'Goles', icon: Award },
     { id: 'assists', label: 'Asistencias', icon: TrendingUp },
-    { id: 'speedMax', label: 'Velocidad', icon: Zap },
-    { id: 'distanceRan', label: 'Distancia', icon: Crosshair },
   ];
 
   // Sort players by the selected metric
@@ -50,7 +48,7 @@ export default function PlayerStatsWidget() {
       </div>
 
       {/* Tabs */}
-      <div className="grid grid-cols-4 border-b border-zinc-900/60 bg-zinc-950/20 p-1 gap-1">
+      <div className="grid grid-cols-2 border-b border-zinc-900/60 bg-zinc-950/20 p-1 gap-1">
         {metricTabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeMetric === tab.id;
