@@ -1,5 +1,6 @@
 import React from 'react';
 import { Eye, Heart, Clock, ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
 
 interface BentoCardProps {
   title: string;
@@ -13,6 +14,7 @@ interface BentoCardProps {
   likes?: number;
   className?: string; // used for custom col/row spans
   children?: React.ReactNode; // in case we want to embed other widgets (like results/stats) inside cards
+  href?: string;
 }
 
 const categoryDetails = {
@@ -34,12 +36,16 @@ export default function BentoCard({
   likes,
   className = '',
   children,
+  href,
 }: BentoCardProps) {
   const cat = categoryDetails[category] || { label: 'Fútbol', color: 'text-zinc-400 border-zinc-900 bg-zinc-900/20' };
 
+  const CardContainer = href ? Link : 'div';
+
   return (
-    <div
-      className={`group relative overflow-hidden rounded-2xl border border-zinc-900 bg-zinc-950/30 backdrop-blur-sm transition-all duration-350 hover:-translate-y-1 hover:border-purple-500/30 hover:bg-zinc-900/20 hover:shadow-2xl hover:shadow-purple-500/5 flex flex-col justify-between ${className}`}
+    <CardContainer
+      href={href as any}
+      className={`group relative overflow-hidden rounded-2xl border border-zinc-900 bg-zinc-950/30 backdrop-blur-sm transition-all duration-350 hover:-translate-y-1 hover:border-purple-500/30 hover:bg-zinc-900/20 hover:shadow-2xl hover:shadow-purple-500/5 flex flex-col justify-between ${className} ${href ? 'cursor-pointer select-none' : ''}`}
     >
       
       {/* Brutalist Tech corners (Visible on Hover) */}
@@ -125,6 +131,6 @@ export default function BentoCard({
         </div>
       )}
 
-    </div>
+    </CardContainer>
   );
 }
