@@ -238,6 +238,14 @@ export default function FlagIcon({ countryCode, className = 'h-4 w-6' }: FlagIco
           <circle cx="250" cy="130" fill="#007a3d" r="8" />
         </svg>
       );
+    case 'SWE':
+      return (
+        <svg className={`${className} border border-zinc-900 rounded-sm`} viewBox="0 0 16 10" xmlns="http://www.w3.org/2000/svg">
+          <rect fill="#006aa7" height="10" width="16" />
+          <rect fill="#fecc00" height="10" width="2" x="5" />
+          <rect fill="#fecc00" height="2" width="16" y="4" />
+        </svg>
+      );
     case 'NOR':
       return (
         <svg className={`${className} border border-zinc-900 rounded-sm`} viewBox="0 0 22 16" xmlns="http://www.w3.org/2000/svg">
