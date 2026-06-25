@@ -4,7 +4,7 @@ import { pool } from '@/lib/db';
 export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://noticiasmundial.com';
+  const baseUrl = 'https://noticiasmundial.xyz';
 
   // Base landing pages and static content
   const routes = ['', '/legal/privacidad', '/legal/cookies', '/legal/aviso-legal', '/legal/autores', '/legal/terminos'].map((route) => ({
