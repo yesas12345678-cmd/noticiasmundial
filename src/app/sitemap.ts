@@ -1,15 +1,22 @@
 import { MetadataRoute } from 'next';
-import { pool } from '@/lib/db';
+import { pool, initDB } from '@/lib/db';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Cache sitemap for 1 hour (ISR)
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://noticiasmundial.xyz';
 
+  // Ensure DB is initialized and seeded
+  try {
+    await initDB();
+  } catch (err) {
+    console.error('Error initializing DB in sitemap:', err);
+  }
+
   // Base landing pages and static content
   const routes = ['', '/legal/privacidad', '/legal/cookies', '/legal/aviso-legal', '/legal/autores', '/legal/terminos'].map((route) => ({
     url: `${baseUrl}${route}`,
-    lastModified: new Date(),
+    lastModified: new Date().toISOString().split('T')[0],
     changeFrequency: (route === '' ? 'daily' : 'monthly') as 'daily' | 'monthly',
     priority: route === '' ? 1.0 : 0.4,
   }));
@@ -23,7 +30,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     
     articleRoutes = rows.map((article) => ({
       url: `${baseUrl}/articulo/${article.id}`,
-      lastModified: article.published_at ? new Date(article.published_at) : new Date(),
+      lastModified: article.published_at 
+        ? new Date(article.published_at).toISOString().split('T')[0] 
+        : new Date().toISOString().split('T')[0],
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     }));
@@ -33,3 +42,4 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [...routes, ...articleRoutes];
 }
+
