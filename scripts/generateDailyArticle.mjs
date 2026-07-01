@@ -44,21 +44,17 @@ const pool = new Pool({
   ssl: false,
 });
 
-// Helper to get Madrid time info
-function getMadridTimeInfo() {
-  const options = { timeZone: 'Europe/Madrid', hour: 'numeric', hour12: false };
-  const formatter = new Intl.DateTimeFormat('en-US', options);
-  const currentHour = parseInt(formatter.format(new Date()), 10);
+const WP_API_URL = 'https://golazos.co/wp-json/wp/v2';
+const WP_USER = 'Manuel Lopez';
+const WP_APP_PASS = 'ohIu XD40 Rgvv cqMx M8h3 jwvi';
+const authHeader = 'Basic ' + Buffer.from(`${WP_USER}:${WP_APP_PASS}`).toString('base64');
 
-  const dateOptions = { timeZone: 'Europe/Madrid', year: 'numeric', month: '2-digit', day: '2-digit' };
-  const dateParts = new Intl.DateTimeFormat('en-US', dateOptions).formatToParts(new Date());
-  const year = dateParts.find(p => p.type === 'year').value;
-  const month = dateParts.find(p => p.type === 'month').value;
-  const day = dateParts.find(p => p.type === 'day').value;
-  const madridDate = `${year}-${month}-${day}`; // YYYY-MM-DD
-
-  return { currentHour, madridDate };
-}
+const CATEGORY_MAP = {
+  selecciones: { name: 'Selecciones', slug: 'selecciones' },
+  lesiones: { name: 'Lesiones & Bajas', slug: 'lesiones' },
+  resultados: { name: 'Resultados', slug: 'resultados' },
+  estadisticas: { name: 'Estadísticas', slug: 'estadisticas' }
+};
 
 const REALISTIC_FOOTBALL_IMAGES = [
   "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1200&auto=format&fit=crop",
@@ -87,84 +83,242 @@ function getRandomImage(excludeList = []) {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
+// Helper to get Madrid time info
+function getMadridTimeInfo() {
+  const options = { timeZone: 'Europe/Madrid', hour: 'numeric', hour12: false };
+  const formatter = new Intl.DateTimeFormat('en-US', options);
+  const currentHour = parseInt(formatter.format(new Date()), 10);
+
+  const dateOptions = { timeZone: 'Europe/Madrid', year: 'numeric', month: '2-digit', day: '2-digit' };
+  const dateParts = new Intl.DateTimeFormat('en-US', dateOptions).formatToParts(new Date());
+  const year = dateParts.find(p => p.type === 'year').value;
+  const month = dateParts.find(p => p.type === 'month').value;
+  const day = dateParts.find(p => p.type === 'day').value;
+  const madridDate = `${year}-${month}-${day}`; // YYYY-MM-DD
+
+  return { currentHour, madridDate };
+}
+
 // Generate 2 unique random hours between 9 and 21
 function generateRandomHours() {
   const allHours = [];
   for (let h = 9; h <= 21; h++) {
     allHours.push(h);
   }
-  // Shuffle allHours
   for (let i = allHours.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [allHours[i], allHours[j]] = [allHours[j], allHours[i]];
   }
-  // Take first 2 and sort them
   return allHours.slice(0, 2).sort((a, b) => a - b);
 }
 
-async function main() {
-  const client = await pool.connect();
+// Function to upload media and publish/update post on WordPress
+async function syncArticleToWordPress(article, cleanContent, coverUrl) {
   try {
-    // 1. Create tables if they do not exist
-    await client.query(`
-      CREATE TABLE IF NOT EXISTS daily_generation_schedule (
-        scheduled_date DATE PRIMARY KEY,
-        hours INT[] NOT NULL
-      );
-    `);
+    console.log(`[WordPress Sync] Resolving category for: ${article.category}...`);
+    const catInfo = CATEGORY_MAP[article.category] || { name: 'Fútbol', slug: 'futbol' };
+    let wpCategoryId = null;
 
-    await client.query(`
-      CREATE TABLE IF NOT EXISTS generation_log (
-        log_date DATE,
-        hour INT,
-        article_id INT,
-        PRIMARY KEY (log_date, hour)
-      );
-    `);
+    const catCheck = await fetch(`${WP_API_URL}/categories?slug=${catInfo.slug}`, {
+      headers: { 'Authorization': authHeader }
+    });
+    if (catCheck.ok) {
+      const data = await catCheck.json();
+      if (data && data.length > 0) {
+        wpCategoryId = data[0].id;
+      }
+    }
+    if (!wpCategoryId) {
+      const catCreate = await fetch(`${WP_API_URL}/categories`, {
+        method: 'POST',
+        headers: {
+          'Authorization': authHeader,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name: catInfo.name, slug: catInfo.slug })
+      });
+      if (catCreate.ok) {
+        const data = await catCreate.json();
+        wpCategoryId = data.id;
+      }
+    }
 
-    // 2. Get current Madrid time
+    if (!wpCategoryId) {
+      console.error(`[WordPress Sync] Failed to resolve category.`);
+      return;
+    }
+
+    // Upload cover image
+    let featuredMediaId = null;
+    if (coverUrl) {
+      console.log(`[WordPress Sync] Downloading and uploading cover image: ${coverUrl}...`);
+      const imgRes = await fetch(coverUrl);
+      if (imgRes.ok) {
+        const blob = await imgRes.blob();
+        const buffer = Buffer.from(await blob.arrayBuffer());
+        const filename = `${article.slug}-cover.jpg`;
+        const mediaRes = await fetch(`${WP_API_URL}/media`, {
+          method: 'POST',
+          headers: {
+            'Authorization': authHeader,
+            'Content-Disposition': `attachment; filename="${filename}"`,
+            'Content-Type': 'image/jpeg'
+          },
+          body: buffer
+        });
+        if (mediaRes.ok) {
+          const mediaData = await mediaRes.json();
+          featuredMediaId = mediaData.id;
+          console.log(`[WordPress Sync] Cover image uploaded. Media ID: ${featuredMediaId}`);
+        }
+      }
+    }
+
+    // Check if post exists
+    let wpPostId = null;
+    const postCheck = await fetch(`${WP_API_URL}/posts?slug=${article.slug}&status=any`, {
+      headers: { 'Authorization': authHeader }
+    });
+    if (postCheck.ok) {
+      const data = await postCheck.json();
+      if (data && data.length > 0) {
+        wpPostId = data[0].id;
+      }
+    }
+
+    const emojiRegex = /[\uD800-\uDBFF][\uDC00-\uDFFF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g;
+    const cleanTitle = article.title.replace(emojiRegex, '').trim();
+    const cleanExcerpt = article.excerpt.replace(emojiRegex, '').trim();
+    const cleanMetaTitle = (article.meta_title || `Noticias Mundial | ${article.title}`).replace(emojiRegex, '').trim();
+    const cleanMetaDesc = (article.meta_description || article.excerpt).replace(emojiRegex, '').trim();
+
+    const postData = {
+      title: cleanTitle,
+      content: cleanContent,
+      excerpt: cleanExcerpt,
+      categories: [wpCategoryId],
+      status: 'publish',
+      meta: {
+        rank_math_focus_keyword: article.keyword,
+        rank_math_title: cleanMetaTitle,
+        rank_math_description: cleanMetaDesc
+      }
+    };
+    if (featuredMediaId) {
+      postData.featured_media = featuredMediaId;
+    }
+
+    if (wpPostId) {
+      console.log(`[WordPress Sync] Updating existing post ID: ${wpPostId}...`);
+      const updateRes = await fetch(`${WP_API_URL}/posts/${wpPostId}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': authHeader,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postData)
+      });
+      if (updateRes.ok) {
+        console.log(`[WordPress Sync] Post updated successfully!`);
+      } else {
+        const errText = await updateRes.text();
+        console.error(`[WordPress Sync] Failed to update post: ${errText}`);
+      }
+    } else {
+      console.log(`[WordPress Sync] Creating new post...`);
+      postData.slug = article.slug;
+      postData.date = new Date(article.published_at).toISOString().slice(0, 19);
+      const createRes = await fetch(`${WP_API_URL}/posts`, {
+        method: 'POST',
+        headers: {
+          'Authorization': authHeader,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postData)
+      });
+      if (createRes.ok) {
+        const data = await createRes.json();
+        console.log(`[WordPress Sync] Post created successfully! WP ID: ${data.id}`);
+      } else {
+        const errText = await createRes.text();
+        console.error(`[WordPress Sync] Failed to create post: ${errText}`);
+      }
+    }
+  } catch (err) {
+    console.error(`[WordPress Sync] Error:`, err.message);
+  }
+}
+
+async function main() {
+  const force = process.argv.includes('--force') || process.argv.includes('--no-delay');
+  
+  if (!force) {
     const { currentHour, madridDate } = getMadridTimeInfo();
     console.log(`Current Madrid Date: ${madridDate}, Hour: ${currentHour}`);
 
-    // 3. Ensure schedule exists for today
-    const { rows: existingSchedule } = await client.query(
-      'SELECT hours FROM daily_generation_schedule WHERE scheduled_date = $1',
-      [madridDate]
-    );
-
+    const clientCheck = await pool.connect();
     let scheduledHours = [];
-    if (existingSchedule.length === 0) {
-      scheduledHours = generateRandomHours();
-      console.log(`Generating new schedule for today (${madridDate}):`, scheduledHours);
-      await client.query(
-        'INSERT INTO daily_generation_schedule (scheduled_date, hours) VALUES ($1, $2) ON CONFLICT (scheduled_date) DO UPDATE SET hours = EXCLUDED.hours',
-        [madridDate, scheduledHours]
+    try {
+      await clientCheck.query(`
+        CREATE TABLE IF NOT EXISTS daily_generation_schedule (
+          scheduled_date DATE PRIMARY KEY,
+          hours INT[] NOT NULL
+        );
+      `);
+
+      await clientCheck.query(`
+        CREATE TABLE IF NOT EXISTS generation_log (
+          log_date DATE,
+          hour INT,
+          article_id INT,
+          PRIMARY KEY (log_date, hour)
+        );
+      `);
+
+      const { rows: existingSchedule } = await clientCheck.query(
+        'SELECT hours FROM daily_generation_schedule WHERE scheduled_date = $1',
+        [madridDate]
       );
-    } else {
-      scheduledHours = existingSchedule[0].hours;
-      console.log(`Existing schedule for today (${madridDate}):`, scheduledHours);
+
+      if (existingSchedule.length === 0) {
+        scheduledHours = generateRandomHours();
+        await clientCheck.query(
+          'INSERT INTO daily_generation_schedule (scheduled_date, hours) VALUES ($1, $2) ON CONFLICT (scheduled_date) DO UPDATE SET hours = EXCLUDED.hours',
+          [madridDate, scheduledHours]
+        );
+      } else {
+        scheduledHours = existingSchedule[0].hours;
+      }
+    } catch (err) {
+      console.error("Database check error:", err.message);
+    } finally {
+      clientCheck.release();
     }
 
-    // 4. Check if current hour is scheduled
     if (!scheduledHours.includes(currentHour)) {
       console.log(`Current hour (${currentHour}) is not in today's scheduled hours. Exiting.`);
-      return;
+      process.exit(0);
+    }
+  }
+
+  const client = await pool.connect();
+  try {
+    const { currentHour, madridDate } = getMadridTimeInfo();
+
+    if (!force) {
+      const { rows: loggedGenerations } = await client.query(
+        'SELECT article_id FROM generation_log WHERE log_date = $1 AND hour = $2',
+        [madridDate, currentHour]
+      );
+      if (loggedGenerations.length > 0) {
+        console.log(`An article (ID: ${loggedGenerations[0].article_id}) was already generated for hour ${currentHour} today. Exiting.`);
+        return;
+      }
     }
 
-    // 5. Check if already generated for this hour
-    const { rows: loggedGenerations } = await client.query(
-      'SELECT article_id FROM generation_log WHERE log_date = $1 AND hour = $2',
-      [madridDate, currentHour]
-    );
-
-    if (loggedGenerations.length > 0) {
-      console.log(`An article (ID: ${loggedGenerations[0].article_id}) was already generated for hour ${currentHour} today. Exiting.`);
-      return;
-    }
-
-    // 6. Find an empty article to generate
+    // Fetch the next article that has empty content
     const { rows: emptyArticles } = await client.query(
-      `SELECT id, title, keyword, category FROM articles WHERE content = '' OR content IS NULL OR length(content) = 0 ORDER BY id ASC LIMIT 1`
+      `SELECT id, title, keyword, category, excerpt, published_at FROM articles WHERE content = '' OR content IS NULL OR length(content) = 0 ORDER BY id ASC LIMIT 1`
     );
 
     if (emptyArticles.length === 0) {
@@ -173,6 +327,9 @@ async function main() {
     }
 
     const article = emptyArticles[0];
+    const slug = article.slug || article.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    article.slug = slug;
+
     console.log(`Found empty article to generate: ID: ${article.id} - "${article.title}"`);
 
     // Prepare prompt
@@ -180,7 +337,7 @@ async function main() {
     promptText = promptText.replace('[INSERTAR NICHO O SECTOR AQUÍ]', `Fútbol e Información del Mundial de la FIFA 2026 - Categoría: ${article.category}`);
     promptText = promptText.replace('[INSERTAR TÍTULO AQUÍ]', article.title);
     promptText = promptText.replace('[INSERTAR KEYWORDS AQUÍ]', article.keyword || '');
-    promptText = promptText.replace('[OPCIONAL: INSERTAR DETALLES ADICIONALES]', `Detalles: Artículo real sobre el Mundial 2026 al día de hoy 24 de Junio de 2026.`);
+    promptText = promptText.replace('[OPCIONAL: INSERTAR DETALLES ADICIONALES]', `Detalles: Artículo real sobre el Mundial 2026.`);
 
     let parsed = null;
     let attempt = 0;
@@ -209,9 +366,7 @@ async function main() {
                 content: currentPrompt
               }
             ],
-            response_format: {
-              type: 'json_object'
-            }
+            response_format: { type: 'json_object' }
           })
         });
 
@@ -301,12 +456,24 @@ async function main() {
         ]
       );
 
-      await client.query(
-        'INSERT INTO generation_log (log_date, hour, article_id) VALUES ($1, $2, $3)',
-        [madridDate, currentHour, article.id]
-      );
+      if (!force) {
+        await client.query(
+          'INSERT INTO generation_log (log_date, hour, article_id) VALUES ($1, $2, $3)',
+          [madridDate, currentHour, article.id]
+        );
+      }
 
       console.log(`Article ID ${article.id} successfully generated, illustrated, and updated at hour ${currentHour}!`);
+
+      // Synchronize with WordPress (golazos.co)
+      const updatedArticle = {
+        ...article,
+        title: parsed.title,
+        excerpt: parsed.excerpt,
+        meta_title: parsed.meta_title,
+        meta_description: parsed.meta_description
+      };
+      await syncArticleToWordPress(updatedArticle, finalContent, coverImage);
     }
 
   } catch (err) {
