@@ -368,9 +368,8 @@ export async function initDB() {
       );
     `);
 
-    // 2. Check current article count and check if the first article has a slug
     const { rows: firstArt } = await client.query("SELECT id, title, slug FROM articles WHERE id = '1'");
-    const reseedNeeded = firstArt.length === 0 || !firstArt[0].slug || firstArt[0].title !== 'Canadá vs. Suiza: Choque estelar por el liderato del Grupo B';
+    const reseedNeeded = firstArt.length === 0 || !firstArt[0].slug;
 
     const { rows } = await client.query('SELECT COUNT(*) FROM articles');
     const count = parseInt(rows[0].count, 10);
