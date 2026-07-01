@@ -160,7 +160,7 @@ export default function AutoresPage() {
                 {filteredArticles.map((art) => (
                   <Link
                     key={art.id}
-                    href={`/articulo/${art.id}`}
+                    href={`/articulo/${art.slug || art.id}`}
                     className="group py-3 flex items-center justify-between hover:bg-zinc-900/10 transition-all px-2 rounded-lg"
                   >
                     <div className="space-y-1">

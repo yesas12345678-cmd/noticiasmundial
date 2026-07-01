@@ -25,11 +25,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let articleRoutes: MetadataRoute.Sitemap = [];
   try {
     const { rows } = await pool.query(
-      'SELECT id, category, published_at FROM articles WHERE published_at <= NOW() ORDER BY published_at DESC'
+      'SELECT id, slug, category, published_at FROM articles WHERE published_at <= NOW() ORDER BY published_at DESC'
     );
     
     articleRoutes = rows.map((article) => ({
-      url: `${baseUrl}/articulo/${article.id}`,
+      url: `${baseUrl}/articulo/${article.slug || article.id}`,
       lastModified: article.published_at 
         ? new Date(article.published_at).toISOString().split('T')[0] 
         : new Date().toISOString().split('T')[0],

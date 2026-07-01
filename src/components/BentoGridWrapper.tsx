@@ -55,7 +55,7 @@ export default function BentoGridWrapper({ articles }: BentoGridWrapperProps) {
             author={heroArticle.author}
             likes={heroArticle.likes}
             className="md:col-span-2 md:row-span-2"
-            href={`/articulo/${heroArticle.id}`}
+            href={`/articulo/${heroArticle.slug || heroArticle.id}`}
           />
         )}
 
@@ -124,7 +124,7 @@ export default function BentoGridWrapper({ articles }: BentoGridWrapperProps) {
               author={article.author}
               likes={article.likes}
               className={spanClass}
-              href={`/articulo/${article.id}`}
+              href={`/articulo/${article.slug || article.id}`}
             />
           );
         })}

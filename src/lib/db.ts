@@ -311,6 +311,20 @@ const SEED_ARTICLES_DATA = [
   },
 ];
 
+// Pre-defined natural hours and minutes for 50 articles to avoid any obvious pattern
+const NATURAL_TIMES = [
+  { h: 10, m: 24 }, { h: 14, m: 45 }, { h: 18, m: 12 }, { h: 9, m: 37 }, { h: 15, m: 5 },
+  { h: 11, m: 50 }, { h: 19, m: 28 }, { h: 13, m: 14 }, { h: 16, m: 42 }, { h: 10, m: 3 },
+  { h: 17, m: 55 }, { h: 12, m: 21 }, { h: 14, m: 9 }, { h: 9, m: 48 }, { h: 19, m: 58 },
+  { h: 15, m: 33 }, { h: 11, m: 7 }, { h: 18, m: 46 }, { h: 13, m: 52 }, { h: 10, m: 31 },
+  { h: 16, m: 19 }, { h: 12, m: 40 }, { h: 14, m: 57 }, { h: 9, m: 15 }, { h: 19, m: 4 },
+  { h: 15, m: 22 }, { h: 11, m: 43 }, { h: 17, m: 11 }, { h: 13, m: 2 }, { h: 10, m: 54 },
+  { h: 16, m: 35 }, { h: 12, m: 18 }, { h: 14, m: 29 }, { h: 9, m: 59 }, { h: 18, m: 37 },
+  { h: 15, m: 51 }, { h: 11, m: 12 }, { h: 19, m: 45 }, { h: 13, m: 23 }, { h: 10, m: 16 },
+  { h: 17, m: 8 }, { h: 12, m: 47 }, { h: 14, m: 11 }, { h: 9, m: 27 }, { h: 18, m: 53 },
+  { h: 15, m: 2 }, { h: 11, m: 36 }, { h: 16, m: 58 }, { h: 13, m: 41 }, { h: 10, m: 49 }
+];
+
 export async function initDB() {
   const client = await pool.connect();
   try {
@@ -332,8 +346,14 @@ export async function initDB() {
         meta_title VARCHAR(255),
         meta_description TEXT,
         published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        keyword VARCHAR(255) UNIQUE
+        keyword VARCHAR(255) UNIQUE,
+        slug VARCHAR(255) UNIQUE
       );
+    `);
+
+    // Run migration to add slug if table already existed without it
+    await client.query(`
+      ALTER TABLE articles ADD COLUMN IF NOT EXISTS slug VARCHAR(255) UNIQUE;
     `);
 
     // Create cron_logs table if it doesn't exist
@@ -348,16 +368,16 @@ export async function initDB() {
       );
     `);
 
-    // 2. Check current article count and check if the first article is our new one
-    const { rows: firstArt } = await client.query("SELECT id, title FROM articles WHERE id = '1'");
-    const reseedNeeded = firstArt.length === 0 || firstArt[0].title !== 'Canadá vs. Suiza: Choque estelar por el liderato del Grupo B';
+    // 2. Check current article count and check if the first article has a slug
+    const { rows: firstArt } = await client.query("SELECT id, title, slug FROM articles WHERE id = '1'");
+    const reseedNeeded = firstArt.length === 0 || !firstArt[0].slug || firstArt[0].title !== 'Canadá vs. Suiza: Choque estelar por el liderato del Grupo B';
 
     const { rows } = await client.query('SELECT COUNT(*) FROM articles');
     const count = parseInt(rows[0].count, 10);
 
     // If the table doesn't have exactly 50 articles or needs reseed, seed it
     if (count !== 50 || reseedNeeded) {
-      console.log(`Database contains ${count} articles. Seeding/Reseeding exactly 50 real World Cup 2026 articles...`);
+      console.log(`Database contains ${count} articles. Seeding/Reseeding exactly 50 real World Cup 2026 articles with slugs...`);
 
       // Clear any existing articles to ensure clean seed of 50
       await client.query('DELETE FROM articles');
@@ -380,9 +400,10 @@ export async function initDB() {
           dateLabel = `Hace ${i} días`;
         }
 
-        // Generate dynamic hours between 09:00 and 20:00:
-        const hour = 9 + (i % 11);
-        const minute = (i * 7) % 60;
+        // Generate organic hours and minutes from NATURAL_TIMES to avoid patterns
+        const timeObj = NATURAL_TIMES[i % NATURAL_TIMES.length];
+        const hour = timeObj.h;
+        const minute = timeObj.m;
         
         const pubDate = new Date();
         pubDate.setDate(pubDate.getDate() - i);
@@ -411,11 +432,14 @@ export async function initDB() {
         const likesVal = 40 + ((i * 23) % 450);
         const trendingVal = i < 3; // mark first 3 as trending for front page hero selection
 
+        // Fallback slug if empty
+        const slugVal = item.slug || item.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
         await client.query(
           `
           INSERT INTO articles (
-            id, title, excerpt, category, date, read_time, image_url, author, content, likes, trending, meta_title, meta_description, published_at, keyword
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+            id, title, excerpt, category, date, read_time, image_url, author, content, likes, trending, meta_title, meta_description, published_at, keyword, slug
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
           `,
           [
             String(i + 1),
@@ -433,12 +457,13 @@ export async function initDB() {
             metaDescription,
             pubDate,
             item.keyword,
+            slugVal,
           ]
         );
       }
-      console.log('Database pre-populated with exactly 50 real World Cup articles successfully!');
+      console.log('Database pre-populated with exactly 50 real World Cup articles with slugs successfully!');
     } else {
-      console.log(`Database already contains exactly 50 real articles. Skipping seeding.`);
+      console.log(`Database already contains exactly 50 real articles with slugs. Skipping seeding.`);
     }
   } catch (err) {
     console.error('Error initializing database:', err);

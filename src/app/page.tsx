@@ -37,6 +37,7 @@ export default async function Home({ searchParams }: PageProps) {
         author: row.author,
         likes: row.likes,
         keyword: row.keyword,
+        slug: row.slug,
       }));
     } finally {
       client.release();

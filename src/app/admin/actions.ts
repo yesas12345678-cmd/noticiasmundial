@@ -19,6 +19,7 @@ export interface AdminArticle {
   trending: boolean;
   published_at: string; // ISO String
   keyword: string;
+  slug: string;
 }
 
 export async function getArticlesAction(): Promise<AdminArticle[]> {
@@ -28,6 +29,7 @@ export async function getArticlesAction(): Promise<AdminArticle[]> {
     return rows.map(row => ({
       ...row,
       published_at: row.published_at ? new Date(row.published_at).toISOString() : new Date().toISOString(),
+      slug: row.slug || '',
     }));
   } catch (err) {
     console.error('Error fetching articles in Server Action:', err);
@@ -53,7 +55,7 @@ export async function updateArticleAction(
 ): Promise<{ success: boolean; message: string }> {
   const client = await pool.connect();
   try {
-    // Check if the keyword / slug would collide (except for this article)
+    // Check if the keyword would collide (except for this article)
     const { rows: keywordCheck } = await client.query(
       'SELECT id FROM articles WHERE keyword = $1 AND id != $2',
       [data.keyword, id]
@@ -62,14 +64,16 @@ export async function updateArticleAction(
       return { success: false, message: 'La palabra clave principal ya está siendo utilizada por otro artículo.' };
     }
 
+    // Check if the slug would collide (except for this article)
     const { rows: slugCheck } = await client.query(
-      'SELECT id FROM articles WHERE keyword = $1 AND id != $2',
-      [`key-${data.category}-${id}`, id] // slug checks or keyword constraints
+      'SELECT id FROM articles WHERE slug = $1 AND id != $2',
+      [data.slug, id]
     );
+    if (slugCheck.length > 0) {
+      return { success: false, message: 'El slug de URL ya está siendo utilizado por otro artículo.' };
+    }
 
     // Update query
-    // In our schema, keyword is unique, and slug was constructed programmatically or stored.
-    // If the user can update the content, we allow updating the content too.
     if (data.content !== undefined) {
       await client.query(
         `
@@ -81,8 +85,9 @@ export async function updateArticleAction(
           date = $5,
           published_at = $6,
           keyword = $7,
-          content = $8
-        WHERE id = $9
+          slug = $8,
+          content = $9
+        WHERE id = $10
         `,
         [
           data.title,
@@ -92,6 +97,7 @@ export async function updateArticleAction(
           data.date,
           new Date(data.published_at),
           data.keyword,
+          data.slug,
           data.content,
           id,
         ]
@@ -106,8 +112,9 @@ export async function updateArticleAction(
           category = $4,
           date = $5,
           published_at = $6,
-          keyword = $7
-        WHERE id = $8
+          keyword = $7,
+          slug = $8
+        WHERE id = $9
         `,
         [
           data.title,
@@ -117,6 +124,7 @@ export async function updateArticleAction(
           data.date,
           new Date(data.published_at),
           data.keyword,
+          data.slug,
           id,
         ]
       );

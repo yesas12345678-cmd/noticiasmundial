@@ -33,6 +33,7 @@ export default function AdminPage() {
   const [editDate, setEditDate] = useState('');
   const [editTime, setEditTime] = useState('');
   const [editKeyword, setEditKeyword] = useState('');
+  const [editSlug, setEditSlug] = useState('');
   const [editContent, setEditContent] = useState('');
   
   const [isPending, startTransition] = useTransition();
@@ -142,6 +143,7 @@ export default function AdminPage() {
     setEditExcerpt(art.excerpt);
     setEditCategory(art.category);
     setEditKeyword(art.keyword);
+    setEditSlug(art.slug || '');
     setEditContent(art.content || '');
     
     const d = new Date(art.published_at);
@@ -171,7 +173,7 @@ export default function AdminPage() {
         date: editDate, // raw date label
         published_at: publishedAtIso,
         keyword: editKeyword,
-        slug: editTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+        slug: editSlug || editTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
         content: editContent,
       });
 
@@ -551,6 +553,18 @@ export default function AdminPage() {
                     required
                     value={editKeyword}
                     onChange={(e) => setEditKeyword(e.target.value)}
+                    className="w-full bg-zinc-900/60 border border-zinc-850 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:border-emerald-550 font-mono"
+                  />
+                </div>
+
+                {/* URL Slug */}
+                <div className="space-y-1">
+                  <label className="block text-[9px] font-mono font-bold text-zinc-500 uppercase">URL Slug (Único)</label>
+                  <input
+                    type="text"
+                    required
+                    value={editSlug}
+                    onChange={(e) => setEditSlug(e.target.value)}
                     className="w-full bg-zinc-900/60 border border-zinc-850 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:border-emerald-550 font-mono"
                   />
                 </div>

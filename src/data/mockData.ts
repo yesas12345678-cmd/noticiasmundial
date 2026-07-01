@@ -10,6 +10,7 @@ export interface Article {
   author: string;
   likes: number;
   keyword?: string;
+  slug?: string;
 }
 
 export interface LiveMatch {

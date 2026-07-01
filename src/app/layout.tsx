@@ -33,6 +33,14 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: 'any' }
+    ],
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
   verification: {
     google: '1VvvgvK2SNfVXg9kZmHo2eCVYGbMOm8f6FNoV5PWbXY',
   },

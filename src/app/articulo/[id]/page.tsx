@@ -15,7 +15,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   let article = null;
   try {
-    const { rows } = await pool.query('SELECT * FROM articles WHERE id = $1', [id]);
+    const { rows } = await pool.query('SELECT * FROM articles WHERE id = $1 OR slug = $1', [id]);
     if (rows.length > 0) {
       article = rows[0];
     }
