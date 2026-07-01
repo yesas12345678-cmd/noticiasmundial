@@ -74,12 +74,18 @@ function getRandomImage(excludeList = []) {
 async function main() {
   const client = await pool.connect();
   try {
-    // Fetch all empty articles
-    const { rows: emptyArticles } = await client.query(
-      `SELECT id, title, keyword, category, excerpt, published_at FROM articles WHERE content = '' OR content IS NULL OR length(content) = 0 ORDER BY id ASC`
-    );
+    // Support optional --limit argument
+    let limitVal = null;
+    const limitArg = process.argv.find(arg => arg.startsWith('--limit='));
+    if (limitArg) {
+      limitVal = parseInt(limitArg.split('=')[1], 10);
+    }
 
-    console.log(`Found ${emptyArticles.length} empty articles to generate.`);
+    // Fetch empty articles
+    const queryStr = `SELECT id, title, keyword, category, excerpt, published_at FROM articles WHERE content = '' OR content IS NULL OR length(content) = 0 ORDER BY id ASC` + (limitVal ? ` LIMIT ${limitVal}` : '');
+    const { rows: emptyArticles } = await client.query(queryStr);
+
+    console.log(`Found ${emptyArticles.length} empty articles to generate (Limit: ${limitVal || 'None'}).`);
 
     for (let i = 0; i < emptyArticles.length; i++) {
       const article = emptyArticles[i];
