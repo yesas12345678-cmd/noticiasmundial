@@ -79,7 +79,7 @@ function NavbarContent() {
           <div className="hidden md:flex items-center gap-3">
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-950/20 border border-red-950/40 text-[10px] font-mono font-bold uppercase text-red-400">
               <Activity className="h-3 w-3 animate-pulse" />
-              <span>Mundial 2026 // LIVE</span>
+              <span>Mundial 2026 // EN VIVO</span>
             </div>
           </div>
 
@@ -126,7 +126,7 @@ function NavbarContent() {
           <div className="pt-2 pb-1 border-t border-zinc-900 mt-2">
             <div className="inline-flex items-center gap-1.5 w-full justify-center px-3 py-2 rounded-lg bg-red-950/20 border border-red-950/40 text-[10px] font-mono font-bold uppercase text-red-400">
               <Activity className="h-3 w-3 animate-pulse" />
-              <span>Mundial 2026 // LIVE INDEX</span>
+              <span>Mundial 2026 // COBERTURA EN VIVO</span>
             </div>
           </div>
         </div>

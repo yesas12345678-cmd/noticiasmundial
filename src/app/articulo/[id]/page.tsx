@@ -101,7 +101,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             {article.likes !== undefined && (
               <span className="flex items-center gap-1 text-zinc-400">
                 <Heart className="h-3.5 w-3.5 text-red-500 fill-red-500" />
-                {article.likes} LIKES
+                {article.likes} ME GUSTA
               </span>
             )}
           </div>
