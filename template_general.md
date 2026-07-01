@@ -108,7 +108,7 @@ Utiliza una estructura de grillas de 2 columnas para desglosar elementos:
 <ul class='space-y-4 my-6'>
   <li class='flex gap-3 text-slate-700'>
     <div class='flex-shrink-0 h-6 w-6 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600'>
-      <svg class='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+      <svg width='16' height='16' class='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
         <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4'/>
       </svg>
     </div>
@@ -137,8 +137,8 @@ Utiliza el elemento nativo `<details>` estructurado con Tailwind CSS para añadi
   <details class='group border border-slate-200 rounded-2xl bg-white p-5 transition-all duration-300 open:shadow-sm'>
     <summary class='flex justify-between items-center font-bold text-slate-900 cursor-pointer list-none select-none'>
       <span>[Pregunta o Título Desplegable]</span>
-      <span class='transition duration-300 group-open:rotate-180 text-teal-600'>
-        <svg class='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+      <span class='transition duration-300 group-open:rotate-180 text-teal-650'>
+        <svg width='20' height='20' class='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
           <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7' />
         </svg>
       </span>

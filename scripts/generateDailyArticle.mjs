@@ -44,18 +44,6 @@ const pool = new Pool({
   ssl: false,
 });
 
-const WP_API_URL = 'https://golazos.co/wp-json/wp/v2';
-const WP_USER = 'Manuel Lopez';
-const WP_APP_PASS = 'ohIu XD40 Rgvv cqMx M8h3 jwvi';
-const authHeader = 'Basic ' + Buffer.from(`${WP_USER}:${WP_APP_PASS}`).toString('base64');
-
-const CATEGORY_MAP = {
-  selecciones: { name: 'Selecciones', slug: 'selecciones' },
-  lesiones: { name: 'Lesiones & Bajas', slug: 'lesiones' },
-  resultados: { name: 'Resultados', slug: 'resultados' },
-  estadisticas: { name: 'Estadísticas', slug: 'estadisticas' }
-};
-
 const REALISTIC_FOOTBALL_IMAGES = [
   "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1200&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1518063319789-7217e6706b04?q=80&w=1200&auto=format&fit=crop",
@@ -110,143 +98,6 @@ function generateRandomHours() {
     [allHours[i], allHours[j]] = [allHours[j], allHours[i]];
   }
   return allHours.slice(0, 2).sort((a, b) => a - b);
-}
-
-// Function to upload media and publish/update post on WordPress
-async function syncArticleToWordPress(article, cleanContent, coverUrl) {
-  try {
-    console.log(`[WordPress Sync] Resolving category for: ${article.category}...`);
-    const catInfo = CATEGORY_MAP[article.category] || { name: 'Fútbol', slug: 'futbol' };
-    let wpCategoryId = null;
-
-    const catCheck = await fetch(`${WP_API_URL}/categories?slug=${catInfo.slug}`, {
-      headers: { 'Authorization': authHeader }
-    });
-    if (catCheck.ok) {
-      const data = await catCheck.json();
-      if (data && data.length > 0) {
-        wpCategoryId = data[0].id;
-      }
-    }
-    if (!wpCategoryId) {
-      const catCreate = await fetch(`${WP_API_URL}/categories`, {
-        method: 'POST',
-        headers: {
-          'Authorization': authHeader,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name: catInfo.name, slug: catInfo.slug })
-      });
-      if (catCreate.ok) {
-        const data = await catCreate.json();
-        wpCategoryId = data.id;
-      }
-    }
-
-    if (!wpCategoryId) {
-      console.error(`[WordPress Sync] Failed to resolve category.`);
-      return;
-    }
-
-    // Upload cover image
-    let featuredMediaId = null;
-    if (coverUrl) {
-      console.log(`[WordPress Sync] Downloading and uploading cover image: ${coverUrl}...`);
-      const imgRes = await fetch(coverUrl);
-      if (imgRes.ok) {
-        const blob = await imgRes.blob();
-        const buffer = Buffer.from(await blob.arrayBuffer());
-        const filename = `${article.slug}-cover.jpg`;
-        const mediaRes = await fetch(`${WP_API_URL}/media`, {
-          method: 'POST',
-          headers: {
-            'Authorization': authHeader,
-            'Content-Disposition': `attachment; filename="${filename}"`,
-            'Content-Type': 'image/jpeg'
-          },
-          body: buffer
-        });
-        if (mediaRes.ok) {
-          const mediaData = await mediaRes.json();
-          featuredMediaId = mediaData.id;
-          console.log(`[WordPress Sync] Cover image uploaded. Media ID: ${featuredMediaId}`);
-        }
-      }
-    }
-
-    // Check if post exists
-    let wpPostId = null;
-    const postCheck = await fetch(`${WP_API_URL}/posts?slug=${article.slug}&status=any`, {
-      headers: { 'Authorization': authHeader }
-    });
-    if (postCheck.ok) {
-      const data = await postCheck.json();
-      if (data && data.length > 0) {
-        wpPostId = data[0].id;
-      }
-    }
-
-    const emojiRegex = /[\uD800-\uDBFF][\uDC00-\uDFFF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g;
-    const cleanTitle = article.title.replace(emojiRegex, '').trim();
-    const cleanExcerpt = article.excerpt.replace(emojiRegex, '').trim();
-    const cleanMetaTitle = (article.meta_title || `Noticias Mundial | ${article.title}`).replace(emojiRegex, '').trim();
-    const cleanMetaDesc = (article.meta_description || article.excerpt).replace(emojiRegex, '').trim();
-
-    const postData = {
-      title: cleanTitle,
-      content: cleanContent,
-      excerpt: cleanExcerpt,
-      categories: [wpCategoryId],
-      status: 'publish',
-      meta: {
-        rank_math_focus_keyword: article.keyword,
-        rank_math_title: cleanMetaTitle,
-        rank_math_description: cleanMetaDesc
-      }
-    };
-    if (featuredMediaId) {
-      postData.featured_media = featuredMediaId;
-    }
-
-    if (wpPostId) {
-      console.log(`[WordPress Sync] Updating existing post ID: ${wpPostId}...`);
-      const updateRes = await fetch(`${WP_API_URL}/posts/${wpPostId}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': authHeader,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(postData)
-      });
-      if (updateRes.ok) {
-        console.log(`[WordPress Sync] Post updated successfully!`);
-      } else {
-        const errText = await updateRes.text();
-        console.error(`[WordPress Sync] Failed to update post: ${errText}`);
-      }
-    } else {
-      console.log(`[WordPress Sync] Creating new post...`);
-      postData.slug = article.slug;
-      postData.date = new Date(article.published_at).toISOString().slice(0, 19);
-      const createRes = await fetch(`${WP_API_URL}/posts`, {
-        method: 'POST',
-        headers: {
-          'Authorization': authHeader,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(postData)
-      });
-      if (createRes.ok) {
-        const data = await createRes.json();
-        console.log(`[WordPress Sync] Post created successfully! WP ID: ${data.id}`);
-      } else {
-        const errText = await createRes.text();
-        console.error(`[WordPress Sync] Failed to create post: ${errText}`);
-      }
-    }
-  } catch (err) {
-    console.error(`[WordPress Sync] Error:`, err.message);
-  }
 }
 
 async function main() {
@@ -463,17 +314,7 @@ async function main() {
         );
       }
 
-      console.log(`Article ID ${article.id} successfully generated, illustrated, and updated at hour ${currentHour}!`);
-
-      // Synchronize with WordPress (golazos.co)
-      const updatedArticle = {
-        ...article,
-        title: parsed.title,
-        excerpt: parsed.excerpt,
-        meta_title: parsed.meta_title,
-        meta_description: parsed.meta_description
-      };
-      await syncArticleToWordPress(updatedArticle, finalContent, coverImage);
+      console.log(`Article ID ${article.id} successfully generated, illustrated, and updated in database at hour ${currentHour}!`);
     }
 
   } catch (err) {
