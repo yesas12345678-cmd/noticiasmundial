@@ -172,16 +172,109 @@ async function main() {
       `SELECT id, title, keyword, category, excerpt, published_at FROM articles WHERE content = '' OR content IS NULL OR length(content) = 0 ORDER BY id ASC LIMIT 1`
     );
 
+    let article;
+
     if (emptyArticles.length === 0) {
-      console.log("No empty articles found in the database. Exiting.");
-      return;
+      console.log("No empty articles found in the database. Generating a new article concept using DeepSeek...");
+      
+      const categoriesList = ['selecciones', 'lesiones', 'resultados', 'estadisticas'];
+      const chosenCategory = categoriesList[Math.floor(Math.random() * categoriesList.length)];
+      
+      const conceptPrompt = `
+        Genera un concepto único para un artículo periodístico realista de noticias del Mundial de Fútbol de la FIFA 2026.
+        La categoría asignada para este artículo es: "${chosenCategory}".
+        
+        Debes responder estrictamente en formato JSON con la siguiente estructura:
+        {
+          "title": "Un título periodístico llamativo y profesional",
+          "excerpt": "Una sinopsis o resumen de 2-3 líneas del artículo",
+          "keyword": "una-palabra-clave-seo-unica",
+          "slug": "un-slug-amigable-para-url"
+        }
+        
+        Nota: Asegúrate de que las noticias parezcan de actualidad en el contexto del mundial 2026 (por ejemplo, previas de partidos, crónicas de partidos, informes de lesionados, o análisis estadísticos). No incluyas explicaciones, solo el JSON puro.
+      `;
+      
+      let conceptData = null;
+      try {
+        const response = await fetch('https://api.deepseek.com/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+          },
+          body: JSON.stringify({
+            model: 'deepseek-chat',
+            messages: [
+              {
+                role: 'system',
+                content: 'Eres un periodista deportivo experto y estratega de contenido SEO. Responde únicamente con el JSON solicitado.'
+              },
+              {
+                role: 'user',
+                content: conceptPrompt
+              }
+            ],
+            response_format: { type: 'json_object' }
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`Concept generation failed: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        conceptData = JSON.parse(data.choices[0].message.content.trim());
+      } catch (err) {
+        console.error("Error generating new article concept:", err.message);
+        return;
+      }
+
+      if (!conceptData || !conceptData.title || !conceptData.excerpt) {
+        console.error("Invalid concept data generated. Exiting.");
+        return;
+      }
+
+      // Calculate the next ID
+      const { rows: maxRows } = await client.query('SELECT MAX(id::int) as max_id FROM articles');
+      const nextId = String((maxRows[0].max_id || 0) + 1);
+
+      const pubDate = new Date();
+      const dateLabel = 'Hoy';
+
+      console.log(`Inserting new article concept into database: ID: ${nextId}, Title: "${conceptData.title}"`);
+      
+      const { rows: newInserted } = await client.query(
+        `INSERT INTO articles (
+          id, title, excerpt, category, date, read_time, author, content, likes, trending, published_at, keyword, slug
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+        RETURNING id, title, keyword, category, excerpt, published_at, slug`,
+        [
+          nextId,
+          conceptData.title,
+          conceptData.excerpt,
+          chosenCategory,
+          dateLabel,
+          '5 min de lectura',
+          Math.random() > 0.5 ? 'Mateo Valenzuela' : 'Sofía Benítez',
+          '',
+          0,
+          false,
+          pubDate,
+          conceptData.keyword,
+          conceptData.slug
+        ]
+      );
+      
+      article = newInserted[0];
+    } else {
+      article = emptyArticles[0];
     }
 
-    const article = emptyArticles[0];
     const slug = article.slug || article.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     article.slug = slug;
 
-    console.log(`Found empty article to generate: ID: ${article.id} - "${article.title}"`);
+    console.log(`Ready to generate content for Article ID ${article.id}: "${article.title}"`);
 
     // Prepare prompt
     let promptText = templateText;

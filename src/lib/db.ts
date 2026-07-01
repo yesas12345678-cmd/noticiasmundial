@@ -374,8 +374,8 @@ export async function initDB() {
     const { rows } = await client.query('SELECT COUNT(*) FROM articles');
     const count = parseInt(rows[0].count, 10);
 
-    // If the table doesn't have exactly 50 articles or needs reseed, seed it
-    if (count !== 50 || reseedNeeded) {
+    // If the table doesn't have any articles or needs reseed, seed it
+    if (count === 0 || reseedNeeded) {
       console.log(`Database contains ${count} articles. Seeding/Reseeding exactly 50 real World Cup 2026 articles with slugs...`);
 
       // Clear any existing articles to ensure clean seed of 50
