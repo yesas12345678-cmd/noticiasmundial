@@ -60,6 +60,33 @@ function getMadridTimeInfo() {
   return { currentHour, madridDate };
 }
 
+const REALISTIC_FOOTBALL_IMAGES = [
+  "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1518063319789-7217e6706b04?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1504155611830-979940686567?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1431324155629-1a6edd1d131d?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1551958219-acbc608c6377?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1510566337590-2fc1f21d0faa?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1556056504-517cf015e859?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1624880351724-413987415180?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1536122985387-a37a6a57c41c?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1552667466-07770ae110d0?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1486282458519-5ab1ad1a720e?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1509048191080-d2984bad6ae5?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1606925797300-0b35e9072f5d?q=80&w=1200&auto=format&fit=crop"
+];
+
+function getRandomImage(excludeList = []) {
+  const filtered = REALISTIC_FOOTBALL_IMAGES.filter(img => !excludeList.includes(img));
+  const pool = filtered.length > 0 ? filtered : REALISTIC_FOOTBALL_IMAGES;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
 // Generate 2 unique random hours between 9 and 21
 function generateRandomHours() {
   const allHours = [];
@@ -232,17 +259,44 @@ async function main() {
     }
 
     if (parsed) {
+      console.log("Adding realistic cover and inline action images to generated article...");
+      const coverImage = getRandomImage();
+      const inlineImage = getRandomImage([coverImage]);
+
+      const inlineImageHtml = `
+<div data-role='middle-image' class='my-8 overflow-hidden rounded-2xl border border-slate-200 shadow-md bg-white p-2'>
+  <img src='${inlineImage}' alt='Acción y análisis en el terreno de juego' class='w-full h-auto rounded-xl object-cover max-h-[450px]' />
+  <p class='text-xs text-slate-500 font-sans italic text-center mt-2'>Análisis visual y telemetría de jugadas sobre el césped.</p>
+</div>
+`;
+
+      let finalContent = parsed.content || '';
+      if (finalContent && finalContent.includes('</div>')) {
+        const paragraphSplit = finalContent.split('</p>');
+        if (paragraphSplit.length >= 4) {
+          const middleIndex = Math.floor(paragraphSplit.length / 2);
+          paragraphSplit[middleIndex] = paragraphSplit[middleIndex] + inlineImageHtml;
+          finalContent = paragraphSplit.join('</p>');
+        } else {
+          const lastClosingDiv = finalContent.lastIndexOf('</div>');
+          if (lastClosingDiv !== -1) {
+            finalContent = finalContent.slice(0, lastClosingDiv) + inlineImageHtml + finalContent.slice(lastClosingDiv);
+          }
+        }
+      }
+
       console.log("Updating database...");
       await client.query(
         `UPDATE articles 
-         SET title = $1, meta_title = $2, meta_description = $3, excerpt = $4, content = $5 
-         WHERE id = $6`,
+         SET title = $1, meta_title = $2, meta_description = $3, excerpt = $4, content = $5, image_url = $6 
+         WHERE id = $7`,
         [
           parsed.title,
           parsed.meta_title,
           parsed.meta_description,
           parsed.excerpt,
-          parsed.content,
+          finalContent,
+          coverImage,
           article.id
         ]
       );
@@ -252,7 +306,7 @@ async function main() {
         [madridDate, currentHour, article.id]
       );
 
-      console.log(`Article ID ${article.id} successfully generated and updated at hour ${currentHour}!`);
+      console.log(`Article ID ${article.id} successfully generated, illustrated, and updated at hour ${currentHour}!`);
     }
 
   } catch (err) {
