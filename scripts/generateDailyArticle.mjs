@@ -2,265 +2,250 @@ import fs from 'fs';
 import path from 'path';
 import pg from 'pg';
 
-const { Pool } = pg;
+const { Client } = pg;
 
-// Load env variables manually from .env.local
-const envPath = path.resolve('.env.local');
-if (fs.existsSync(envPath)) {
-  const envContent = fs.readFileSync(envPath, 'utf8');
-  for (const line of envContent.split(/\r?\n/)) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    const firstEquals = trimmed.indexOf('=');
-    if (firstEquals === -1) continue;
-    const key = trimmed.slice(0, firstEquals).trim();
-    const value = trimmed.slice(firstEquals + 1).trim();
-    process.env[key] = value;
+// 1. Load env vars manually from .env.local
+function loadEnv() {
+  try {
+    const envPath = path.resolve('.env.local');
+    if (fs.existsSync(envPath)) {
+      const envContent = fs.readFileSync(envPath, 'utf8');
+      envContent.split(/\r?\n/).forEach(line => {
+        const trimmed = line.trim();
+        if (trimmed && !trimmed.startsWith('#')) {
+          const parts = trimmed.split('=');
+          if (parts.length >= 2) {
+            const key = parts[0].trim();
+            const value = parts.slice(1).join('=').trim().replace(/^['"]|['"]$/g, '');
+            process.env[key] = value;
+          }
+        }
+      });
+      console.log('Loaded variables from .env.local successfully.');
+    } else {
+      console.warn('Warning: .env.local not found in project root.');
+    }
+  } catch (err) {
+    console.error('Error reading .env.local file:', err);
   }
 }
+
+loadEnv();
 
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
 const DATABASE_URL = process.env.DATABASE_URL;
 
 if (!DEEPSEEK_API_KEY) {
-  console.error("Error: DEEPSEEK_API_KEY is not defined.");
+  console.error('CRITICAL: DEEPSEEK_API_KEY is not defined in environment variables.');
   process.exit(1);
 }
 
 if (!DATABASE_URL) {
-  console.error("Error: DATABASE_URL is not defined.");
+  console.error('CRITICAL: DATABASE_URL is not defined in environment variables.');
   process.exit(1);
 }
 
-const templatePath = path.resolve('template_general.md');
-if (!fs.existsSync(templatePath)) {
-  console.error("Error: template_general.md not found in the root directory.");
+// 2. Read template_general.md
+let template = '';
+try {
+  template = fs.readFileSync(path.resolve('template_general.md'), 'utf8');
+  console.log('Successfully read template_general.md');
+} catch (err) {
+  console.error('CRITICAL: Could not read template_general.md:', err);
   process.exit(1);
 }
-const templateText = fs.readFileSync(templatePath, 'utf8');
 
-const pool = new Pool({
-  connectionString: DATABASE_URL,
-  ssl: false,
-});
+// Update the niche and word count requirements in template to 2000-3000 words
+template = template.replace('[INSERTAR NICHO O SECTOR AQUÍ]', 'Copa Mundial de la FIFA 2026 y fútbol internacional');
+template = template.replace(
+  'El artículo debe contener estrictamente entre **2.000 y 2.500 palabras de texto real**',
+  'El artículo debe contener estrictamente entre **2.000 y 3.000 palabras de texto real**'
+);
 
-// Helper to get Madrid time info
-function getMadridTimeInfo() {
-  const options = { timeZone: 'Europe/Madrid', hour: 'numeric', hour12: false };
-  const formatter = new Intl.DateTimeFormat('en-US', options);
-  const currentHour = parseInt(formatter.format(new Date()), 10);
-
-  const dateOptions = { timeZone: 'Europe/Madrid', year: 'numeric', month: '2-digit', day: '2-digit' };
-  const dateParts = new Intl.DateTimeFormat('en-US', dateOptions).formatToParts(new Date());
-  const year = dateParts.find(p => p.type === 'year').value;
-  const month = dateParts.find(p => p.type === 'month').value;
-  const day = dateParts.find(p => p.type === 'day').value;
-  const madridDate = `${year}-${month}-${day}`; // YYYY-MM-DD
-
-  return { currentHour, madridDate };
+// Helper function to calculate word count and read time
+function calculateReadTime(htmlContent) {
+  if (!htmlContent) return '3 min de lectura';
+  const cleanText = htmlContent.replace(/<[^>]*>/g, ' '); // Strip HTML tags
+  const words = cleanText.trim().split(/\s+/).filter(Boolean).length;
+  const minutes = Math.ceil(words / 200); // Average reading speed of 200 words per minute
+  return `${minutes} min de lectura`;
 }
 
-// Generate 5 unique random hours between 9 and 21
-function generateRandomHours() {
-  const allHours = [];
-  for (let h = 9; h <= 21; h++) {
-    allHours.push(h);
+// Seedable pseudo-random number generator
+function seedRandom(seedStr) {
+  let hash = 0;
+  for (let i = 0; i < seedStr.length; i++) {
+    hash = seedStr.charCodeAt(i) + ((hash << 5) - hash);
   }
-  // Shuffle allHours
-  for (let i = allHours.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [allHours[i], allHours[j]] = [allHours[j], allHours[i]];
-  }
-  // Take first 5 and sort them
-  return allHours.slice(0, 5).sort((a, b) => a - b);
+  return function() {
+    const x = Math.sin(hash++) * 10000;
+    return x - Math.floor(x);
+  };
 }
 
-async function main() {
-  const client = await pool.connect();
+// 3. Main execution logic
+async function run() {
+  // Determine if we should bypass the schedule (e.g. manual CLI execution)
+  const force = process.argv.includes('--force') || process.argv.includes('--no-delay');
+  
+  if (!force) {
+    // Get date string and current hour in Madrid timezone
+    const dateString = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Madrid' }); // YYYY-MM-DD
+    const currentHour = parseInt(
+      new Date().toLocaleTimeString('en-US', { timeZone: 'Europe/Madrid', hour: '2-digit', hour12: false }),
+      10
+    );
+
+    // Generate 2 random hours between 9 and 21 based on today's date seed
+    const rng = seedRandom(dateString);
+    const targetHours = [];
+    const ARTICLES_PER_DAY = 2; // Standard: 2 articles per day
+
+    while (targetHours.length < ARTICLES_PER_DAY) {
+      const h = Math.floor(9 + rng() * 13); // 9 to 21 (inclusive)
+      if (!targetHours.includes(h)) {
+        targetHours.push(h);
+      }
+    }
+    targetHours.sort((a, b) => a - b);
+
+    console.log(`Fecha de hoy (Madrid): ${dateString}`);
+    console.log(`Horas seleccionadas para hoy: ${targetHours.join(', ')}`);
+    console.log(`Hora actual (Madrid): ${currentHour}`);
+
+    if (!targetHours.includes(currentHour)) {
+      console.log('La hora actual no coincide con las horas programadas para hoy. Saliendo sin generar.');
+      process.exit(0);
+    }
+    console.log('Coincidencia de hora detectada. Procediendo con la generación del artículo...');
+  } else {
+    console.log('Ejecutando con flag --force. Saltando comprobación de horario.');
+  }
+
+  const client = new Client({
+    connectionString: DATABASE_URL,
+    ssl: false,
+  });
+
   try {
-    // 1. Create tables if they do not exist
-    await client.query(`
-      CREATE TABLE IF NOT EXISTS daily_generation_schedule (
-        scheduled_date DATE PRIMARY KEY,
-        hours INT[] NOT NULL
-      );
-    `);
+    await client.connect();
+    console.log('Connected to PostgreSQL database.');
 
-    await client.query(`
-      CREATE TABLE IF NOT EXISTS generation_log (
-        log_date DATE,
-        hour INT,
-        article_id INT,
-        PRIMARY KEY (log_date, hour)
-      );
-    `);
-
-    // 2. Get current Madrid time
-    const { currentHour, madridDate } = getMadridTimeInfo();
-    console.log(`Current Madrid Date: ${madridDate}, Hour: ${currentHour}`);
-
-    // 3. Ensure schedule exists for today
-    const { rows: existingSchedule } = await client.query(
-      'SELECT hours FROM daily_generation_schedule WHERE scheduled_date = $1',
-      [madridDate]
+    // Fetch the next article that has empty content
+    const { rows: articles } = await client.query(
+      "SELECT id, title, category, keyword, excerpt FROM articles WHERE content IS NULL OR content = '' OR LENGTH(content) = 0 ORDER BY id ASC LIMIT 1"
     );
 
-    let scheduledHours = [];
-    if (existingSchedule.length === 0) {
-      scheduledHours = generateRandomHours();
-      console.log(`Generating new schedule for today (${madridDate}):`, scheduledHours);
-      await client.query(
-        'INSERT INTO daily_generation_schedule (scheduled_date, hours) VALUES ($1, $2) ON CONFLICT (scheduled_date) DO UPDATE SET hours = EXCLUDED.hours',
-        [madridDate, scheduledHours]
-      );
-    } else {
-      scheduledHours = existingSchedule[0].hours;
-      console.log(`Existing schedule for today (${madridDate}):`, scheduledHours);
-    }
-
-    // 4. Check if current hour is scheduled
-    if (!scheduledHours.includes(currentHour)) {
-      console.log(`Current hour (${currentHour}) is not in today's scheduled hours. Exiting.`);
+    if (articles.length === 0) {
+      console.log('No articles found with empty content. Nothing to generate today.');
       return;
     }
 
-    // 5. Check if already generated for this hour
-    const { rows: loggedGenerations } = await client.query(
-      'SELECT article_id FROM generation_log WHERE log_date = $1 AND hour = $2',
-      [madridDate, currentHour]
-    );
+    const art = articles[0];
+    console.log(`Processing Article #${art.id}: "${art.title}"...`);
 
-    if (loggedGenerations.length > 0) {
-      console.log(`An article (ID: ${loggedGenerations[0].article_id}) was already generated for hour ${currentHour} today. Exiting.`);
-      return;
+    // Construct system prompt by injecting metadata
+    let systemPrompt = template
+      .replace('[INSERTAR TÍTULO AQUÍ]', art.title)
+      .replace('[INSERTAR KEYWORDS AQUÍ]', art.keyword);
+
+    if (systemPrompt.includes('[OPCIONAL: INSERTAR DETALLES ADICIONALES]')) {
+      systemPrompt = systemPrompt.replace(
+        '[OPCIONAL: INSERTAR DETALLES ADICIONALES]',
+        `Categoría del artículo: ${art.category}. Extracto del boletín original: ${art.excerpt}`
+      );
     }
 
-    // 6. Find an empty article to generate
-    const { rows: emptyArticles } = await client.query(
-      `SELECT id, title, keyword, category FROM articles WHERE content = '' OR content IS NULL OR length(content) = 0 ORDER BY id ASC LIMIT 1`
-    );
+    let success = false;
+    let retries = 3;
 
-    if (emptyArticles.length === 0) {
-      console.log("No empty articles found in the database. Exiting.");
-      return;
-    }
-
-    const article = emptyArticles[0];
-    console.log(`Found empty article to generate: ID: ${article.id} - "${article.title}"`);
-
-    // Prepare prompt
-    let promptText = templateText;
-    promptText = promptText.replace('[INSERTAR NICHO O SECTOR AQUÍ]', `Fútbol e Información del Mundial de la FIFA 2026 - Categoría: ${article.category}`);
-    promptText = promptText.replace('[INSERTAR TÍTULO AQUÍ]', article.title);
-    promptText = promptText.replace('[INSERTAR KEYWORDS AQUÍ]', article.keyword || '');
-    promptText = promptText.replace('[OPCIONAL: INSERTAR DETALLES ADICIONALES]', `Detalles: Artículo real sobre el Mundial 2026 al día de hoy 24 de Junio de 2026.`);
-
-    let parsed = null;
-    let attempt = 0;
-    const maxAttempts = 3;
-    let currentPrompt = promptText;
-
-    while (attempt < maxAttempts) {
-      attempt++;
+    while (!success && retries > 0) {
       try {
-        console.log(`Calling DeepSeek API (Attempt ${attempt}/${maxAttempts})...`);
+        console.log(`Sending API request to DeepSeek (Retries left: ${retries - 1})...`);
+        
         const response = await fetch('https://api.deepseek.com/chat/completions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+            'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
           },
           body: JSON.stringify({
             model: 'deepseek-chat',
             messages: [
-              {
-                role: 'system',
-                content: 'Eres un redactor experto en SEO, redacción deportiva y EEAT. Debes responder únicamente con el objeto JSON solicitado, sin explicaciones ni markdown que lo envuelva. Tu artículo debe ser extremadamente detallado y tener obligatoriamente entre 2200 y 2800 palabras de texto legible (excluyendo etiquetas HTML).'
-              },
-              {
-                role: 'user',
-                content: currentPrompt
-              }
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: `Escribe el artículo completo con las directivas especificadas. El artículo debe ser en español, de 2000 a 3000 palabras de texto real, utilizar formato HTML adaptado a Tailwind CSS en comillas simples para la propiedad 'content', no contener emojis bajo ninguna circunstancia, e incluir tablas, tarjetas y acordeones. Devuelve la respuesta estrictamente estructurada como un objeto JSON.` }
             ],
-            response_format: {
-              type: 'json_object'
-            }
-          })
+            response_format: { type: 'json_object' },
+            temperature: 0.3,
+          }),
         });
 
         if (!response.ok) {
           const errText = await response.text();
-          throw new Error(`HTTP Error: ${response.status} ${response.statusText} - ${errText}`);
+          throw new Error(`API HTTP Error ${response.status}: ${errText}`);
         }
 
-        const data = await response.json();
-        const rawContent = data.choices[0].message.content;
+        const resData = await response.json();
+        const jsonText = resData.choices[0].message.content;
 
-        let cleaned = rawContent.trim();
-        if (cleaned.startsWith('```')) {
-          cleaned = cleaned.replace(/^```json\s*/i, '').replace(/```$/, '').trim();
+        // Parse JSON returned by model
+        const parsed = JSON.parse(jsonText);
+
+        if (!parsed.content || !parsed.title) {
+          throw new Error('API returned JSON, but properties "content" or "title" are missing.');
         }
 
-        parsed = JSON.parse(cleaned);
+        const readTime = calculateReadTime(parsed.content);
 
-        if (!parsed.title || !parsed.meta_title || !parsed.meta_description || !parsed.excerpt || !parsed.content) {
-          throw new Error("Missing required JSON fields in API response.");
-        }
+        console.log('Article generated successfully. Updating database...');
 
-        const textOnly = parsed.content.replace(/<[^>]*>/g, ' ');
-        const wordCount = textOnly.trim().split(/\s+/).filter(w => w.length > 0).length;
-        console.log(`Actual word count: ${wordCount} words.`);
+        // Update the database.
+        // We set published_at to NOW() so that it is "published" at this exact randomized time.
+        // We set date to 'Hoy' so the front-end displays it as published today.
+        await client.query(
+          `
+          UPDATE articles SET
+            title = $1,
+            meta_title = $2,
+            meta_description = $3,
+            excerpt = $4,
+            content = $5,
+            read_time = $6,
+            published_at = NOW(),
+            date = 'Hoy'
+          WHERE id = $7
+          `,
+          [
+            parsed.title,
+            parsed.meta_title || parsed.title,
+            parsed.meta_description || parsed.excerpt || '',
+            parsed.excerpt || art.excerpt,
+            parsed.content,
+            readTime,
+            art.id,
+          ]
+        );
 
-        if (wordCount < 2000 || wordCount > 3000) {
-          console.warn(`Warning: Word count ${wordCount} is outside the 2000-3000 range.`);
-          if (attempt < maxAttempts) {
-            currentPrompt = `${promptText}\n\n[SISTEMA: El resultado anterior tenía ${wordCount} palabras. Es OBLIGATORIO que el artículo tenga estrictamente entre 2000 y 3000 palabras de texto legible (excluyendo etiquetas HTML). Por favor, ajusta la extensión de las secciones para cumplir exactamente con este rango.]`;
-            continue;
-          } else {
-            console.log("Saving article anyway despite word count warning on last attempt.");
-          }
-        }
-
-        break;
+        console.log(`Successfully saved and published Article #${art.id}!`);
+        success = true;
       } catch (err) {
-        console.error(`Attempt ${attempt} failed:`, err.message);
-        if (attempt >= maxAttempts) {
-          throw err;
+        console.error(`Error processing article #${art.id}:`, err.message);
+        retries--;
+        if (retries === 0) {
+          console.error(`Failed to process Article #${art.id} after all retries.`);
+        } else {
+          console.log('Waiting 5 seconds before retrying...');
+          await new Promise(resolve => setTimeout(resolve, 5000));
         }
-        await new Promise(resolve => setTimeout(resolve, 2000));
       }
     }
 
-    if (parsed) {
-      console.log("Updating database...");
-      await client.query(
-        `UPDATE articles 
-         SET title = $1, meta_title = $2, meta_description = $3, excerpt = $4, content = $5 
-         WHERE id = $6`,
-        [
-          parsed.title,
-          parsed.meta_title,
-          parsed.meta_description,
-          parsed.excerpt,
-          parsed.content,
-          article.id
-        ]
-      );
-
-      await client.query(
-        'INSERT INTO generation_log (log_date, hour, article_id) VALUES ($1, $2, $3)',
-        [madridDate, currentHour, article.id]
-      );
-
-      console.log(`Article ID ${article.id} successfully generated and updated at hour ${currentHour}!`);
-    }
-
   } catch (err) {
-    console.error("Error running daily generation:", err);
+    console.error('Fatal database error:', err);
   } finally {
-    client.release();
-    await pool.end();
+    await client.end();
+    console.log('Database connection closed.');
   }
 }
 
-main();
+run();
