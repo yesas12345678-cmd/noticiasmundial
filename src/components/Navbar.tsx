@@ -9,6 +9,25 @@ function NavbarContent() {
   const [isOpen, setIsOpen] = useState(false);
   const searchParams = useSearchParams();
   const activeCategory = searchParams.get('category') || 'todos';
+  const [textSize, setTextSize] = useState<'small' | 'medium' | 'large' | 'xlarge'>('medium');
+
+  React.useEffect(() => {
+    if (typeof document !== 'undefined') {
+      const savedSize = localStorage.getItem('text-size') as any;
+      if (savedSize && ['small', 'medium', 'large', 'xlarge'].includes(savedSize)) {
+        setTextSize(savedSize);
+        document.documentElement.setAttribute('data-text-size', savedSize);
+      }
+    }
+  }, []);
+
+  const changeTextSize = (size: 'small' | 'medium' | 'large' | 'xlarge') => {
+    setTextSize(size);
+    localStorage.setItem('text-size', size);
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-text-size', size);
+    }
+  };
 
   const categories = [
     { id: 'todos', name: 'Todas' },
@@ -20,7 +39,7 @@ function NavbarContent() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-zinc-900 bg-zinc-950/70 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-zinc-900 bg-zinc-950/80 backdrop-blur-md">
       {/* Accent color bar */}
       <div className="h-[3px] w-full bg-gradient-to-r from-purple-600 via-blue-500 via-emerald-400 via-yellow-450 via-orange-500 to-red-650" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -36,10 +55,10 @@ function NavbarContent() {
                 </span>
               </div>
               <div className="flex flex-col">
-                <span className="text-sm font-mono font-bold tracking-widest text-white leading-none">
+                <span className="text-base font-bold tracking-widest text-white leading-none">
                   NOTICIAS
                 </span>
-                <span className="text-[10px] font-mono tracking-widest text-purple-400 font-semibold leading-none mt-1">
+                <span className="text-xs tracking-widest text-purple-400 font-bold leading-none mt-1">
                   MUNDIAL
                 </span>
               </div>
@@ -47,7 +66,7 @@ function NavbarContent() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden xl:flex items-center gap-1">
+          <nav className="hidden xl:flex items-center gap-1.5">
             {categories.map((cat) => {
               const href = cat.id === 'todos' ? '/' : `/?category=${cat.id}`;
               const isActive = activeCategory === cat.id;
@@ -56,10 +75,10 @@ function NavbarContent() {
                 <Link
                   key={cat.id}
                   href={href}
-                  className={`relative px-4 py-2 rounded-lg text-xs font-mono tracking-wide uppercase font-medium transition-all duration-205 border border-transparent ${
+                  className={`relative px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 border border-transparent ${
                     isActive
-                      ? 'text-purple-400 bg-purple-950/30 border-purple-950/50 shadow-neon-green'
-                      : 'text-zinc-400 hover:text-white hover:bg-zinc-900/50'
+                      ? 'text-purple-400 bg-purple-950/40 border-purple-900/60 shadow shadow-purple-500/10'
+                      : 'text-zinc-300 hover:text-white hover:bg-zinc-900/60'
                   }`}
                 >
                   {cat.name}
@@ -69,10 +88,51 @@ function NavbarContent() {
           </nav>
 
           {/* Controls / Info */}
-          <div className="hidden md:flex items-center gap-3">
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-950/20 border border-emerald-950/40 text-[10px] font-mono font-bold uppercase text-emerald-400">
-              <Activity className="h-3 w-3 animate-pulse" />
-              <span>ALERTAS AL MINUTO // FEED GLOBAL</span>
+          <div className="hidden md:flex items-center gap-4">
+            {/* Accessibility Font Size Toggle */}
+            <div className="flex items-center gap-1 bg-zinc-900/80 border border-zinc-800 p-1 rounded-lg">
+              <span className="text-[10px] font-bold text-zinc-500 uppercase px-2">Texto:</span>
+              <button
+                onClick={() => changeTextSize('small')}
+                className={`px-2 py-0.5 rounded text-xs font-bold transition-all ${
+                  textSize === 'small' ? 'bg-purple-600 text-white' : 'text-zinc-400 hover:text-white'
+                }`}
+                title="Letra pequeña"
+              >
+                A-
+              </button>
+              <button
+                onClick={() => changeTextSize('medium')}
+                className={`px-2 py-0.5 rounded text-xs font-bold transition-all ${
+                  textSize === 'medium' ? 'bg-purple-600 text-white' : 'text-zinc-400 hover:text-white'
+                }`}
+                title="Letra normal"
+              >
+                A
+              </button>
+              <button
+                onClick={() => changeTextSize('large')}
+                className={`px-2 py-0.5 rounded text-xs font-bold transition-all ${
+                  textSize === 'large' ? 'bg-purple-600 text-white' : 'text-zinc-400 hover:text-white'
+                }`}
+                title="Letra grande"
+              >
+                A+
+              </button>
+              <button
+                onClick={() => changeTextSize('xlarge')}
+                className={`px-2 py-0.5 rounded text-xs font-bold transition-all ${
+                  textSize === 'xlarge' ? 'bg-purple-600 text-white' : 'text-zinc-400 hover:text-white'
+                }`}
+                title="Letra muy grande"
+              >
+                A++
+              </button>
+            </div>
+
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-950/20 border border-emerald-950/40 text-xs font-medium text-emerald-400">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Actualizado en vivo</span>
             </div>
           </div>
 
@@ -90,7 +150,7 @@ function NavbarContent() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="xl:hidden border-t border-zinc-900 bg-zinc-950 px-4 py-3 space-y-1">
+        <div className="xl:hidden border-t border-zinc-900 bg-zinc-950 px-4 py-3 space-y-2">
           {categories.map((cat) => {
             const href = cat.id === 'todos' ? '/' : `/?category=${cat.id}`;
             const isActive = activeCategory === cat.id;
@@ -100,20 +160,60 @@ function NavbarContent() {
                 key={cat.id}
                 href={href}
                 onClick={() => setIsOpen(false)}
-                className={`w-full text-left flex items-center justify-between px-4 py-3 rounded-lg text-xs font-mono tracking-wider uppercase transition-all ${
+                className={`w-full text-left flex items-center justify-between px-4 py-2.5 rounded-lg text-sm font-semibold transition-all ${
                   isActive
-                    ? 'text-purple-400 bg-purple-950/20 border-purple-950/30'
-                    : 'text-zinc-400 hover:text-white hover:bg-zinc-900/50'
+                    ? 'text-purple-400 bg-purple-950/30 border border-purple-900/40'
+                    : 'text-zinc-300 hover:text-white hover:bg-zinc-900/50'
                 }`}
               >
                 <span>{cat.name}</span>
               </Link>
             );
           })}
-          <div className="pt-2 pb-1 border-t border-zinc-900 mt-2">
-            <div className="inline-flex items-center gap-1.5 w-full justify-center px-3 py-2 rounded-lg bg-emerald-950/20 border border-emerald-950/40 text-[10px] font-mono font-bold uppercase text-emerald-400">
-              <Activity className="h-3 w-3 animate-pulse" />
-              <span>ALERTAS AL MINUTO // COBERTURA GLOBAL</span>
+          
+          {/* Mobile Accessibility controls */}
+          <div className="flex flex-col gap-2 pt-2 border-t border-zinc-900">
+            <div className="flex items-center justify-between bg-zinc-900/80 border border-zinc-800 p-1 rounded-lg">
+              <span className="text-[10px] font-bold text-zinc-500 uppercase px-2">Tamaño de Texto:</span>
+              <div className="flex gap-1">
+                <button
+                  onClick={() => changeTextSize('small')}
+                  className={`px-2 py-0.5 rounded text-xs font-bold transition-all ${
+                    textSize === 'small' ? 'bg-purple-600 text-white' : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  A-
+                </button>
+                <button
+                  onClick={() => changeTextSize('medium')}
+                  className={`px-2 py-0.5 rounded text-xs font-bold transition-all ${
+                    textSize === 'medium' ? 'bg-purple-600 text-white' : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  A
+                </button>
+                <button
+                  onClick={() => changeTextSize('large')}
+                  className={`px-2 py-0.5 rounded text-xs font-bold transition-all ${
+                    textSize === 'large' ? 'bg-purple-600 text-white' : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  A+
+                </button>
+                <button
+                  onClick={() => changeTextSize('xlarge')}
+                  className={`px-2 py-0.5 rounded text-xs font-bold transition-all ${
+                    textSize === 'xlarge' ? 'bg-purple-600 text-white' : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  A++
+                </button>
+              </div>
+            </div>
+
+            <div className="inline-flex items-center gap-1.5 w-full justify-center px-3 py-2 rounded-lg bg-emerald-950/20 border border-emerald-950/40 text-xs font-medium text-emerald-400">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Actualizado en vivo</span>
             </div>
           </div>
         </div>

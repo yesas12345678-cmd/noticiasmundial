@@ -86,8 +86,8 @@ export default function LiveMarketsWidget() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
-          <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400">
-            COTIZACIONES GLOBALES // LIVE MARKET
+          <span className="text-xs font-bold text-zinc-300">
+            Bolsa y Mercados Financieros
           </span>
         </div>
         <DollarSign className="h-4 w-4 text-zinc-500" />
@@ -102,10 +102,10 @@ export default function LiveMarketsWidget() {
           >
             {/* Asset Symbol & Name */}
             <div className="flex flex-col">
-              <span className="text-xs font-mono font-bold text-white tracking-wider">
+              <span className="text-sm font-semibold text-white">
                 {asset.symbol}
               </span>
-              <span className="text-[9px] font-mono text-zinc-550 mt-0.5">
+              <span className="text-xs text-zinc-400 mt-0.5">
                 {asset.name}
               </span>
             </div>
@@ -114,11 +114,11 @@ export default function LiveMarketsWidget() {
             <div className="flex items-center gap-4">
               {/* Numeric price */}
               <div className="text-right">
-                <span className="text-xs font-mono font-bold text-zinc-200">
+                <span className="text-sm font-semibold text-zinc-100">
                   {asset.price}
                 </span>
                 <span
-                  className={`text-[8px] font-mono font-bold uppercase block mt-0.5 tracking-tight ${
+                  className={`text-xs font-bold block mt-0.5 ${
                     asset.isUp ? 'text-emerald-400' : 'text-red-400'
                   }`}
                 >
@@ -146,12 +146,12 @@ export default function LiveMarketsWidget() {
       </div>
 
       {/* Footer Info */}
-      <div className="border-t border-zinc-900 bg-zinc-950/60 p-3 flex justify-between items-center text-[8px] font-mono text-zinc-650">
+      <div className="border-t border-zinc-900 bg-zinc-950/60 p-3 flex justify-between items-center text-[10px] font-medium text-zinc-500">
         <span className="flex items-center gap-1">
           <RefreshCw className="h-2.5 w-2.5 animate-spin" />
-          <span>ACTUALIZACIÓN CONTINUA</span>
+          <span>Actualización en vivo</span>
         </span>
-        <span>MADRID TIME: {lastUpdated}</span>
+        <span>Hora local: {lastUpdated.replace(' CET', '')}</span>
       </div>
     </div>
   );

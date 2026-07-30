@@ -1,34 +1,35 @@
-import fs from 'fs';
-import path from 'path';
-import pg from 'pg';
+import { pool } from './db';
 
-const { Pool } = pg;
-
-// Load env variables manually from .env.local
-const envPath = path.resolve('.env.local');
-if (fs.existsSync(envPath)) {
-  const envContent = fs.readFileSync(envPath, 'utf8');
-  for (const line of envContent.split(/\r?\n/)) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    const firstEquals = trimmed.indexOf('=');
-    if (firstEquals === -1) continue;
-    const key = trimmed.slice(0, firstEquals).trim();
-    const value = trimmed.slice(firstEquals + 1).trim();
-    process.env[key] = value;
+// Extract all used image URLs from the database (both cover images and inline content images)
+export async function getUsedImages(): Promise<Set<string>> {
+  const used = new Set<string>();
+  try {
+    const { rows } = await pool.query('SELECT image_url, content FROM articles');
+    for (const row of rows) {
+      if (row.image_url) {
+        used.add(row.image_url);
+        // Also add the base URL without query params to avoid duplicate photos with different sizes
+        const base = row.image_url.split('?')[0];
+        used.add(base);
+      }
+      if (row.content) {
+        const regex = /<img[^>]+src=['"]([^'"]+)['"]/g;
+        let match;
+        while ((match = regex.exec(row.content)) !== null) {
+          used.add(match[1]);
+          const base = match[1].split('?')[0];
+          used.add(base);
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Error fetching used images from DB:', err);
   }
+  return used;
 }
 
-const DATABASE_URL = process.env.DATABASE_URL || 'postgresql://postgres:cugh0qsq8uaeawz5@187.127.233.89:5435/postgres';
-
-
-const pool = new Pool({
-  connectionString: DATABASE_URL,
-  ssl: false,
-});
-
-// Fallback pools of 40 unique Unsplash photo IDs per category to guarantee no repeats
-const PHOTO_ID_POOLS = {
+// 40 unique Unsplash photo IDs for each category (total 200 unique assets)
+const PHOTO_ID_POOLS: Record<string, string[]> = {
   internacional: [
     'photo-1541872703-74c5e44368f9', 'photo-1451187580459-43490279c0fa', 'photo-1590402421685-64de85567bcf',
     'photo-1579546929518-9e396f3cc809', 'photo-1486406146926-c627a92ad1ab', 'photo-1529107386315-e1a2ed48a620',
@@ -42,7 +43,7 @@ const PHOTO_ID_POOLS = {
     'photo-1573164713988-8665fc963095', 'photo-1552667466-07770ae110d0', 'photo-1560250097-0b93528c311a',
     'photo-1573496359142-b8d87734a5a2', 'photo-1573497019940-1c28c88b4f3e', 'photo-1573497491208-6b1acb260507',
     'photo-1580894732444-8febeb78fb3e', 'photo-1580894894513-541e068a3e2b', 'photo-1580894908361-9671950ee345',
-    'photo-1581092921461-eab62e97a780', 'photo-1581092580497-e0d23cbdf1dc', 'photo-15810926825-a6a2a5aee158',
+    'photo-1581092921461-eab62e97a780', 'photo-1581092580497-e0d23cbdf1dc', 'photo-1581091226825-a6a2a5aee158',
     'photo-1581591524425-c7e0978865fc'
   ],
   economia: [
@@ -57,7 +58,7 @@ const PHOTO_ID_POOLS = {
     'photo-1516321497487-e288fb19713f', 'photo-1522071820081-009f0129c71c', 'photo-1523240795612-9a054b0db644',
     'photo-1523287554-4fb3c7347b7b', 'photo-1524758631624-e2822e304c36', 'photo-1531497865144-0464ef8fb9a9',
     'photo-1531535934027-68782a11f75d', 'photo-1542744094-3a31f103e35f', 'photo-1542744095-fcf48d80b4fd',
-    'photo-1542744097-8e0ee26cf660', 'photo-1543269664-76bc3997d9ea', 'photo-1543269865-cbf427effbad',
+    'photo-1542744173-8e0ee26cf660', 'photo-1543269664-76bc3997d9ea', 'photo-1543269865-cbf427effbad',
     'photo-1551135049-8a33b5883817', 'photo-1552667466-07770ae110d0', 'photo-1557425955-df376b5903c8',
     'photo-1444653303775-6134b69d5f7f'
   ],
@@ -111,26 +112,43 @@ const PHOTO_ID_POOLS = {
   ],
 };
 
-async function fetchFromUnsplashAPI(category) {
+// Formulates the full image URL from Unsplash photo ID
+function makeUnsplashUrl(photoId: string): string {
+  return `https://images.unsplash.com/${photoId}?auto=format&fit=crop&q=80&w=1200`;
+}
+
+// Queries the Unsplash Search API using process.env.UNSPLASH_ACCESS_KEY
+async function fetchFromUnsplashAPI(category: string): Promise<string[]> {
   const accessKey = process.env.UNSPLASH_ACCESS_KEY;
-  if (!accessKey) return [];
+  if (!accessKey) {
+    console.log('Unsplash API Access Key not found in environment. Using fallback pools.');
+    return [];
+  }
+  
   try {
-    const queryMap = {
+    const queryMap: Record<string, string> = {
       internacional: 'politics global diplomacy UN news',
       economia: 'finance stock market business economy',
       tecnologia: 'technology AI computer science microchip',
       cultura: 'museum art exhibition theater literature',
       deportes: 'sports tennis golf formula 1 athletics'
     };
+    
     const searchTerm = queryMap[category] || 'news';
     const response = await fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(searchTerm)}&per_page=30`, {
-      headers: { 'Authorization': `Client-ID ${accessKey}` }
-    });
-    if (response.ok) {
-      const data = await response.json();
-      if (data && data.results) {
-        return data.results.map(item => `${item.urls.raw}&auto=format&fit=crop&q=80&w=1200`);
+      headers: {
+        'Authorization': `Client-ID ${accessKey}`
       }
+    });
+
+    if (response.ok) {
+      const data = (await response.json()) as any;
+      if (data && data.results) {
+        console.log(`Successfully fetched ${data.results.length} images from Unsplash API for category: ${category}`);
+        return data.results.map((item: any) => `${item.urls.raw}&auto=format&fit=crop&q=80&w=1200`);
+      }
+    } else {
+      console.warn(`Unsplash API query failed: ${response.status} ${response.statusText}`);
     }
   } catch (err) {
     console.error('Error fetching from Unsplash API:', err);
@@ -138,10 +156,11 @@ async function fetchFromUnsplashAPI(category) {
   return [];
 }
 
-async function getUniqueImageForScript(category, usedImages) {
+// Main function to get a unique, non-repeating image URL for a specific category
+export async function getUniqueImage(category: string, usedImages: Set<string>): Promise<string> {
   const normalizedCategory = category.toLowerCase();
   
-  // 1. Unsplash API
+  // 1. First, try fetching live images from Unsplash API
   const apiUrls = await fetchFromUnsplashAPI(normalizedCategory);
   for (const url of apiUrls) {
     const base = url.split('?')[0];
@@ -152,13 +171,16 @@ async function getUniqueImageForScript(category, usedImages) {
     }
   }
 
-  // 2. Fallback pool
+  // 2. If API key is missing, rate-limited, or all returned images were already used, fall back to our local pool
   const poolIds = PHOTO_ID_POOLS[normalizedCategory] || PHOTO_ID_POOLS['internacional'];
+  
+  // Shuffle fallback pool slightly to give random results
   const shuffledIds = [...poolIds].sort(() => Math.random() - 0.5);
 
   for (const photoId of shuffledIds) {
-    const fullUrl = `https://images.unsplash.com/${photoId}?auto=format&fit=crop&q=80&w=1200`;
+    const fullUrl = makeUnsplashUrl(photoId);
     const base = fullUrl.split('?')[0];
+    
     if (!usedImages.has(fullUrl) && !usedImages.has(base)) {
       usedImages.add(fullUrl);
       usedImages.add(base);
@@ -166,76 +188,10 @@ async function getUniqueImageForScript(category, usedImages) {
     }
   }
 
-  // 3. Absolute fallback
+  // 3. Absolute fallback in the extremely rare event that every single image in the pool was already used.
+  // We append a unique timestamp and random identifier to prevent browser caching duplication.
+  console.warn(`Warning: All pool images for category "${category}" are in use. Generating a mutated fallback URL.`);
   const randomFallbackId = poolIds[Math.floor(Math.random() * poolIds.length)];
-  return `https://images.unsplash.com/${randomFallbackId}?auto=format&fit=crop&q=80&w=1200&unique_seed=${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+  const mutatedUrl = `${makeUnsplashUrl(randomFallbackId)}&unique_seed=${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+  return mutatedUrl;
 }
-
-async function main() {
-  const client = await pool.connect();
-  try {
-    // 1. Fetch all articles from database
-    const { rows: articles } = await client.query(
-      `SELECT id, title, image_url, content, category FROM articles ORDER BY id ASC`
-    );
-
-    console.log(`Found ${articles.length} articles to update with cover and inline images.`);
-
-    // Initialize an empty set of used images to guarantee full clean re-assignment
-    const usedImages = new Set();
-
-    for (let i = 0; i < articles.length; i++) {
-      const art = articles[i];
-      const category = art.category || 'internacional';
-
-      // Overwrite cover image always to ensure 100% uniqueness
-      const coverImage = await getUniqueImageForScript(category, usedImages);
-      console.log(`Article ID ${art.id}: Set cover image to ${coverImage}`);
-      await client.query(`UPDATE articles SET image_url = $1 WHERE id = $2`, [coverImage, art.id]);
-
-      // Remove any existing middle-image blocks first to start fresh
-      let content = art.content || '';
-      if (content.includes('data-role="middle-image"')) {
-        content = content.replace(/<div data-role=['"]middle-image['"][\s\S]*?<\/div>/g, '');
-      }
-
-      // Inject inline image into the middle of the HTML content
-      if (content && content.includes('</div>')) {
-        const inlineImage = await getUniqueImageForScript(category, usedImages);
-        console.log(`Article ID ${art.id}: Injecting inline action image in content...`);
-
-        const inlineImageHtml = `
-<div data-role='middle-image' class='my-8 overflow-hidden rounded-2xl border border-slate-200 shadow-md bg-white p-2'>
-  <img src='${inlineImage}' alt='Retrato y cobertura sobre el terreno' class='w-full h-auto rounded-xl object-cover max-h-[450px]' />
-  <p class='text-xs text-slate-500 font-sans italic text-center mt-2'>Registro visual y cobertura del acontecimiento en tiempo real.</p>
-</div>
-`;
-
-        const paragraphSplit = content.split('</p>');
-        if (paragraphSplit.length >= 4) {
-          const middleIndex = Math.floor(paragraphSplit.length / 2);
-          paragraphSplit[middleIndex] = paragraphSplit[middleIndex] + inlineImageHtml;
-          content = paragraphSplit.join('</p>');
-        } else {
-          // If short content, inject before the last closing div
-          const lastClosingDiv = content.lastIndexOf('</div>');
-          if (lastClosingDiv !== -1) {
-            content = content.slice(0, lastClosingDiv) + inlineImageHtml + content.slice(lastClosingDiv);
-          }
-        }
-
-        await client.query(`UPDATE articles SET content = $1 WHERE id = $2`, [content, art.id]);
-        console.log(`Article ID ${art.id}: Inline image injected successfully.`);
-      }
-    }
-
-    console.log("All articles updated with cover and mid-content images successfully!");
-  } catch (err) {
-    console.error("Error setting article images:", err);
-  } finally {
-    client.release();
-    await pool.end();
-  }
-}
-
-main();

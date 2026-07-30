@@ -56,3 +56,64 @@ body {
   pointer-events: none;
 }
 
+/* Accessibility dynamic text scaling */
+html {
+  font-size: 16px;
+  transition: font-size 0.15s ease-in-out;
+}
+
+html[data-text-size="small"] {
+  font-size: 14px;
+}
+
+html[data-text-size="medium"] {
+  font-size: 16px;
+}
+
+html[data-text-size="large"] {
+  font-size: 19px;
+}
+
+html[data-text-size="xlarge"] {
+  font-size: 22px;
+}
+
+/* Article content readability overrides */
+.article-body-content p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #1e293b;
+  margin-bottom: 1.25rem;
+}
+
+.article-body-content h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.article-body-content h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.article-body-content ul, .article-body-content ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+  list-style-type: decimal;
+}
+
+.article-body-content li {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+
+

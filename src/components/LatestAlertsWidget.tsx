@@ -40,8 +40,8 @@ export default function LatestAlertsWidget() {
       <div className="flex items-center justify-between border-b border-zinc-900 px-4 py-3 bg-zinc-950/60">
         <div className="flex items-center gap-2">
           <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-ping" />
-          <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400">
-            ALERTAS EN CURSO // NEWS FEED
+          <span className="text-xs font-bold text-zinc-300">
+            Últimas Alertas Informativas
           </span>
         </div>
         <Bell className="h-4 w-4 text-zinc-500" />
@@ -57,20 +57,20 @@ export default function LatestAlertsWidget() {
             {/* Metadata Line */}
             <div className="flex items-center justify-between gap-2 mb-2">
               <div className="flex items-center gap-2">
-                <span className={`px-2 py-0.5 rounded-full border text-[8px] font-mono font-bold uppercase ${getCategoryStyles(alert.category)}`}>
+                <span className={`px-2 py-0.5 rounded-full border text-xs font-semibold uppercase ${getCategoryStyles(alert.category)}`}>
                   {alert.category}
                 </span>
-                <span className="text-[8px] font-mono text-zinc-550 truncate">
-                  // ORIGEN: {alert.source.toUpperCase()}
+                <span className="text-xs text-zinc-450 truncate">
+                  Fuente: {alert.source}
                 </span>
               </div>
-              <span className="text-[9px] font-mono text-zinc-500 font-bold shrink-0">
-                {alert.time.toUpperCase()}
+              <span className="text-xs text-zinc-500 font-medium shrink-0">
+                {alert.time}
               </span>
             </div>
 
             {/* Alert Headline Text */}
-            <p className="text-xs font-sans text-zinc-300 leading-relaxed font-medium">
+            <p className="text-sm font-sans text-zinc-300 leading-relaxed font-medium">
               {alert.text}
             </p>
           </div>
@@ -78,14 +78,14 @@ export default function LatestAlertsWidget() {
       </div>
 
       {/* Footer Info */}
-      <div className="border-t border-zinc-900 bg-zinc-950/60 p-3 flex justify-between items-center text-[8px] font-mono text-zinc-650">
+      <div className="border-t border-zinc-900 bg-zinc-950/60 p-3 flex justify-between items-center text-xs font-medium text-zinc-500">
         <span className="flex items-center gap-1">
           <Zap className="h-2.5 w-2.5 text-amber-500" />
-          <span>CANAL DE COMUNICACIÓN ABIERTO</span>
+          <span>Centro de noticias</span>
         </span>
-        <button className="flex items-center gap-0.5 text-purple-400 hover:text-purple-350 transition-colors font-bold uppercase">
+        <button className="flex items-center gap-0.5 text-purple-400 hover:text-purple-350 transition-colors font-bold">
           <span>Ver historial</span>
-          <ChevronRight className="h-2.5 w-2.5" />
+          <ChevronRight className="h-3 w-3" />
         </button>
       </div>
     </div>

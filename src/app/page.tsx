@@ -63,57 +63,48 @@ export default async function Home({ searchParams }: PageProps) {
   return (
     <div className="flex-grow py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-8">
       
-      {/* Brutalist Hero / News Command Center Header */}
-      <section className="relative rounded-2xl border border-zinc-900 bg-zinc-950/40 p-6 md:p-8 overflow-hidden backdrop-blur-md">
-        
-        {/* Decorative tactical elements */}
-        <div className="absolute top-3 left-3 text-[9px] font-mono text-zinc-600 tracking-wider">
-          STATUS: ONLINE // FEED_ACTIVE
-        </div>
-        <div className="absolute top-3 right-3 flex items-center gap-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-[9px] font-mono text-emerald-500 font-bold">RADAR GLOBAL</span>
-        </div>
-
+      {/* Hero Header Section */}
+      <section className="relative rounded-2xl border border-zinc-900 bg-zinc-950/60 p-6 md:p-10 overflow-hidden backdrop-blur-md">
         <div className="max-w-3xl space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400">
-            <Cpu className="h-3.5 w-3.5" />
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider">
-              Centro de Operaciones Informativas
-            </span>
-          </div>
-
-          <h1 className="text-3xl md:text-5xl font-black tracking-tight text-white uppercase leading-none">
-            El Latido del <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-500">Mundo</span> en Tiempo Real
+          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white leading-none">
+            Noticias Mundial <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-500">Digital</span>
           </h1>
           
-          <p className="text-sm text-zinc-400 max-w-2xl leading-relaxed">
-            Bienvenido al centro de operaciones informativas independiente de Noticias Mundial. Datos contrastados, análisis en profundidad y corresponsalías abiertas. Explora la actualidad global en nuestro panel de control interactivo.
+          <p className="text-base text-zinc-300 max-w-2xl leading-relaxed">
+            Tu portal de información independiente y análisis internacional en tiempo real. Datos contrastados y cobertura periodística completa.
           </p>
         </div>
 
-        {/* Quick category indicators / stat overview */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-zinc-900/60 text-zinc-400">
-          <div className="space-y-1">
-            <span className="text-[9px] font-mono text-zinc-600 block uppercase">// RED DE CORRESPONSALES</span>
-            <div className="text-xl font-bold font-mono text-white">48 Activos</div>
-            <span className="text-[8px] font-mono text-zinc-500 block">Cobertura global abierta</span>
-          </div>
-          <div className="space-y-1">
-            <span className="text-[9px] font-mono text-zinc-600 block uppercase">// ALERTAS EN CURSO</span>
-            <div className="text-xl font-bold font-mono text-red-400">2 Urgentes</div>
-            <span className="text-[8px] font-mono text-red-500/65 block">Prioridad de emisión</span>
-          </div>
-          <div className="space-y-1">
-            <span className="text-[9px] font-mono text-zinc-600 block uppercase">// ACTUALIZACIÓN DE NOTICIAS</span>
-            <div className="text-xl font-bold font-mono text-emerald-400">24 / 7 Live</div>
-            <span className="text-[8px] font-mono text-emerald-500/65 block">Retransmisión continua</span>
-          </div>
-          <div className="space-y-1">
-            <span className="text-[9px] font-mono text-zinc-600 block uppercase">// AUDIENCIA SIMULTÁNEA</span>
-            <div className="text-xl font-bold font-mono text-blue-400">128.4k / min</div>
-            <span className="text-[8px] font-mono text-blue-500/65 block">Usuarios conectados</span>
-          </div>
+        {/* Search Bar */}
+        <div className="mt-6 max-w-xl">
+          <form method="GET" action="/" className="flex gap-2">
+            {activeCategory !== 'todos' && (
+              <input type="hidden" name="category" value={activeCategory} />
+            )}
+            <div className="relative flex-1">
+              <input
+                type="text"
+                name="search"
+                defaultValue={searchQuery}
+                placeholder="Escribe para buscar noticias..."
+                className="w-full h-11 px-4 rounded-xl bg-zinc-900 border border-zinc-800 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all font-semibold"
+              />
+            </div>
+            <button
+              type="submit"
+              className="h-11 px-5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"
+            >
+              Buscar
+            </button>
+            {searchQuery && (
+              <Link
+                href={activeCategory !== 'todos' ? `/?category=${activeCategory}` : '/'}
+                className="h-11 px-3 rounded-xl border border-zinc-800 bg-zinc-900/40 text-zinc-400 hover:text-white flex items-center justify-center text-sm font-semibold transition-all"
+              >
+                Limpiar
+              </Link>
+            )}
+          </form>
         </div>
 
       </section>

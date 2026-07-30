@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+import { getUniqueImage } from './imageFetcher';
 
 const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:cugh0qsq8uaeawz5@187.127.233.89:5435/postgres';
 
@@ -383,6 +384,7 @@ export async function initDB() {
       await client.query('DELETE FROM articles');
 
       const categoriesList = ['internacional', 'economia', 'tecnologia', 'cultura', 'deportes'];
+      const usedImages = new Set<string>();
 
       for (let i = 0; i < SEED_ARTICLES_DATA.length; i++) {
         const item = SEED_ARTICLES_DATA[i];
@@ -417,19 +419,8 @@ export async function initDB() {
         const metaTitle = `Noticias Mundial | ${item.title}`;
         const metaDescription = item.excerpt.substring(0, 160);
 
-        // Assign mock image urls from unsplash according to category
-        let imageUrl = '';
-        if (category === 'internacional') {
-          imageUrl = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=800';
-        } else if (category === 'economia') {
-          imageUrl = 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=800';
-        } else if (category === 'tecnologia') {
-          imageUrl = 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800';
-        } else if (category === 'cultura') {
-          imageUrl = 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&q=80&w=800';
-        } else {
-          imageUrl = 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=800';
-        }
+        // Assign unique, non-repeating image url from unsplash
+        const imageUrl = await getUniqueImage(category, usedImages);
 
         const likesVal = 40 + ((i * 23) % 450);
         const trendingVal = i < 3; // mark first 3 as trending for front page hero selection
