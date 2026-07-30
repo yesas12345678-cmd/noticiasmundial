@@ -23,7 +23,7 @@ export default async function Home({ searchParams }: PageProps) {
   try {
     const client = await pool.connect();
     try {
-      const { rows } = await client.query('SELECT * FROM articles ORDER BY published_at DESC');
+      const { rows } = await client.query('SELECT * FROM articles WHERE published_at <= NOW() ORDER BY published_at DESC');
       articles = rows.map((row) => ({
         id: row.id,
         title: row.title,
