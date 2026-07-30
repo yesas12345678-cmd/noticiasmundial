@@ -236,11 +236,11 @@ async function main() {
       limitVal = parseInt(limitArg.split('=')[1], 10);
     }
 
-    // Fetch all articles to regenerate
-    const queryStr = `SELECT id, title, keyword, category, excerpt, published_at FROM articles ORDER BY id ASC` + (limitVal ? ` LIMIT ${limitVal}` : '');
+    // Fetch only empty articles to generate (skipping already generated ones)
+    const queryStr = `SELECT id, title, keyword, category, excerpt, published_at FROM articles WHERE content IS NULL OR content = '' OR length(content) <= 100 ORDER BY id ASC` + (limitVal ? ` LIMIT ${limitVal}` : '');
     const { rows: articlesToGenerate } = await client.query(queryStr);
 
-    console.log(`Found ${articlesToGenerate.length} articles to regenerate (Limit: ${limitVal || 'None'}).`);
+    console.log(`Found ${articlesToGenerate.length} empty articles to generate (Limit: ${limitVal || 'None'}).`);
 
     const usedImages = await getUsedImages(client);
 
@@ -278,7 +278,7 @@ async function main() {
               messages: [
                 {
                   role: 'system',
-                  content: 'Eres un redactor experto en SEO, periodismo internacional y EEAT. Debes responder únicamente con el objeto JSON solicitado, sin explicaciones ni markdown que lo envuelva. Tu artículo debe ser extremadamente detallado y tener obligatoriamente entre 2000 y 2500 palabras de texto legible (excluyendo etiquetas HTML).'
+                  content: 'Eres un redactor experto en SEO, periodismo internacional y EEAT. Debes responder únicamente con el objeto JSON solicitado, sin explicaciones ni markdown que lo envuelva. Tu artículo debe ser extremadamente detallado y tener obligatoriamente entre 2300 y 3000 palabras de texto legible (excluyendo etiquetas HTML).'
                 },
                 {
                   role: 'user',
@@ -314,10 +314,10 @@ async function main() {
           const wordCount = textOnly.trim().split(/\s+/).filter(w => w.length > 0).length;
           console.log(`Actual word count: ${wordCount} words.`);
 
-          if (wordCount < 2000 || wordCount > 2500) {
-            console.warn(`Warning: Word count ${wordCount} is outside the 2000-2500 range.`);
+          if (wordCount < 2300 || wordCount > 3000) {
+            console.warn(`Warning: Word count ${wordCount} is outside the 2300-3000 range.`);
             if (attempt < maxAttempts) {
-              currentPrompt = `${promptText}\n\n[SISTEMA: El resultado anterior tenía ${wordCount} palabras. Es OBLIGATORIO que el artículo tenga estrictamente entre 2000 and 2500 palabras de texto legible (excluyendo etiquetas HTML). Por favor, ajusta la extensión de las secciones para cumplir exactamente con este rango.]`;
+              currentPrompt = `${promptText}\n\n[SISTEMA: El resultado anterior tenía ${wordCount} palabras. Es OBLIGATORIO que el artículo tenga estrictamente entre 2300 y 3000 palabras de texto legible (excluyendo etiquetas HTML). Por favor, ajusta la extensión de las secciones para cumplir exactamente con este rango.]`;
               continue;
             } else {
               console.log("Saving article anyway despite word count warning on last attempt.");
