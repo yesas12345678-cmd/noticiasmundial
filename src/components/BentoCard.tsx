@@ -65,6 +65,9 @@ export default function BentoCard({
           <img
             src={imageUrl}
             alt={title}
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
             className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 filter brightness-[0.4] saturate-[0.8] contrast-[1.1]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent" />
@@ -109,25 +112,17 @@ export default function BentoCard({
           </div>
 
           {/* Footer Metadata */}
-          <div className="flex items-center justify-between border-t border-zinc-900/60 pt-3 text-xs font-medium text-zinc-500">
-            <div className="flex items-center gap-3">
-              {author && <span className="font-bold text-zinc-400">{author}</span>}
-              {date && (
-                <span className="flex items-center gap-1">
-                  <Clock className="h-3 w-3" />
-                  {date}
-                </span>
-              )}
+          <div className="flex items-center justify-between border-t border-zinc-900/60 pt-3 text-xs font-bold text-zinc-300">
+            <div className="flex items-center gap-1.5">
+              <Clock className="h-4 w-4 text-purple-400" />
+              <span>{date}</span>
             </div>
-            <div className="flex items-center gap-3">
-              {readTime && <span>{readTime}</span>}
-              {likes !== undefined && (
-                <span className="flex items-center gap-1 hover:text-red-400 transition-colors cursor-pointer">
-                  <Heart className="h-3 w-3 fill-transparent group-hover:fill-transparent" />
-                  {likes}
-                </span>
-              )}
-            </div>
+            {likes !== undefined && (
+              <div className="flex items-center gap-1.5 text-zinc-300">
+                <Heart className="h-4 w-4 text-red-500 fill-red-500" />
+                <span>{likes}</span>
+              </div>
+            )}
           </div>
 
         </div>
