@@ -64,13 +64,13 @@ export default async function Home({ searchParams }: PageProps) {
     <div className="flex-grow py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-8">
       
       {/* Hero Header Section */}
-      <section className="relative rounded-2xl border border-zinc-900 bg-zinc-950/60 p-6 md:p-10 overflow-hidden backdrop-blur-md">
-        <div className="max-w-3xl space-y-4">
-          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white leading-none">
-            Noticias Mundial <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-500">Digital</span>
+      <section className="py-6 border-b border-zinc-200">
+        <div className="max-w-3xl space-y-3">
+          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-zinc-900 leading-none">
+            Noticias Mundial <span className="text-purple-600">Digital</span>
           </h1>
           
-          <p className="text-base text-zinc-300 max-w-2xl leading-relaxed">
+          <p className="text-base text-zinc-650 max-w-2xl leading-relaxed">
             Tu portal de información independiente y análisis internacional en tiempo real. Datos contrastados y cobertura periodística completa.
           </p>
         </div>
@@ -87,7 +87,7 @@ export default async function Home({ searchParams }: PageProps) {
                 name="search"
                 defaultValue={searchQuery}
                 placeholder="Escribe para buscar noticias..."
-                className="w-full h-11 px-4 rounded-xl bg-zinc-900 border border-zinc-800 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all font-semibold"
+                className="w-full h-11 px-4 rounded-xl bg-white border border-zinc-300 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all font-semibold"
               />
             </div>
             <button
@@ -99,7 +99,7 @@ export default async function Home({ searchParams }: PageProps) {
             {searchQuery && (
               <Link
                 href={activeCategory !== 'todos' ? `/?category=${activeCategory}` : '/'}
-                className="h-11 px-3 rounded-xl border border-zinc-800 bg-zinc-900/40 text-zinc-400 hover:text-white flex items-center justify-center text-sm font-semibold transition-all"
+                className="h-11 px-3 rounded-xl border border-zinc-300 bg-zinc-100 text-zinc-650 hover:text-zinc-900 flex items-center justify-center text-sm font-semibold transition-all"
               >
                 Limpiar
               </Link>
@@ -136,30 +136,6 @@ export default async function Home({ searchParams }: PageProps) {
         <BentoGridWrapper articles={filteredArticles} />
 
       </section>
-
-      {/* Decorative floating radar grid (Visual flair for background) */}
-      <div className="relative border border-zinc-900/60 rounded-2xl bg-zinc-950/10 p-6 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f293704_1px,transparent_1px),linear-gradient(to_bottom,#1f293704_1px,transparent_1px)] bg-[size:32px_32px] -z-10" />
-        <div className="space-y-1">
-          <div className="flex items-center gap-1.5">
-            <Flame className="h-4 w-4 text-orange-500" />
-            <span className="text-xs font-mono font-bold text-white uppercase tracking-wider">MODO COBERTURA MÁXIMA</span>
-          </div>
-          <p className="text-xs text-zinc-500 max-w-xl">
-            La información expuesta es recopilada, verificada y publicada por agencias y corresponsalías independientes colaboradoras en cinco continentes, garantizando imparcialidad y rapidez.
-          </p>
-        </div>
-        <div className="flex gap-4">
-          <div className="text-center bg-zinc-950 border border-zinc-900 p-3 rounded-xl min-w-[80px]">
-            <div className="text-lg font-mono font-black text-white leading-none">0.01s</div>
-            <span className="text-[8px] font-mono text-zinc-600 block mt-1">LATENCIA FEED</span>
-          </div>
-          <div className="text-center bg-zinc-950 border border-zinc-900 p-3 rounded-xl min-w-[80px]">
-            <div className="text-lg font-mono font-black text-purple-400 leading-none">99.9%</div>
-            <span className="text-[8px] font-mono text-zinc-600 block mt-1">RIGOR SEÑAL</span>
-          </div>
-        </div>
-      </div>
 
     </div>
   );
