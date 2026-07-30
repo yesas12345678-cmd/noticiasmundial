@@ -138,6 +138,15 @@ async function fetchFromUnsplashAPI(category) {
   return [];
 }
 
+async function isValidImageUrl(url) {
+  try {
+    const res = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(1500) });
+    return res.status === 200;
+  } catch (err) {
+    return false;
+  }
+}
+
 async function getUniqueImageForScript(category, usedImages) {
   const normalizedCategory = category.toLowerCase();
   
@@ -146,9 +155,11 @@ async function getUniqueImageForScript(category, usedImages) {
   for (const url of apiUrls) {
     const base = url.split('?')[0];
     if (!usedImages.has(url) && !usedImages.has(base)) {
-      usedImages.add(url);
-      usedImages.add(base);
-      return url;
+      if (await isValidImageUrl(url)) {
+        usedImages.add(url);
+        usedImages.add(base);
+        return url;
+      }
     }
   }
 
@@ -160,9 +171,11 @@ async function getUniqueImageForScript(category, usedImages) {
     const fullUrl = `https://images.unsplash.com/${photoId}?auto=format&fit=crop&q=80&w=1200`;
     const base = fullUrl.split('?')[0];
     if (!usedImages.has(fullUrl) && !usedImages.has(base)) {
-      usedImages.add(fullUrl);
-      usedImages.add(base);
-      return fullUrl;
+      if (await isValidImageUrl(fullUrl)) {
+        usedImages.add(fullUrl);
+        usedImages.add(base);
+        return fullUrl;
+      }
     }
   }
 

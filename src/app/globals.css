@@ -281,12 +281,21 @@ html[data-text-size="xlarge"] {
 }
 
 /* Gracefully handle failed/broken images and hide their default broken icons/alt overlapping texts */
-img:not([src]), img[src=""] {
-  opacity: 0 !important;
+img {
+  position: relative;
+  text-indent: -10000px;
 }
 
-img {
-  text-indent: -10000px;
+img:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(135deg, #fafafa 0%, #f3f4f6 100%) !important;
+  z-index: 10;
 }
 
 
