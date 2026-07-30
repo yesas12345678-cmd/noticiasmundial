@@ -317,10 +317,11 @@ export default function AdminPage() {
             className="w-full bg-zinc-950/40 border border-zinc-900 rounded-xl px-4 py-3 text-zinc-400 text-xs focus:outline-none focus:border-emerald-500/50 transition-all appearance-none cursor-pointer"
           >
             <option value="todas">Todas las Categorías</option>
-            <option value="selecciones">Noticias de Selecciones</option>
-            <option value="lesiones">Lesiones y Convocatorias</option>
-            <option value="resultados">Resultados en Vivo</option>
-            <option value="estadisticas">Estadísticas de Jugadores</option>
+            <option value="internacional">Internacional</option>
+            <option value="economia">Economía</option>
+            <option value="tecnologia">Tecnología</option>
+            <option value="cultura">Cultura</option>
+            <option value="deportes">Deportes</option>
           </select>
           <Filter className="absolute right-3.5 top-3.5 h-4 w-4 text-zinc-650 pointer-events-none" />
         </div>
@@ -421,10 +422,11 @@ export default function AdminPage() {
                       {/* Category */}
                       <td className="p-4">
                         <span className={`px-2 py-0.5 rounded-full border text-[8px] font-mono font-bold uppercase ${
-                          art.category === 'selecciones' ? 'text-blue-400 border-blue-950 bg-blue-950/20' :
-                          art.category === 'lesiones' ? 'text-red-400 border-red-950 bg-red-950/20' :
-                          art.category === 'resultados' ? 'text-amber-400 border-amber-950 bg-amber-950/20' :
-                          'text-emerald-400 border-emerald-950 bg-emerald-950/20'
+                          art.category === 'internacional' ? 'text-purple-400 border-purple-950 bg-purple-950/20' :
+                          art.category === 'economia' ? 'text-emerald-400 border-emerald-950 bg-emerald-950/20' :
+                          art.category === 'tecnologia' ? 'text-blue-400 border-blue-950 bg-blue-950/20' :
+                          art.category === 'cultura' ? 'text-pink-400 border-pink-950 bg-pink-950/20' :
+                          'text-orange-400 border-orange-950 bg-orange-950/20'
                         }`}>
                           {art.category}
                         </span>
@@ -577,10 +579,11 @@ export default function AdminPage() {
                     onChange={(e) => setEditCategory(e.target.value)}
                     className="w-full bg-zinc-900/60 border border-zinc-850 rounded-lg px-3 py-2 text-zinc-400 text-xs focus:outline-none focus:border-emerald-550"
                   >
-                    <option value="selecciones">Noticias de Selecciones</option>
-                    <option value="lesiones">Lesiones y Convocatorias</option>
-                    <option value="resultados">Resultados en Vivo</option>
-                    <option value="estadisticas">Estadísticas de Jugadores</option>
+                    <option value="internacional">Internacional</option>
+                    <option value="economia">Economía</option>
+                    <option value="tecnologia">Tecnología</option>
+                    <option value="cultura">Cultura</option>
+                    <option value="deportes">Deportes</option>
                   </select>
                 </div>
 

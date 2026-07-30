@@ -29,20 +29,22 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   // Map category to localized labels
   const categoryLabels: Record<string, string> = {
-    selecciones: 'Selecciones',
-    lesiones: 'Lesiones & Bajas',
-    resultados: 'Resultados',
-    estadisticas: 'Estadísticas',
+    internacional: 'Internacional',
+    economia: 'Economía',
+    tecnologia: 'Tecnología',
+    cultura: 'Cultura',
+    deportes: 'Deportes',
   };
 
   const categoryColors: Record<string, string> = {
-    selecciones: 'text-purple-400 border-purple-950 bg-purple-950/20',
-    lesiones: 'text-red-400 border-red-950 bg-red-950/20',
-    resultados: 'text-orange-400 border-orange-950 bg-orange-950/20',
-    estadisticas: 'text-lime-400 border-lime-950 bg-lime-950/20',
+    internacional: 'text-purple-400 border-purple-950 bg-purple-950/20',
+    economia: 'text-emerald-400 border-emerald-950 bg-emerald-950/20',
+    tecnologia: 'text-blue-400 border-blue-950 bg-blue-950/20',
+    cultura: 'text-pink-400 border-pink-950 bg-pink-950/20',
+    deportes: 'text-orange-400 border-orange-950 bg-orange-950/20',
   };
 
-  const catLabel = categoryLabels[article.category] || 'Fútbol';
+  const catLabel = categoryLabels[article.category] || 'Actualidad';
   const catColor = categoryColors[article.category] || 'text-zinc-400 border-zinc-900 bg-zinc-900/20';
 
   return (

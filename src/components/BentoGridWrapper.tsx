@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { Article } from '@/data/mockData';
 import BentoGrid from './BentoGrid';
 import BentoCard from './BentoCard';
-import LiveResultsWidget from './LiveResultsWidget';
-import PlayerStatsWidget from './PlayerStatsWidget';
-import { ShieldCheck, AlertTriangle, Eye, RefreshCw } from 'lucide-react';
+import LiveMarketsWidget from './LiveMarketsWidget';
+import LatestAlertsWidget from './LatestAlertsWidget';
+import { ShieldCheck, AlertTriangle, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 
 interface BentoGridWrapperProps {
@@ -59,22 +59,22 @@ export default function BentoGridWrapper({ articles }: BentoGridWrapperProps) {
           />
         )}
 
-        {/* 2. LIVE RESULTS WIDGET (Client-Side Interactivity) */}
+        {/* 2. LIVE MARKETS WIDGET (Client-Side Interactivity) */}
         <BentoCard 
-          title="Resultados en Vivo" 
-          category="resultados" 
+          title="Cotizaciones de Mercados" 
+          category="economia" 
           className="md:col-span-2 md:row-span-2"
         >
-          <LiveResultsWidget />
+          <LiveMarketsWidget />
         </BentoCard>
 
-        {/* 3. PLAYER STATS WIDGET (Client-Side Interactivity) */}
+        {/* 3. LATEST ALERTS WIDGET (Client-Side Interactivity) */}
         <BentoCard 
-          title="Estadísticas de Jugadores" 
-          category="estadisticas" 
+          title="Últimas Alertas Informativas" 
+          category="internacional" 
           className="md:col-span-2 md:row-span-3"
         >
-          <PlayerStatsWidget />
+          <LatestAlertsWidget />
         </BentoCard>
 
         {/* 4. Sobre Nosotros (Integrated Bento Block) */}
@@ -91,15 +91,15 @@ export default function BentoGridWrapper({ articles }: BentoGridWrapperProps) {
               </span>
             </div>
             <h4 className="text-sm font-bold tracking-tight text-white uppercase">
-              La Red Informativa Independiente
+              Red Informativa Independiente
             </h4>
             <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-              Somos un colectivo global de periodistas y analistas de datos deportivos. No vendemos servicios ni representamos corporaciones. Nuestro único fin es reportar con absoluta libertad e inmediatez las noticias tácticas del Mundial y convocatorias nacionales, apoyados por estadísticas avanzadas.
+              Somos un colectivo global de periodistas independientes y analistas de información. Nuestro único fin es reportar con absoluta libertad, inmediatez y rigor las noticias de actualidad internacional, economía, tecnología, cultura y deportes de todo el mundo.
             </p>
           </div>
           
           <div className="flex items-center justify-between border-t border-purple-950/40 pt-3 mt-4 text-[9px] font-mono text-zinc-500">
-            <span>RED DE AUTORES PÚBLICA</span>
+            <span>RED DE REDACCIÓN GLOBAL</span>
             <span className="text-purple-500 font-bold">100% INFORMATIVO</span>
           </div>
         </div>

@@ -1,8 +1,7 @@
 import React from 'react';
 import { mockArticles, Article } from '../data/mockData';
 import BentoGridWrapper from '../components/BentoGridWrapper';
-import TournamentBracket from '../components/TournamentBracket';
-import { Target, AlertTriangle, ShieldCheck, Flame, Cpu, Eye, Network } from 'lucide-react';
+import { Flame, Cpu, Network } from 'lucide-react';
 import Link from 'next/link';
 import { pool, initDB } from '@/lib/db';
 
@@ -64,16 +63,16 @@ export default async function Home({ searchParams }: PageProps) {
   return (
     <div className="flex-grow py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-8">
       
-      {/* Brutalist Hero / Sports Command Center Header */}
+      {/* Brutalist Hero / News Command Center Header */}
       <section className="relative rounded-2xl border border-zinc-900 bg-zinc-950/40 p-6 md:p-8 overflow-hidden backdrop-blur-md">
         
         {/* Decorative tactical elements */}
-        <div className="absolute top-3 left-3 text-[9px] font-mono text-zinc-650 tracking-wider">
-          STATUS: ONLINE // SYS_ACTIVE
+        <div className="absolute top-3 left-3 text-[9px] font-mono text-zinc-600 tracking-wider">
+          STATUS: ONLINE // FEED_ACTIVE
         </div>
         <div className="absolute top-3 right-3 flex items-center gap-1">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-[9px] font-mono text-emerald-500 font-bold">RADAR MUNDIAL</span>
+          <span className="text-[9px] font-mono text-emerald-500 font-bold">RADAR GLOBAL</span>
         </div>
 
         <div className="max-w-3xl space-y-4">
@@ -85,35 +84,35 @@ export default async function Home({ searchParams }: PageProps) {
           </div>
 
           <h1 className="text-3xl md:text-5xl font-black tracking-tight text-white uppercase leading-none">
-            La Pizarra del <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-orange-400 to-red-500">Mundial</span> del Futuro
+            El Latido del <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-500">Mundo</span> en Tiempo Real
           </h1>
           
           <p className="text-sm text-zinc-400 max-w-2xl leading-relaxed">
-            Bienvenido al portal disruptivo de análisis táctico y reportes del mundial. Datos crudos, estadísticas avanzadas y partes médicos sin filtros. Explora la información en nuestro centro de control bento.
+            Bienvenido al centro de operaciones informativas independiente de Noticias Mundial. Datos contrastados, análisis en profundidad y corresponsalías abiertas. Explora la actualidad global en nuestro panel de control interactivo.
           </p>
         </div>
 
         {/* Quick category indicators / stat overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-zinc-900/60 text-zinc-400">
           <div className="space-y-1">
-            <span className="text-[9px] font-mono text-zinc-650 block uppercase">// CONVOCATORIAS</span>
-            <div className="text-xl font-bold font-mono text-white">26 Jugadores</div>
-            <span className="text-[8px] font-mono text-zinc-500 block">Nóminas confirmadas</span>
+            <span className="text-[9px] font-mono text-zinc-600 block uppercase">// RED DE CORRESPONSALES</span>
+            <div className="text-xl font-bold font-mono text-white">48 Activos</div>
+            <span className="text-[8px] font-mono text-zinc-500 block">Cobertura global abierta</span>
           </div>
           <div className="space-y-1">
-            <span className="text-[9px] font-mono text-zinc-650 block uppercase">// REPORTES DE LESIÓN</span>
-            <div className="text-xl font-bold font-mono text-red-400">4 Confirmadas</div>
-            <span className="text-[8px] font-mono text-red-500/65 block">Riesgo en debut</span>
+            <span className="text-[9px] font-mono text-zinc-600 block uppercase">// ALERTAS EN CURSO</span>
+            <div className="text-xl font-bold font-mono text-red-400">2 Urgentes</div>
+            <span className="text-[8px] font-mono text-red-500/65 block">Prioridad de emisión</span>
           </div>
           <div className="space-y-1">
-            <span className="text-[9px] font-mono text-zinc-650 block uppercase">// PARTIDOS EN VIVO</span>
-            <div className="text-xl font-bold font-mono text-orange-400">3 Hoy</div>
-            <span className="text-[8px] font-mono text-orange-500/65 block">Señales satelitales</span>
+            <span className="text-[9px] font-mono text-zinc-600 block uppercase">// ACTUALIZACIÓN DE NOTICIAS</span>
+            <div className="text-xl font-bold font-mono text-emerald-400">24 / 7 Live</div>
+            <span className="text-[8px] font-mono text-emerald-500/65 block">Retransmisión continua</span>
           </div>
           <div className="space-y-1">
-            <span className="text-[9px] font-mono text-zinc-650 block uppercase">// LECTORES ACTIVOS</span>
-            <div className="text-xl font-bold font-mono text-blue-400">41.8k / min</div>
-            <span className="text-[8px] font-mono text-blue-500/65 block">Red global abierta</span>
+            <span className="text-[9px] font-mono text-zinc-600 block uppercase">// AUDIENCIA SIMULTÁNEA</span>
+            <div className="text-xl font-bold font-mono text-blue-400">128.4k / min</div>
+            <span className="text-[8px] font-mono text-blue-500/65 block">Usuarios conectados</span>
           </div>
         </div>
 
@@ -147,31 +146,26 @@ export default async function Home({ searchParams }: PageProps) {
 
       </section>
 
-      {/* Symmetrical Tournament Bracket */}
-      <section className="scroll-mt-20">
-        <TournamentBracket />
-      </section>
-
-      {/* Decorative floating tactical radar grid (Visual flair for background) */}
+      {/* Decorative floating radar grid (Visual flair for background) */}
       <div className="relative border border-zinc-900/60 rounded-2xl bg-zinc-950/10 p-6 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f293704_1px,transparent_1px),linear-gradient(to_bottom,#1f293704_1px,transparent_1px)] bg-[size:32px_32px] -z-10" />
         <div className="space-y-1">
           <div className="flex items-center gap-1.5">
             <Flame className="h-4 w-4 text-orange-500" />
-            <span className="text-xs font-mono font-bold text-white uppercase tracking-wider">MODO ULTRA ANÁLISIS</span>
+            <span className="text-xs font-mono font-bold text-white uppercase tracking-wider">MODO COBERTURA MÁXIMA</span>
           </div>
           <p className="text-xs text-zinc-500 max-w-xl">
-            Todos los datos estadísticos son procesados directamente desde los sensores oficiales del campeonato mundial, combinando telemetría de jugadores y reportes médicos certificados en tiempo real.
+            La información expuesta es recopilada, verificada y publicada por agencias y corresponsalías independientes colaboradoras en cinco continentes, garantizando imparcialidad y rapidez.
           </p>
         </div>
         <div className="flex gap-4">
           <div className="text-center bg-zinc-950 border border-zinc-900 p-3 rounded-xl min-w-[80px]">
-            <div className="text-lg font-mono font-black text-white leading-none">0.02s</div>
-            <span className="text-[8px] font-mono text-zinc-650 block mt-1">LATENCIA DE RED</span>
+            <div className="text-lg font-mono font-black text-white leading-none">0.01s</div>
+            <span className="text-[8px] font-mono text-zinc-600 block mt-1">LATENCIA FEED</span>
           </div>
           <div className="text-center bg-zinc-950 border border-zinc-900 p-3 rounded-xl min-w-[80px]">
-            <div className="text-lg font-mono font-black text-purple-400 leading-none">99.8%</div>
-            <span className="text-[8px] font-mono text-zinc-650 block mt-1">PRECISIÓN VAR</span>
+            <div className="text-lg font-mono font-black text-purple-400 leading-none">99.9%</div>
+            <span className="text-[8px] font-mono text-zinc-600 block mt-1">RIGOR SEÑAL</span>
           </div>
         </div>
       </div>

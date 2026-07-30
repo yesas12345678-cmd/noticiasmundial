@@ -5,7 +5,7 @@ import Link from 'next/link';
 interface BentoCardProps {
   title: string;
   excerpt?: string;
-  category: 'selecciones' | 'lesiones' | 'resultados' | 'estadisticas';
+  category: 'internacional' | 'economia' | 'tecnologia' | 'cultura' | 'deportes';
   imageUrl?: string;
   date?: string;
   readTime?: string;
@@ -13,15 +13,16 @@ interface BentoCardProps {
   author?: string;
   likes?: number;
   className?: string; // used for custom col/row spans
-  children?: React.ReactNode; // in case we want to embed other widgets (like results/stats) inside cards
+  children?: React.ReactNode; // in case we want to embed other widgets
   href?: string;
 }
 
 const categoryDetails = {
-  selecciones: { label: 'Selecciones', color: 'text-purple-400 border-purple-950 bg-purple-950/20' },
-  lesiones: { label: 'Lesiones & Bajas', color: 'text-red-400 border-red-950 bg-red-950/20' },
-  resultados: { label: 'Resultados', color: 'text-orange-400 border-orange-950 bg-orange-950/20' },
-  estadisticas: { label: 'Estadísticas', color: 'text-lime-400 border-lime-950 bg-lime-950/20' },
+  internacional: { label: 'Internacional', color: 'text-purple-400 border-purple-950 bg-purple-950/20' },
+  economia: { label: 'Economía', color: 'text-emerald-400 border-emerald-950 bg-emerald-950/20' },
+  tecnologia: { label: 'Tecnología', color: 'text-blue-400 border-blue-950 bg-blue-950/20' },
+  cultura: { label: 'Cultura', color: 'text-pink-400 border-pink-950 bg-pink-950/20' },
+  deportes: { label: 'Deportes', color: 'text-orange-400 border-orange-950 bg-orange-950/20' },
 };
 
 export default function BentoCard({

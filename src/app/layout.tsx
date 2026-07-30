@@ -17,16 +17,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Noticias Mundial | Portal Informativo de Fútbol Internacional',
+  title: 'Noticias Mundial | El Latido Diario de la Actualidad Global',
   description:
-    'El portal independiente líder de noticias sobre el Mundial de Fútbol, convocatorias de selecciones internacionales, partes médicos, lesiones, resultados en vivo y estadísticas avanzadas.',
+    'El portal independiente líder de información internacional y noticias de actualidad. Cobertura al minuto sobre política, economía, tecnología, cultura y deportes mundiales.',
   keywords: [
-    'Mundial de Fútbol',
-    'Copa del Mundo',
-    'Resultados en vivo',
-    'Estadísticas de jugadores',
-    'Lesiones y Convocatorias',
-    'Selecciones de Fútbol',
+    'Noticias mundiales',
+    'Actualidad internacional',
+    'Información al minuto',
+    'Noticias de economía',
+    'Tecnología y ciencia',
+    'Cultura y entretenimiento',
+    'Deportes globales',
   ],
   authors: [{ name: 'Redacción Noticias Mundial' }],
   robots: {

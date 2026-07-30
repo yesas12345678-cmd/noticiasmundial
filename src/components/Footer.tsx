@@ -34,7 +34,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-xs text-zinc-500 max-w-sm leading-relaxed">
-              El centro de control informativo independiente más avanzado del fútbol global y selecciones nacionales. Cobertura estadística masiva y reportes de última hora en tiempo real.
+              El centro de control informativo independiente más avanzado de noticias mundiales y actualidad global. Cobertura analítica masiva y alertas de última hora en tiempo real.
             </p>
             <div className="text-[10px] font-mono text-zinc-600 bg-zinc-900/40 border border-zinc-900/60 p-2.5 rounded-lg inline-block">
               // CLASIFICACIÓN DE RED: PÚBLICA e INFORMATIVA

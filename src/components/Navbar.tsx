@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, Suspense } from 'react';
-import { Menu, X, Trophy, Activity } from 'lucide-react';
+import { Menu, X, Globe, Activity } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
@@ -11,24 +11,25 @@ function NavbarContent() {
   const activeCategory = searchParams.get('category') || 'todos';
 
   const categories = [
-    { id: 'todos', name: 'Todas las Noticias' },
-    { id: 'selecciones', name: 'Noticias de Selecciones' },
-    { id: 'lesiones', name: 'Lesiones y Convocatorias' },
-    { id: 'resultados', name: 'Resultados en Vivo' },
-    { id: 'estadisticas', name: 'Estadísticas de Jugadores' },
+    { id: 'todos', name: 'Todas' },
+    { id: 'internacional', name: 'Internacional' },
+    { id: 'economia', name: 'Economía' },
+    { id: 'tecnologia', name: 'Tecnología' },
+    { id: 'cultura', name: 'Cultura' },
+    { id: 'deportes', name: 'Deportes' },
   ];
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-zinc-900 bg-zinc-950/70 backdrop-blur-md">
-      {/* Línea de acento de colores del Mundial 2026 */}
-      <div className="h-[3px] w-full bg-gradient-to-r from-purple-600 via-blue-500 via-emerald-400 via-yellow-400 via-orange-500 to-red-600" />
+      {/* Accent color bar */}
+      <div className="h-[3px] w-full bg-gradient-to-r from-purple-600 via-blue-500 via-emerald-400 via-yellow-450 via-orange-500 to-red-650" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo / Brand */}
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2 group">
               <div className="relative flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-400 group-hover:border-purple-500/50 transition-all duration-300">
-                <Trophy className="h-5 w-5" />
+                <Globe className="h-5 w-5" />
                 <span className="absolute -top-1 -right-1 flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
@@ -55,21 +56,13 @@ function NavbarContent() {
                 <Link
                   key={cat.id}
                   href={href}
-                  className={`relative px-3.5 py-2 rounded-lg text-xs font-mono tracking-wide uppercase font-medium transition-all duration-200 border border-transparent ${
+                  className={`relative px-4 py-2 rounded-lg text-xs font-mono tracking-wide uppercase font-medium transition-all duration-205 border border-transparent ${
                     isActive
                       ? 'text-purple-400 bg-purple-950/30 border-purple-950/50 shadow-neon-green'
                       : 'text-zinc-400 hover:text-white hover:bg-zinc-900/50'
                   }`}
                 >
                   {cat.name}
-                  {cat.id === 'resultados' && (
-                    <span className="ml-2 inline-flex items-center">
-                      <span className="relative flex h-1.5 w-1.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
-                      </span>
-                    </span>
-                  )}
                 </Link>
               );
             })}
@@ -77,9 +70,9 @@ function NavbarContent() {
 
           {/* Controls / Info */}
           <div className="hidden md:flex items-center gap-3">
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-950/20 border border-red-950/40 text-[10px] font-mono font-bold uppercase text-red-400">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-950/20 border border-emerald-950/40 text-[10px] font-mono font-bold uppercase text-emerald-400">
               <Activity className="h-3 w-3 animate-pulse" />
-              <span>Mundial 2026 // EN VIVO</span>
+              <span>ALERTAS AL MINUTO // FEED GLOBAL</span>
             </div>
           </div>
 
@@ -114,19 +107,13 @@ function NavbarContent() {
                 }`}
               >
                 <span>{cat.name}</span>
-                {cat.id === 'resultados' && (
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                  </span>
-                )}
               </Link>
             );
           })}
           <div className="pt-2 pb-1 border-t border-zinc-900 mt-2">
-            <div className="inline-flex items-center gap-1.5 w-full justify-center px-3 py-2 rounded-lg bg-red-950/20 border border-red-950/40 text-[10px] font-mono font-bold uppercase text-red-400">
+            <div className="inline-flex items-center gap-1.5 w-full justify-center px-3 py-2 rounded-lg bg-emerald-950/20 border border-emerald-950/40 text-[10px] font-mono font-bold uppercase text-emerald-400">
               <Activity className="h-3 w-3 animate-pulse" />
-              <span>Mundial 2026 // COBERTURA EN VIVO</span>
+              <span>ALERTAS AL MINUTO // COBERTURA GLOBAL</span>
             </div>
           </div>
         </div>

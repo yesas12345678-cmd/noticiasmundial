@@ -3,119 +3,118 @@
 import React from 'react';
 
 export default function WorldCupBackground() {
-  // 16 bands to cover the 1000px width (centered at 500)
-  const bandsCount = 16;
-  const bandWidth = 32;
-
-  const colors = [
-    '#9e81f6', // Light Purple
-    '#1a56db', // Royal Blue
-    '#e10615', // Orange-Red
-    '#f97316', // Orange
-    '#84cc16', // Lime-Green
-    '#a3e635', // Neon Lime
-    '#22d3ee', // Turquoise/Cyan
-    '#115e59', // Dark Teal
+  // We draw an abstract premium cybernetic network grid representational of a global information flow
+  const nodes = [
+    { x: 100, y: 150, r: 3 },
+    { x: 250, y: 100, r: 2 },
+    { x: 400, y: 220, r: 4 },
+    { x: 550, y: 80, r: 3 },
+    { x: 700, y: 180, r: 2 },
+    { x: 880, y: 120, r: 3 },
+    { x: 150, y: 450, r: 2.5 },
+    { x: 320, y: 380, r: 3 },
+    { x: 500, y: 500, r: 2 },
+    { x: 680, y: 420, r: 4 },
+    { x: 820, y: 480, r: 2.5 },
+    { x: 920, y: 350, r: 2 },
   ];
 
-  const path2 = "M -60,-130 C -60,-160 -40,-180 -15,-180 H 15 C 40,-180 60,-160 60,-130 V -100 C 60,-75 35,-60 -10,-60 H -60 V -20 H 60 V -60 H 0 C 20,-60 30,-70 30,-80 V -130 C 30,-140 23,-148 15,-148 H -15 C -23,-148 -30,-140 -30,-130 V -120 H -60 Z";
-
-  const path6 = "M -60,-10 H -30 V 5 H 15 C 40,5 60,25 60,50 V 105 C 60,130 40,150 15,150 H -15 C -40,150 -60,130 -60,105 Z M -30,50 C -30,40 -20,30 -10,30 H 10 C 20,30 30,40 30,50 V 90 C 30,100 20,110 10,110 H -10 C -20,110 -30,100 -30,90 Z";
+  const connections = [
+    { from: 0, to: 1 },
+    { from: 0, to: 6 },
+    { from: 1, to: 2 },
+    { from: 1, to: 3 },
+    { from: 2, to: 3 },
+    { from: 2, to: 7 },
+    { from: 3, to: 4 },
+    { from: 3, to: 5 },
+    { from: 4, to: 5 },
+    { from: 4, to: 9 },
+    { from: 5, to: 11 },
+    { from: 6, to: 7 },
+    { from: 7, to: 8 },
+    { from: 8, to: 9 },
+    { from: 9, to: 10 },
+    { from: 10, to: 11 },
+    { from: 2, to: 9 },
+    { from: 7, to: 9 },
+  ];
 
   return (
     <div className="fixed inset-0 -z-50 overflow-hidden pointer-events-none bg-[#09090b]">
-      {/* Dynamic World Cup 2026 Graphic Pattern */}
+      {/* Background cyber grid & network lines */}
       <svg
-        className="w-full h-full object-cover opacity-60 filter saturate-[1.2] contrast-[1.1]"
+        className="w-full h-full opacity-35 filter saturate-[1.2]"
         viewBox="0 0 1000 600"
         preserveAspectRatio="xMidYMid slice"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {/* Draw bands from outside to inside (so they overlay correctly) */}
-        {Array.from({ length: bandsCount }).map((_, index) => {
-          const i = bandsCount - index; // 16 down to 1
-          const offset = i * bandWidth - bandWidth / 2;
-          const color = colors[(i - 1) % colors.length];
-
+        {/* Connection lines */}
+        {connections.map((conn, idx) => {
+          const fromNode = nodes[conn.from];
+          const toNode = nodes[conn.to];
           return (
-            <g key={i}>
-              {/* Left Side: Concentric Curves (Bezier Curves) */}
-              {/* Top-Left Curve */}
-              <path
-                d={`M 500,300 Q ${500 - offset},300 ${500 - offset},0`}
-                fill="none"
-                stroke={color}
-                strokeWidth={bandWidth + 1}
-              />
-              {/* Bottom-Left Curve */}
-              <path
-                d={`M 500,300 Q ${500 - offset},300 ${500 - offset},600`}
-                fill="none"
-                stroke={color}
-                strokeWidth={bandWidth + 1}
-              />
-
-              {/* Right Side */}
-              {/* Top-Right L-Shape */}
-              <path
-                d={`M 500,300 H ${500 + offset} V 0`}
-                fill="none"
-                stroke={color}
-                strokeWidth={bandWidth + 1}
-              />
-              {/* Bottom-Right Curve (mirrors bottom-left, curving down and right) */}
-              <path
-                d={`M 500,300 Q ${500 + offset},300 ${500 + offset},600`}
-                fill="none"
-                stroke={color}
-                strokeWidth={bandWidth + 1}
-              />
-            </g>
+            <line
+              key={`line-${idx}`}
+              x1={fromNode.x}
+              y1={fromNode.y}
+              x2={toNode.x}
+              y2={toNode.y}
+              stroke="url(#lineGradient)"
+              strokeWidth="0.8"
+              opacity="0.25"
+            />
           );
         })}
 
-        {/* Center Horizon Line Accent */}
-        <line x1="0" y1="300" x2="1000" y2="300" stroke="#fff" strokeWidth="2" opacity="0.15" />
-
-        {/* Central FIFA 26 Stacked Logo */}
-        <g transform="translate(500, 300)">
-          {/* Layer 4: Outermost - Purple (#9e81f6) */}
-          <g transform="scale(1.8)">
-            <path fillRule="evenodd" d={path2} fill="#9e81f6" />
-            <path fillRule="evenodd" d={path6} fill="#9e81f6" />
+        {/* Node points */}
+        {nodes.map((node, idx) => (
+          <g key={`node-${idx}`}>
+            <circle
+              cx={node.x}
+              cy={node.y}
+              r={node.r + 3}
+              fill="rgba(147, 51, 234, 0.05)"
+            />
+            <circle
+              cx={node.x}
+              cy={node.y}
+              r={node.r}
+              fill="url(#nodeGradient)"
+            />
           </g>
+        ))}
 
-          {/* Layer 3: Crimson/Rose (#c21525) */}
-          <g transform="scale(1.58)">
-            <path fillRule="evenodd" d={path2} fill="#c21525" />
-            <path fillRule="evenodd" d={path6} fill="#c21525" />
-          </g>
+        {/* Global network circles representing latitude/longitude lines */}
+        <circle cx="500" cy="300" r="280" fill="none" stroke="rgba(147, 51, 234, 0.02)" strokeWidth="1" />
+        <circle cx="500" cy="300" r="420" fill="none" stroke="rgba(59, 130, 246, 0.02)" strokeWidth="1" />
+        <ellipse cx="500" cy="300" rx="450" ry="180" fill="none" stroke="rgba(147, 51, 234, 0.015)" strokeWidth="1" />
+        <ellipse cx="500" cy="300" rx="180" ry="280" fill="none" stroke="rgba(59, 130, 246, 0.015)" strokeWidth="1" />
 
-          {/* Layer 2: Bright Red (#e10615) */}
-          <g transform="scale(1.38)">
-            <path fillRule="evenodd" d={path2} fill="#e10615" />
-            <path fillRule="evenodd" d={path6} fill="#e10615" />
-          </g>
-
-          {/* Layer 1: Dark Red-Brown (#58050a) */}
-          <g transform="scale(1.18)">
-            <path fillRule="evenodd" d={path2} fill="#58050a" />
-            <path fillRule="evenodd" d={path6} fill="#58050a" />
-          </g>
-
-          {/* Layer 0: Innermost - White (#ffffff) */}
-          <g transform="scale(1.0)">
-            <path fillRule="evenodd" d={path2} fill="#ffffff" />
-            <path fillRule="evenodd" d={path6} fill="#ffffff" />
-          </g>
-        </g>
+        {/* Definitions for Gradients */}
+        <defs>
+          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#9333ea" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.4" />
+          </linearGradient>
+          <radialGradient id="nodeGradient">
+            <stop offset="0%" stopColor="#c084fc" />
+            <stop offset="70%" stopColor="#9333ea" />
+            <stop offset="100%" stopColor="#6366f1" />
+          </radialGradient>
+        </defs>
       </svg>
 
-      {/* Futuristic Dark Radial Overlay to ensure text readability */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(9,9,11,0.2)_0%,rgba(9,9,11,0.75)_60%,rgba(9,9,11,0.95)_95%)]" />
+      {/* Glowing atmospheric gradient mesh layers */}
+      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-purple-500/5 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[55%] h-[55%] rounded-full bg-blue-500/5 blur-[130px] pointer-events-none" />
+      <div className="absolute top-[30%] right-[10%] w-[35%] h-[35%] rounded-full bg-emerald-500/3 blur-[110px] pointer-events-none" />
 
-      {/* Cyberpunk matrix grid overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:40px_40px]" />
+      {/* Dark radial overlay to ensure content readability */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(9,9,11,0.15)_0%,rgba(9,9,11,0.75)_60%,rgba(9,9,11,0.96)_95%)]" />
+
+      {/* Fine-mesh cyber grid */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff01_1px,transparent_1px),linear-gradient(to_bottom,#ffffff01_1px,transparent_1px)] bg-[size:32px_32px]" />
     </div>
   );
 }

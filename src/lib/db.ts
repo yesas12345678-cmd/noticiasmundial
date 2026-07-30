@@ -7,307 +7,307 @@ export const pool = new Pool({
   ssl: false,
 });
 
-// Definition of 50 unique SEO-optimized articles based on actual/realistic World Cup 2026 events on June 24, 2026
+// Definition of 50 unique SEO-optimized articles based on general world news
 const SEED_ARTICLES_DATA = [
   {
-    title: 'Canadá vs. Suiza: Choque estelar por el liderato del Grupo B',
-    excerpt: 'El BC Place de Vancouver define hoy el destino del Grupo B en un vibrante cara a cara entre dos selecciones invictas.',
-    keyword: 'canada-suiza-grupo-b-2026',
-    slug: 'canada-suiza-liderato-grupo-b',
+    title: 'Acuerdo histórico en la cumbre climática de Ginebra: 120 países firmarán la reducción acelerada de emisiones',
+    excerpt: 'El consenso alcanzado de madrugada establece límites estrictos a las industrias pesadas y crea un fondo compensatorio millonario para economías en desarrollo.',
+    keyword: 'cumbre-climatica-ginebra-2026',
+    slug: 'acuerdo-historico-cumbre-climatica-ginebra',
   },
   {
-    title: 'Parte médico: Molestias de Vinícius Júnior lo dejan en duda ante Escocia',
-    excerpt: 'El delantero de la Seleção sintió una fatiga en el aductor durante la práctica en Miami y podría descansar preventivamente.',
-    keyword: 'lesion-vinicius-junior-brasil-2026',
-    slug: 'vinicius-junior-lesion-duda-escocia',
+    title: 'La Reserva Federal mantiene estables los tipos de interés ante el retroceso continuo de la inflación global',
+    excerpt: 'El banco central destaca la solidez en el mercado laboral y sugiere que el periodo de subidas agresivas ha finalizado oficialmente de cara al cierre de año.',
+    keyword: 'reserva-federal-tipos-interes-2026',
+    slug: 'reserva-federal-tipos-interes-inflacion',
   },
   {
-    title: 'Francia 3-0 Irak: Mbappé lidera bajo el diluvio en Filadelfia',
-    excerpt: 'Kylian Mbappé firma un doblete en un partido marcado por una interrupción de dos horas debido a tormentas eléctricas.',
-    keyword: 'francia-irak-resultado-2026',
-    slug: 'francia-irak-goleada-tormenta-filadelfia',
+    title: 'Presentan el primer microchip cuántico comercial: Un salto de computación sin precedentes',
+    excerpt: 'Una corporación tecnológica logra empaquetar procesamiento cuántico estable a temperatura ambiente en un formato compatible con superordenadores actuales.',
+    keyword: 'microchip-cuantico-comercial-2026',
+    slug: 'presentan-primer-microchip-cuantico-comercial',
   },
   {
-    title: 'Noruega 3-2 Senegal: Doblete de Haaland clasifica a los escandinavos',
-    excerpt: 'Erling Haaland brilla en el MetLife Stadium de Nueva Jersey y asegura el pase de Noruega a la ronda de 32.',
-    keyword: 'noruega-senegal-haaland-2026',
-    slug: 'noruega-senegal-cronica-doblete-haaland',
+    title: 'El Museo del Prado abre una galería digital interactiva con obras maestras restauradas en 8K',
+    excerpt: 'La nueva experiencia digital permite examinar con precisión nanométrica cada trazo del pincel y sumergirse en análisis históricos mediante realidad aumentada.',
+    keyword: 'museo-prado-galeria-digital-2026',
+    slug: 'museo-del-prado-galeria-digital-8k',
   },
   {
-    title: 'Javier Aguirre afina defensa de México para el cierre ante Chequia',
-    excerpt: 'El Tri busca mantener su portería a cero y asegurar el paso perfecto en el Estadio Azteca frente al combinado checo.',
-    keyword: 'mexico-chequia-previo-2026',
-    slug: 'javier-aguirre-tactica-defensa-mexico-chequia',
+    title: 'Final electrizante en Wimbledon: El nuevo talento de 19 años se consagra campeón tras cinco sets épicos',
+    excerpt: 'En un partido que duró casi cinco horas frente al número uno del mundo, la joven promesa remontó dos sets adversos coronando un triunfo legendario.',
+    keyword: 'final-wimbledon-campeon-2026',
+    slug: 'final-electrizante-wimbledon-campeon-historico',
   },
   {
-    title: 'Estados Unidos clasifica como líder del Grupo D tras vencer a Paraguay',
-    excerpt: 'El combinado norteamericano sella su clasificación con solidez táctica y desata la locura en su afición.',
-    keyword: 'eeuu-paraguay-clasificacion-2026',
-    slug: 'estados-unidos-lider-grupo-d-paraguay',
+    title: 'Líderes mundiales se reúnen en la ONU para debatir la regulación internacional de la Inteligencia Artificial',
+    excerpt: 'La asamblea general busca redactar un marco ético de seguridad vinculante que evite riesgos sistémicos en el desarrollo de modelos de lenguaje autónomos.',
+    keyword: 'onu-regulacion-inteligencia-artificial-2026',
+    slug: 'onu-regulacion-inteligencia-artificial-marcos',
   },
   {
-    title: 'Lamine Yamal brilla con dos asistencias en el gran debut español',
-    excerpt: 'El extremo del Barcelona destroza la zaga rival y se consagra como motor de La Roja en la Copa del Mundo.',
-    keyword: 'lamine-yamal-asistencias-espana-2026',
-    slug: 'lamine-yamal-asistencias-debut-espana',
+    title: 'El desempleo en la eurozona registra mínimos históricos en el segundo trimestre de este año',
+    excerpt: 'La oficina de estadísticas reporta una tasa del 5.9%, impulsada por la resiliencia en la contratación tecnológica y la recuperación total del sector servicios.',
+    keyword: 'desempleo-eurozona-minimo-historico-2026',
+    slug: 'desempleo-eurozona-minimos-historicos-record',
   },
   {
-    title: 'Argentina golea 3-0 a Argelia con exhibición de Lionel Messi',
-    excerpt: 'La albiceleste convence en su partido de fase de grupos con gol y asistencia de su mítico capitán en el Mercedes-Benz Stadium.',
-    keyword: 'argentina-algelia-exhibicion-messi-2026',
-    slug: 'argentina-algelia-goleada-lionel-messi',
+    title: 'Astrónomos descubren un exoplaneta con agua líquida y atmósfera estable a 40 años luz',
+    excerpt: 'El nuevo telescopio orbital capta firmas moleculares de vapor de agua y oxígeno en el planeta Kepler-982c, abriendo nuevos debates sobre habitabilidad exterior.',
+    keyword: 'descubrimiento-exoplaneta-agua-liquida-2026',
+    slug: 'descubren-exoplaneta-agua-liquida-atmosfera',
   },
   {
-    title: 'Alarma en Alemania: Jamal Musiala sufre sobrecarga y descansará en la jornada',
-    excerpt: 'El cuerpo médico de la Mannschaft prefiere no arriesgar a su enganche estrella para evitar una lesión mayor.',
-    keyword: 'lesion-musiala-alemania-sobrecarga-2026',
-    slug: 'jamal-musiala-sobrecarga-descanso-alemania',
+    title: 'La Bienal de Venecia abre sus puertas con una exposición dedicada al arte ecológico y sostenible',
+    excerpt: 'Pabellones de más de 80 naciones se centran en instalaciones realizadas con materiales reciclados y obras interactivas de denuncia medioambiental.',
+    keyword: 'bienal-venecia-arte-ecologico-2026',
+    slug: 'bienal-venecia-exposicion-arte-ecologico',
   },
   {
-    title: 'Colombia asegura boleto a dieciseisavos al batir a RD Congo 2-1 en un final tenso',
-    excerpt: 'Los cafeteros sufren en los últimos minutos pero amarran los tres puntos que los colocan en la siguiente fase.',
-    keyword: 'colombia-congo-resultado-mundial-2026',
-    slug: 'colombia-congo-clasificacion-dieciseisavos',
+    title: 'Juegos Olímpicos: La delegación de natación rompe dos récords mundiales en la jornada inaugural',
+    excerpt: 'Las disciplinas de relevos libre de 400 metros de hombres y mujeres pulverizan marcas previas, desatando la locura en el centro acuático.',
+    keyword: 'juegos-olimpicos-natacion-records-2026',
+    slug: 'juegos-olimpicos-natacion-records-inaugural',
   },
   {
-    title: 'Inglaterra vence 2-0 a Ghana y se clasifica a la ronda de 32',
-    excerpt: 'Con goles de Bellingham y Saka, el equipo de los tres leones cumple las expectativas en la fase de grupos.',
-    keyword: 'inglaterra-ghana-resultado-2026',
-    slug: 'inglaterra-ghana-bellingham-saka-clasificados',
+    title: 'Tensiones geopolíticas en el Pacífico: Nuevos acuerdos comerciales buscan aliviar la cadena de suministro',
+    excerpt: 'Una alianza transpacífica acuerda rebajas arancelarias mutuas y planes de respuesta rápida ante cuellos de botella logísticos globales.',
+    keyword: 'acuerdos-comerciales-transpacifico-2026',
+    slug: 'tensiones-pacifico-acuerdos-cadena-suministro',
   },
   {
-    title: 'Croacia elimina a Panamá por la mínima y avanza de ronda',
-    excerpt: 'Un solitario gol de cabeza le da el pase a los balcánicos, sentenciando la eliminación de la selección canalera.',
-    keyword: 'croacia-panama-resultado-grupo-2026',
-    slug: 'croacia-panama-eliminacion-canalera',
+    title: 'El precio del petróleo Brent experimenta volatilidad debido al aumento de producción y transición verde',
+    excerpt: 'Los analistas sugieren una estabilización en torno a los 75 dólares por barril ante los ajustes del cartel y el impulso del transporte electrificado.',
+    keyword: 'precio-petroleo-brent-transicion-2026',
+    slug: 'precio-petroleo-brent-volatilidad-analisis',
   },
   {
-    title: 'Portugal golea 3-0 a Uzbekistán con gol de Cristiano Ronaldo',
-    excerpt: 'El astro luso anota el tercero y comanda el pase de Portugal como líder indiscutible del Grupo K.',
-    keyword: 'portugal-uzbekistan-cristiano-ronaldo-2026',
-    slug: 'portugal-uzbekistan-goleada-lusa-cristiano',
+    title: 'La inteligencia artificial autónoma debuta en el diagnóstico de enfermedades cardíacas de alta precisión',
+    excerpt: 'Sistemas neuronales analizan miles de ecocardiogramas en segundos, detectando anomalías sutiles con una efectividad superior a los métodos tradicionales.',
+    keyword: 'ia-diagnostico-cardiaco-medicina-2026',
+    slug: 'inteligencia-artificial-diagnostico-enfermedades-cardiacas',
   },
   {
-    title: 'Austria sorprende 3-1 a Jordania en partido de alta intensidad',
-    excerpt: 'El combinado europeo domina las transiciones rápidas y sella tres puntos clave en su lucha por clasificar.',
-    keyword: 'austria-jordania-resultado-25-2026',
-    slug: 'austria-jordania-sorpresa-transiciones-rapidas',
+    title: 'Fallece a los 92 años el aclamado novelista y ganador del premio Cervantes',
+    excerpt: 'El mundo de las letras hispanas despide hoy al maestro de la prosa realista tras una prolífica carrera literaria de más de seis décadas.',
+    keyword: 'fallecimiento-escritor-premio-cervantes-2026',
+    slug: 'fallece-novelista-ganador-premio-cervantes',
   },
   {
-    title: 'Escocia sueña con su primer pase histórico ante la poderosa Brasil en Miami',
-    excerpt: 'El conjunto británico necesita rascar un punto del Hard Rock Stadium para aspirar a meterse en dieciseisavos.',
-    keyword: 'brasil-escocia-previa-historica-2026',
-    slug: 'escocia-suena-clasificacion-historica-brasil',
+    title: 'Fórmula 1: Emocionante victoria bajo la lluvia en el Gran Premio de Mónaco',
+    excerpt: 'La estrategia de neumáticos de seco en las vueltas finales permite una espectacular remontada de diez posiciones en el circuito urbano.',
+    keyword: 'formula-1-gp-monaco-victoria-2026',
+    slug: 'formula-1-gp-monaco-victoria-lluvia',
   },
   {
-    title: 'Corea del Sur y Sudáfrica disputan una final directa por la clasificación',
-    excerpt: 'Ambos equipos del Grupo A se miden con la obligación de ganar para no depender de otros resultados.',
-    keyword: 'corea-sudafrica-final-grupo-a-2026',
-    slug: 'corea-sur-sudafrica-duelo-directo-grupo-a',
+    title: 'Nuevos corredores de ayuda humanitaria se abren paso en las zonas de conflicto de África Central',
+    excerpt: 'Agencias internacionales coordinan treguas logísticas para suministrar alimentos y medicamentos a más de un millón de personas aisladas.',
+    keyword: 'ayuda-humanitaria-africa-central-2026',
+    slug: 'corredores-ayuda-humanitaria-africa-central',
   },
   {
-    title: 'Marruecos busca sellar su pase como líder del Grupo C frente a Haití',
-    excerpt: 'Los leones del Atlas se miden a una Haití ya eliminada, buscando asegurar la primera plaza del grupo.',
-    keyword: 'marruecos-haiti-grupo-c-2026',
-    slug: 'marruecos-haiti-liderato-grupo-c',
+    title: 'Las exportaciones globales de semiconductores marcan récord ante la demanda del sector automotriz',
+    excerpt: 'Las fundiciones del este asiático amplían su capacidad, logrando abastecer la cartera acumulada tras dos años de escasez severa.',
+    keyword: 'exportacion-semiconductores-automotriz-2026',
+    slug: 'exportaciones-semiconductores-record-automotriz',
   },
   {
-    title: 'Bosnia y Qatar pelean por una remota chance de avanzar como mejor tercero',
-    excerpt: 'Ambas escuadras del Grupo B necesitan una goleada y combinaciones milagrosas en otros sectores.',
-    keyword: 'bosnia-qatar-mejor-tercero-2026',
-    slug: 'bosnia-qatar-lucha-desesperada-terceros',
+    title: 'Lanzan al espacio un satélite revolucionario para rastrear fugas de metano a escala planetaria',
+    excerpt: 'La misión ambiental conjunta monitorizará en tiempo real las infraestructuras de gas natural de todo el globo con imágenes térmicas.',
+    keyword: 'lanzamiento-satelite-fugas-metano-2026',
+    slug: 'lanzamiento-satelite-rastreo-fugas-metano',
   },
   {
-    title: 'Análisis de Datos: Los laterales franceses rompen récords de velocidad en el Mundial',
-    excerpt: 'Métricas de GPS revelan que la zaga gala alcanza los 36.8 km/h en transiciones defensivas y ofensivas.',
-    keyword: 'francia-metricas-velocidad-laterales-2026',
-    slug: 'analisis-datos-laterales-franceses-velocidad',
+    title: 'El festival de cine de San Sebastián anuncia una selección oficial con fuerte presencia iberoamericana',
+    excerpt: 'Catorce largometrajes competirán por la Concha de Oro, destacando la presencia de nuevos talentos chilenos, mexicanos y españoles.',
+    keyword: 'festival-cine-san-sebastian-2026',
+    slug: 'festival-cine-san-sebastian-seleccion-oficial',
   },
   {
-    title: 'El impacto del calor extremo en las sedes del sur de Estados Unidos',
-    excerpt: 'Temperaturas superiores a 35 grados obligan a aplicar pausas de hidratación en Houston, Dallas y Miami.',
-    keyword: 'calor-sedes-eeuu-mundial-2026',
-    slug: 'impacto-calor-extremo-sedes-sur-estados-unidos',
+    title: 'La selección de balonmano sella su pase a la final del campeonato de Europa tras una prórroga dramática',
+    excerpt: 'Un tanto de penalti en el último suspiro del tiempo extra corona un regreso heroico frente al combinado nórdico.',
+    keyword: 'campeonato-balonmano-final-europa-2026',
+    slug: 'seleccion-balonmano-final-campeonato-europa',
   },
   {
-    title: 'Fisioterapia a fondo: Cómo recuperan a Lionel Messi entre partidos del Mundial',
-    excerpt: 'Detalles del plan de crioterapia y masoterapia que recibe la estrella argentina para dosificar sus minutos.',
-    keyword: 'lesion-messi-recuperacion-fisioterapia-2026',
-    slug: 'crioterapia-recuperacion-lionel-messi-partidos',
+    title: 'Acuerdos multilaterales de ciberseguridad protegen infraestructuras críticas contra ataques cibernéticos',
+    excerpt: 'Una veintena de naciones firma un pacto de colaboración de inteligencia militar para blindar redes eléctricas y sistemas hídricos.',
+    keyword: 'ciberseguridad-infraestructuras-criticas-pacto-2026',
+    slug: 'acuerdos-ciberseguridad-proteccion-infraestructuras-criticas',
   },
   {
-    title: 'El nuevo esquema táctico de Italia para blindar su portería',
-    excerpt: 'El seleccionador azzurro implementa una línea de cinco para contrarrestar la velocidad de los extremos rivales.',
-    keyword: 'italia-tactica-linea-cinco-2026',
-    slug: 'esquema-tactico-italia-blindaje-porteria',
+    title: 'Startups de energía limpia reciben inversión récord de fondos soberanos en Europa y Asia',
+    excerpt: 'La inyección financiera de más de 12.000 millones acelerará la construcción de parques eólicos flotantes mar adentro.',
+    keyword: 'inversion-startups-energia-limpia-2026',
+    slug: 'inversion-record-startups-energia-limpia',
   },
   {
-    title: 'Estilo de juego: Bélgica y su transición ofensiva vertical en tres toques',
-    excerpt: 'Analizamos cómo los belgas explotan los carriles interiores gracias a la visión de Kevin De Bruyne.',
-    keyword: 'belgica-transicion-vertical-de-bruyne-2026',
-    slug: 'estilo-juego-belgica-transiciones-de-bruyne',
+    title: 'Diseñan una batería de estado sólido para vehículos eléctricos con autonomía superior a los mil kilómetros',
+    excerpt: 'El nuevo electrolito cerámico evita el sobrecalentamiento y permite cargas ultra rápidas del 80% en apenas ocho minutos.',
+    keyword: 'bateria-estado-solido-vehiculos-electricos-2026',
+    slug: 'baterias-estado-solido-automocion-autonomia',
   },
   {
-    title: 'Senegal confía en Ismaïla Sarr tras su gran actuación goleadora ante Noruega',
-    excerpt: 'El atacante senegalés se consolida como la gran esperanza del continente africano tras su doblete.',
-    keyword: 'senegal-confia-ismaila-sarr-goles-2026',
-    slug: 'senegal-goleador-ismaila-sarr-esperanza',
+    title: 'Una excavación arqueológica en Egipto descubre una tumba intacta con murales de hace 4000 años',
+    excerpt: 'El hallazgo en Saqqara pertenece a un alto funcionario de la Quinta Dinastía y muestra jeroglíficos y pinturas de colores vibrantes.',
+    keyword: 'arqueologia-egipto-tumba-saqqara-2026',
+    slug: 'excavacion-arqueologica-egipto-tumba-intacta',
   },
   {
-    title: 'La marea escocesa toma las calles de Miami previo al gran choque con Brasil',
-    excerpt: 'Miles de aficionados británicos llenan de color las playas y avenidas antes del vital encuentro de hoy.',
-    keyword: 'escoceses-miami-brasil-ambiente-2026',
-    slug: 'marea-escocesa-miami-previo-choque-brasil',
+    title: 'Giro de Italia: La etapa reina de montaña define al nuevo líder de la clasificación general',
+    excerpt: 'Un demarraje a falta de cinco kilómetros para coronar el Passo dello Stelvio revienta la carrera por la Maglia Rosa.',
+    keyword: 'giro-italia-maglia-rosa-stelvio-2026',
+    slug: 'giro-italia-etapa-reina-clasificacion',
   },
   {
-    title: 'Chequia confía en su poderío aéreo para batir al anfitrión México',
-    excerpt: 'El seleccionador checo diseña jugadas a balón parado explotando la estatura de sus delanteros centros.',
-    keyword: 'chequia-balon-parado-mexico-2026',
-    slug: 'chequia-juego-aereo-estrategia-mexico',
+    title: 'La cumbre de desarrollo sostenible de Tokio propone metas de cero plástico para el año 2035',
+    excerpt: 'El acuerdo de mínimos obliga a prohibir paulatinamente los plásticos de un solo uso no médicos en los países miembros.',
+    keyword: 'cumbre-desarrollo-sostenible-tokio-2026',
+    slug: 'cumbre-sostenibilidad-tokio-cero-plastico',
   },
   {
-    title: 'El césped del BC Place de Vancouver recibe elogios de suizos y canadienses',
-    excerpt: 'El terreno de juego híbrido del estadio canadiense pasa con nota alta las revisiones técnicas de la FIFA.',
-    keyword: 'cesped-bc-place-vancouver-2026',
-    slug: 'cesped-bc-place-vancouver-elogios-fifa',
+    title: 'Las criptomonedas de segunda generación avanzan hacia la integración con los bancos centrales europeos',
+    excerpt: 'Entidades regulatorias proponen marcos de control para las stablecoins con el fin de asentar las bases del Euro digital.',
+    keyword: 'euro-digital-stablecoins-regulacion-2026',
+    slug: 'criptomonedas-segunda-generacion-bancos-centrales',
   },
   {
-    title: 'Historial de duelos: Brasil y Escocia se ven las caras tras décadas',
-    excerpt: 'Repasamos los duelos históricos en mundiales pasados y cómo se presenta este nuevo capítulo.',
-    keyword: 'brasil-escocia-historial-duelos-2026',
-    slug: 'historial-duelos-brasil-escocia-mundiales',
+    title: 'Un implante neuronal permite a pacientes con parálisis severa escribir mediante comandos mentales',
+    excerpt: 'La interfaz cerebro-computador traduce impulsos eléctricos en palabras digitales con un acierto del 98.6% y velocidad fluida.',
+    keyword: 'implante-neuronal-paralisis-escritura-2026',
+    slug: 'implante-neuronal-interfaz-cerebro-computador',
   },
   {
-    title: 'Las revelaciones estadísticas de la primera fase del Mundial 2026',
-    excerpt: 'Datos revelan un incremento notable en goles de contragolpe y efectividad en disparos de media distancia.',
-    keyword: 'estadisticas-goles-contragolpe-mundial-2026',
-    slug: 'revelaciones-estadisticas-primera-fase-goles',
+    title: 'La Filarmónica de Viena ofrece un concierto benéfico retransmitido de forma gratuita por internet',
+    excerpt: 'La recaudación por publicidad de la emisión digital irá destinada íntegramente a programas de educación musical infantil.',
+    keyword: 'filarmonica-viena-concierto-benefico-25-2026',
+    slug: 'filarmonica-viena-concierto-benefico-digital',
   },
   {
-    title: 'Los guardametas más efectivos en lo que va de la Copa del Mundo',
-    excerpt: 'Un repaso al porcentaje de paradas y efectividad en balones aéreos de los porteros destacados.',
-    keyword: 'arqueros-mas-efectivos-paradas-2026',
-    slug: 'porteros-mas-efectivos-copa-mundo',
+    title: 'NBA: Los campeones defensores inician los playoffs con una victoria contundente en el último segundo',
+    excerpt: 'Un triple sobre la bocina en el séptimo partido de la serie inicial decide la clasificación del equipo angelino.',
+    keyword: 'nba-playoffs-triple-bocina-2026',
+    slug: 'nba-playoffs-victoria-campeones-ultimo-segundo',
   },
   {
-    title: 'Jürgen Klopp analiza el pressing alto de la selección alemana',
-    excerpt: 'El prestigioso entrenador destaca los bloqueos del medio campo alemán para anular las salidas limpias.',
-    keyword: 'klopp-analisis-pressing-alemania-2026',
-    slug: 'jurgen-klopp-analisis-pressing-alemania',
+    title: 'Tratados de cooperación comercial entre la Unión Europea y el Mercosur entran en su fase final',
+    excerpt: 'Ambas delegaciones alcanzan consensos en el sector agrícola, allanando el camino para el mayor bloque de libre comercio.',
+    keyword: 'tratado-ue-mercosur-negociaciones-2026',
+    slug: 'tratado-cooperacion-comercial-ue-mercosur',
   },
   {
-    title: 'La fiebre mundialista inunda la Ciudad de México previo al México-Chequia',
-    excerpt: 'El Zócalo capitalino y el Ángel de la Independencia se tiñen de verde en apoyo incondicional a la selección.',
-    keyword: 'ambiente-cdmx-mexico-chequia-2026',
-    slug: 'fiebre-mundialista-cdmx-previo-mexico-chequia',
+    title: 'El oro alcanza máximos históricos como refugio seguro ante la incertidumbre económica global',
+    excerpt: 'La onza troy de metal precioso supera los 2.450 dólares, respaldada por la compra de reservas por parte de bancos centrales.',
+    keyword: 'oro-maximo-historico-refugio-economico-2026',
+    slug: 'oro-precio-maximo-historico-refugio-seguro',
   },
   {
-    title: 'El VAR y su impacto en el porcentaje de acierto de penaltis en el torneo',
-    excerpt: 'Los árbitros tardan un promedio de 45 segundos en revisar jugadas clave, mejorando la justicia deportiva.',
-    keyword: 'impacto-var-penaltis-estadisticas-2026',
-    slug: 'impacto-var-porcentaje-penaltis-efectividad',
+    title: 'Desarrollan plásticos biodegradables a partir de algas que se descomponen en agua marina en un mes',
+    excerpt: 'La nueva formulación biopolímera imita la elasticidad del polietileno pero no deja residuos tóxicos ni microplásticos.',
+    keyword: 'plasticos-biodegradables-algas-marinas-2026',
+    slug: 'desarrollan-plasticos-biodegradables-algas-marinas',
   },
   {
-    title: 'Parte de lesionados: Las selecciones que sufren bajas para los dieciseisavos',
-    excerpt: 'Una recopilación de los futbolistas que se pierden la ronda del KO por problemas musculares y óseos.',
-    keyword: 'lesiones-bajas-dieciseisavos-lista-2026',
-    slug: 'parte-lesionados-bajas-confirmadas-dieciseisavos',
+    title: 'La restauración de la catedral gótica revela capiteles medievales ocultos durante siglos',
+    excerpt: 'Un grupo de restauradores descubre relieves intactos representando mitología y fauna local detrás de un altar barroco.',
+    keyword: 'restauracion-catedral-medieval-relieves-2026',
+    slug: 'restauracion-catedral-gotica-descubrimiento-medieval',
   },
   {
-    title: 'Curazao y su valiente debut táctico ante la potencia de Alemania',
-    excerpt: 'La selección caribeña sorprende a los analistas con un planteamiento valiente a pesar de la derrota.',
-    keyword: 'curazao-debut-alemania-tactica-2026',
-    slug: 'curazao-valiente-debut-potencia-alemana',
+    title: 'Tour de Francia: Un contrarreloj individual de alta velocidad agita los puestos del podio',
+    excerpt: 'El corredor belga arrebata el maillot amarillo en una espectacular contrarreloj de 35 kilómetros cuesta arriba.',
+    keyword: 'tour-francia-contrarreloj-maillot-amarillo-2026',
+    slug: 'tour-francia-contrarreloj-individual-podio',
   },
   {
-    title: 'Uruguay entrena a puerta cerrada preparando su partido decisivo del grupo',
-    excerpt: 'Marcelo Bielsa oculta sus cartas tácticas y ensaya desmarques al espacio para sorprender a su próximo rival.',
-    keyword: 'uruguay-entrenamiento-puerta-cerrada-2026',
-    slug: 'uruguay-entrena-puerta-cerrada-bielsa',
+    title: 'La OMS declara erradicada una variante de virus endémico en zonas rurales de Sudamérica',
+    excerpt: 'Tras campañas intensivas de vacunación y control de vectores, no se reportan casos del patógeno en tres años consecutivos.',
+    keyword: 'oms-erradicacion-virus-sudamerica-2026',
+    slug: 'oms-erradicacion-variante-virus-endemico',
   },
   {
-    title: 'El impresionante rendimiento físico de Jude Bellingham en el mediocampo inglés',
-    excerpt: 'El jugador del Real Madrid promedia 11.5 kilómetros recorridos por partido con gran acierto defensivo.',
-    keyword: 'bellingham-rendimiento-fisico-kilometros-2026',
-    slug: 'rendimiento-fisico-jude-bellingham-mediocampo',
+    title: 'La inflación subyacente cae por debajo del objetivo en las principales potencias industriales',
+    excerpt: 'La moderación en los precios de energía y alimentos importados acelera los planes para flexibilizar la política crediticia.',
+    keyword: 'inflacion-subyacente-moderacion-precios-2026',
+    slug: 'inflacion-subyacente-cae-objetivo-potencias',
   },
   {
-    title: 'Las rotaciones de Didier Deschamps pensando en la ronda de eliminación directa',
-    excerpt: 'Francia dará descanso a sus figuras en el último choque de fase de grupos tras amarrar el boleto.',
-    keyword: 'francia-rotaciones-didier-deschamps-2026',
-    slug: 'rotaciones-didier-deschamps-francia-clasificada',
+    title: 'Prueban con éxito un reactor de fusión nuclear comercial manteniendo plasma estable por una hora',
+    excerpt: 'El dispositivo tokamak del instituto experimental logra temperaturas solares estables y un retorno neto de energía positivo.',
+    keyword: 'reactor-fusion-nuclear-tokamak-plasma-2026',
+    slug: 'prueban-reactor-fusion-nuclear-plasma-estable',
   },
   {
-    title: 'Los mejores goles de tiro libre directo en la fase de grupos del Mundial',
-    excerpt: 'Un repaso en video y datos a las ejecuciones perfectas que han deleitado a los aficionados.',
-    keyword: 'mejores-goles-tiro-libre-2026',
-    slug: 'mejores-goles-tiro-libre-fase-grupos',
+    title: 'El Museo de Arte Moderno adquiere una colección histórica de fotografía vanguardista de los años 30',
+    excerpt: 'El archivo recuperado incluye más de doscientas copias de plata originales de fotógrafas y pioneras surrealistas.',
+    keyword: 'moma-fotografia-vanguardia-surrealismo-2026',
+    slug: 'museo-arte-moderno-adquiere-fotografias-vanguardia',
   },
   {
-    title: 'Decepción en Panamá tras la temprana eliminación de la Copa del Mundo',
-    excerpt: 'El cuerpo técnico panameño hace autocrítica y destaca la necesidad de renovar los procesos juveniles.',
-    keyword: 'panama-decepcion-eliminacion-croacia-2026',
-    slug: 'decepcion-panama-eliminacion-temprana-mundial',
+    title: 'Clásico del fútbol nacional termina en empate con dos goles en los minutos de descuento',
+    excerpt: 'Un penalti dudoso cobrado por el VAR y un cabezazo a la salida de un córner sellan el reparto de puntos final.',
+    keyword: 'clasico-futbol-empate-descuento-2026',
+    slug: 'clasico-futbol-nacional-empate-descuento',
   },
   {
-    title: 'Uzbekistán se despide con honor tras caer ante la Portugal de Cristiano',
-    excerpt: 'La escuadra asiática luchó con gallardía pero sucumbió ante la jerarquía individual del combinado luso.',
-    keyword: 'uzbekistan-despedida-honor-portugal-2026',
-    slug: 'uzbekistan-despedida-honor-caida-portugal',
+    title: 'Iniciativas globales de reforestación plantan más de cien millones de árboles autóctonos en la Amazonia',
+    excerpt: 'El proyecto de restauración a gran escala emplea drones sembradores y empleo comunitario para proteger la biodiversidad.',
+    keyword: 'reforestacion-amazonia-biodiversidad-2026',
+    slug: 'reforestacion-amazonia-iniciativa-global-arboles',
   },
   {
-    title: 'La afición de Irak agradece el esfuerzo en Filadelfia ante el gigante Francia',
-    excerpt: 'Miles de hinchas aplauden a su selección a pesar de la derrota, destacando el orgullo del país en la gran cita.',
-    keyword: 'aficion-irak-filadelfia-francia-2026',
-    slug: 'aficion-irak-agradecimiento-esfuerzo-francia',
+    title: 'El comercio electrónico transfronterizo representa el 30% del volumen minorista global',
+    excerpt: 'Estudios de mercado sugieren que las compras directas a plataformas internacionales se han normalizado en la última década.',
+    keyword: 'comercio-electronico-transfronterizo-minoristas-2026',
+    slug: 'comercio-electronico-transfronterizo-volumen-minorista',
   },
   {
-    title: 'Dinamarca y su sólida estructura táctica en el mediocampo defensivo',
-    excerpt: 'El bloque dinamarqués ahoga la creación de juego rival y destaca en recuperaciones limpias de balón.',
-    keyword: 'dinamarca-estructura-tactica-bloque-2026',
-    slug: 'dinamarca-solida-estructura-tactica-mediocampo',
+    title: 'Una nueva generación de paneles solares transparentes promete convertir ventanas en generadores eléctricos',
+    excerpt: 'La tecnología fotovoltaica orgánica absorbe longitudes de onda no visibles sin restar claridad a los vidrios domésticos.',
+    keyword: 'paneles-solares-transparentes-ventanas-2026',
+    slug: 'paneles-solares-transparentes-ventanas-edificios',
   },
   {
-    title: 'La velocidad de Alphonso Davies: El arma secreta de Canadá ante Suiza',
-    excerpt: 'El veloz carrilero canadiense planea desbordar por la izquierda para romper la zaga helvética hoy.',
-    keyword: 'alphonso-davies-velocidad-canada-2026',
-    slug: 'velocidad-alphonso-davies-arma-canada-suiza',
+    title: 'Se subasta un manuscrito inédito de un célebre poeta del siglo de oro por una cifra récord',
+    excerpt: 'El documento original, hallado casualmente en una biblioteca privada, incluye poemas de amor y sátiras desconocidas.',
+    keyword: 'subasta-manuscrito-poeta-siglo-de-oro-2026',
+    slug: 'subasta-manuscrito-inedito-poeta-siglo-oro',
   },
   {
-    title: 'Suiza y su histórica solidez táctica en la línea de tres centrales',
-    excerpt: 'El muro defensivo helvético es el menos batido del Grupo B y pondrá a prueba al ataque de Canadá.',
-    keyword: 'suiza-solidez-defensa-tres-centrales-2026',
-    slug: 'suiza-historica-solidez-linea-tres-centrales',
+    title: 'La final de la Copa Davis de tenis se decidirá en el decisivo partido de dobles del domingo',
+    excerpt: 'Tras las victorias individuales cruzadas del sábado, la pareja de dobles mixtos define el título de la copa.',
+    keyword: 'copa-davis-final-dobles-tenis-2026',
+    slug: 'final-copa-davis-tenis-dobles-decisivos',
   },
   {
-    title: 'Reporte meteorológico: Prevención ante posibles tormentas en las sedes del este',
-    excerpt: 'La FIFA monitoriza las condiciones en Filadelfia y Boston para garantizar la seguridad de los espectáculos.',
-    keyword: 'reporte-meteorologico-tormentas-fifa-2026',
-    slug: 'reporte-meteorologico-tormentas-sedes-este',
+    title: 'Cooperación pacífica internacional expande la base de investigación científica permanente en la Antártida',
+    excerpt: 'Científicos de doce nacionalidades trabajarán conjuntamente en el análisis de testigos de hielo de más de un millón de años.',
+    keyword: 'cooperacion-cientifica-antartida-testigos-hielo-2026',
+    slug: 'cooperacion-internacional-antartida-investigacion-cientifica',
   },
   {
-    title: 'Los debutantes absolutos que dejaron huella en esta primera fase del torneo',
-    excerpt: 'Historias de jugadores nóveles que saltaron a la fama mundial con actuaciones sobresalientes.',
-    keyword: 'debutantes-sobresalientes-primera-fase-2026',
-    slug: 'debutantes-absolutos-huella-primera-fase',
+    title: 'El mercado de bonos soberanos verdes supera las expectativas de financiación climática',
+    excerpt: 'Las emisiones de deuda pública destinadas exclusivamente a obras de adaptación ecológica captan fuerte demanda institucional.',
+    keyword: 'bonos-soberanos-verdes-deuda-publica-2026',
+    slug: 'mercado-bonos-soberanos-verdes-financiacion',
   },
   {
-    title: 'El análisis del grupo de la muerte: Duelos, sorpresas y eliminados tempranos',
-    excerpt: 'Examinamos las sorpresas del sector más parejo del Mundial y cómo se configuran sus clasificados.',
-    keyword: 'analisis-grupo-muerte-sorpresas-2026',
-    slug: 'analisis-grupo-muerte-sorpresas-eliminaciones',
+    title: 'Científicos secuencian el genoma completo de especies vegetales clave para adaptarlas al cambio climático',
+    excerpt: 'La catalogación de genes de resistencia a la sequía abre vías para salvaguardar cultivos básicos en regiones áridas.',
+    keyword: 'secuenciacion-genoma-vegetal-sequia-cultivos-2026',
+    slug: 'secuenciacion-genoma-vegetal-resistencia-sequia',
   },
   {
-    title: 'El Hard Rock Stadium listo para recibir el clásico entre Brasil y Escocia',
-    excerpt: 'El coliseo de Miami acoge uno de los choques más esperados del día con lleno absoluto garantizado.',
-    keyword: 'hard-rock-stadium-miami-brasil-escocia-2026',
-    slug: 'hard-rock-stadium-preparativos-brasil-escocia',
+    title: 'El festival de teatro de Mérida abre su temporada clásica con un lleno absoluto y gran crítica',
+    excerpt: 'La representación de la tragedia griega en el teatro romano de Mérida convence con una escenografía moderna e impactante.',
+    keyword: 'festival-teatro-merida-tragedia-griega-2026',
+    slug: 'festival-teatro-merida-inauguracion-lleno',
   },
   {
-    title: 'La evolución del fútbol norteamericano reflejada en la Copa del Mundo',
-    excerpt: 'Especialistas debaten el crecimiento de la MLS y ligas locales y su impacto en las selecciones anfitrionas.',
-    keyword: 'evolucion-futbol-norteamericano-debate-2026',
-    slug: 'evolucion-futbol-norteamericano-impacto-mundial',
+    title: 'Copa del Mundo de Rugby: El equipo defensor del título avanza a semifinales tras un partido físico',
+    excerpt: 'Un ensayo en la última jugada del partido rompe la defensa contraria y sella la victoria por un estrecho margen.',
+    keyword: 'copa-mundo-rugby-semifinales-2026',
+    slug: 'copa-mundo-rugby-semifinales-defensores-titulo',
   },
 ];
 
@@ -368,26 +368,27 @@ export async function initDB() {
       );
     `);
 
-    const { rows: firstArt } = await client.query("SELECT id, title, slug FROM articles WHERE id = '1'");
-    const reseedNeeded = firstArt.length === 0 || !firstArt[0].slug;
+    const { rows: firstArt } = await client.query("SELECT id, title, slug, category FROM articles WHERE id = '1'");
+    // Reseed if the first article is missing, doesn't have slug, or uses old categories like 'selecciones'
+    const reseedNeeded = firstArt.length === 0 || !firstArt[0].slug || firstArt[0].category === 'selecciones';
 
     const { rows } = await client.query('SELECT COUNT(*) FROM articles');
     const count = parseInt(rows[0].count, 10);
 
     // If the table doesn't have any articles or needs reseed, seed it
     if (count === 0 || reseedNeeded) {
-      console.log(`Database contains ${count} articles. Seeding/Reseeding exactly 50 real World Cup 2026 articles with slugs...`);
+      console.log(`Database contains ${count} articles. Seeding/Reseeding exactly 50 real World News articles with slugs...`);
 
       // Clear any existing articles to ensure clean seed of 50
       await client.query('DELETE FROM articles');
 
-      const categoriesList = ['selecciones', 'lesiones', 'resultados', 'estadisticas'];
+      const categoriesList = ['internacional', 'economia', 'tecnologia', 'cultura', 'deportes'];
 
       for (let i = 0; i < SEED_ARTICLES_DATA.length; i++) {
         const item = SEED_ARTICLES_DATA[i];
         
         // Alternating categories day-by-day to avoid consecutives
-        const category = categoriesList[i % 4];
+        const category = categoriesList[i % categoriesList.length];
 
         // Format dates: Hoy, Ayer, Hace X días
         let dateLabel = '';
@@ -418,14 +419,16 @@ export async function initDB() {
 
         // Assign mock image urls from unsplash according to category
         let imageUrl = '';
-        if (category === 'selecciones') {
-          imageUrl = 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&q=80&w=800';
-        } else if (category === 'lesiones') {
-          imageUrl = 'https://images.unsplash.com/photo-1518152006812-edab29b069ac?auto=format&fit=crop&q=80&w=800';
-        } else if (category === 'resultados') {
-          imageUrl = 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=800';
+        if (category === 'internacional') {
+          imageUrl = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=800';
+        } else if (category === 'economia') {
+          imageUrl = 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=800';
+        } else if (category === 'tecnologia') {
+          imageUrl = 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800';
+        } else if (category === 'cultura') {
+          imageUrl = 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&q=80&w=800';
         } else {
-          imageUrl = 'https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?auto=format&fit=crop&q=80&w=800';
+          imageUrl = 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=800';
         }
 
         const likesVal = 40 + ((i * 23) % 450);
@@ -460,7 +463,7 @@ export async function initDB() {
           ]
         );
       }
-      console.log('Database pre-populated with exactly 50 real World Cup articles with slugs successfully!');
+      console.log('Database pre-populated with exactly 50 real World News articles with slugs successfully!');
     } else {
       console.log(`Database already contains exactly 50 real articles with slugs. Skipping seeding.`);
     }

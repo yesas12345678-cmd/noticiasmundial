@@ -44,30 +44,26 @@ const pool = new Pool({
   ssl: false,
 });
 
-const REALISTIC_FOOTBALL_IMAGES = [
+const REALISTIC_NEWS_IMAGES = [
+  "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1541872703-74c5e44368f9?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1508962914676-134849a727f0?q=80&w=1200&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1518063319789-7217e6706b04?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1504155611830-979940686567?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1431324155629-1a6edd1d131d?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1551958219-acbc608c6377?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1510566337590-2fc1f21d0faa?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1556056504-517cf015e859?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1624880351724-413987415180?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1536122985387-a37a6a57c41c?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1552667466-07770ae110d0?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1486282458519-5ab1ad1a720e?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1509048191080-d2984bad6ae5?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1606925797300-0b35e9072f5d?q=80&w=1200&auto=format&fit=crop"
+  "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=1200&auto=format&fit=crop",
 ];
 
 function getRandomImage(excludeList = []) {
-  const filtered = REALISTIC_FOOTBALL_IMAGES.filter(img => !excludeList.includes(img));
-  const pool = filtered.length > 0 ? filtered : REALISTIC_FOOTBALL_IMAGES;
+  const filtered = REALISTIC_NEWS_IMAGES.filter(img => !excludeList.includes(img));
+  const pool = filtered.length > 0 ? filtered : REALISTIC_NEWS_IMAGES;
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
@@ -177,11 +173,11 @@ async function main() {
     if (emptyArticles.length === 0) {
       console.log("No empty articles found in the database. Generating a new article concept using DeepSeek...");
       
-      const categoriesList = ['selecciones', 'lesiones', 'resultados', 'estadisticas'];
+      const categoriesList = ['internacional', 'economia', 'tecnologia', 'cultura', 'deportes'];
       const chosenCategory = categoriesList[Math.floor(Math.random() * categoriesList.length)];
       
       const conceptPrompt = `
-        Genera un concepto único para un artículo periodístico realista de noticias del Mundial de Fútbol de la FIFA 2026.
+        Genera un concepto único para un artículo periodístico realista de noticias y actualidad mundial del día a día.
         La categoría asignada para este artículo es: "${chosenCategory}".
         
         Debes responder estrictamente en formato JSON con la siguiente estructura:
@@ -192,7 +188,7 @@ async function main() {
           "slug": "un-slug-amigable-para-url"
         }
         
-        Nota: Asegúrate de que las noticias parezcan de actualidad en el contexto del mundial 2026 (por ejemplo, previas de partidos, crónicas de partidos, informes de lesionados, o análisis estadísticos). No incluyas explicaciones, solo el JSON puro.
+        Nota: Asegúrate de que las noticias parezcan de actualidad en el contexto global (por ejemplo, previas de eventos, crónicas, informes, debates de geopolítica o análisis económicos). No incluyas explicaciones, solo el JSON puro.
       `;
       
       let conceptData = null;
@@ -208,7 +204,7 @@ async function main() {
             messages: [
               {
                 role: 'system',
-                content: 'Eres un periodista deportivo experto y estratega de contenido SEO. Responde únicamente con el JSON solicitado.'
+                content: 'Eres un periodista internacional experto y estratega de contenido SEO. Responde únicamente con el JSON solicitado.'
               },
               {
                 role: 'user',
@@ -278,10 +274,10 @@ async function main() {
 
     // Prepare prompt
     let promptText = templateText;
-    promptText = promptText.replace('[INSERTAR NICHO O SECTOR AQUÍ]', `Fútbol e Información del Mundial de la FIFA 2026 - Categoría: ${article.category}`);
+    promptText = promptText.replace('[INSERTAR NICHO O SECTOR AQUÍ]', `Noticias del acontecer diario y actualidad mundial - Categoría: ${article.category}`);
     promptText = promptText.replace('[INSERTAR TÍTULO AQUÍ]', article.title);
     promptText = promptText.replace('[INSERTAR KEYWORDS AQUÍ]', article.keyword || '');
-    promptText = promptText.replace('[OPCIONAL: INSERTAR DETALLES ADICIONALES]', `Detalles: Artículo real sobre el Mundial 2026.`);
+    promptText = promptText.replace('[OPCIONAL: INSERTAR DETALLES ADICIONALES]', `Detalles: Artículo periodístico de actualidad mundial.`);
 
     let parsed = null;
     let attempt = 0;
@@ -303,7 +299,7 @@ async function main() {
             messages: [
               {
                 role: 'system',
-                content: 'Eres un redactor experto en SEO, redacción deportiva y EEAT. Debes responder únicamente con el objeto JSON solicitado, sin explicaciones ni markdown que lo envuelva. Tu artículo debe ser extremadamente detallado y tener obligatoriamente entre 2200 y 2800 palabras de texto legible (excluyendo etiquetas HTML).'
+                content: 'Eres un redactor experto en SEO, periodismo internacional y EEAT. Debes responder únicamente con el objeto JSON solicitado, sin explicaciones ni markdown que lo envuelva. Tu artículo debe ser extremadamente detallado y tener obligatoriamente entre 2200 y 2800 palabras de texto legible (excluyendo etiquetas HTML).'
               },
               {
                 role: 'user',
@@ -364,8 +360,8 @@ async function main() {
 
       const inlineImageHtml = `
 <div data-role='middle-image' class='my-8 overflow-hidden rounded-2xl border border-slate-200 shadow-md bg-white p-2'>
-  <img src='${inlineImage}' alt='Acción y análisis en el terreno de juego' class='w-full h-auto rounded-xl object-cover max-h-[450px]' />
-  <p class='text-xs text-slate-500 font-sans italic text-center mt-2'>Análisis visual y telemetría de jugadas sobre el césped.</p>
+  <img src='${inlineImage}' alt='Retrato y cobertura sobre el terreno' class='w-full h-auto rounded-xl object-cover max-h-[450px]' />
+  <p class='text-xs text-slate-500 font-sans italic text-center mt-2'>Registro visual y cobertura del acontecimiento en tiempo real.</p>
 </div>
 `;
 
