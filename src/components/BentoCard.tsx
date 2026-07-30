@@ -68,9 +68,9 @@ export default function BentoCard({
             onError={(e) => {
               e.currentTarget.style.display = 'none';
             }}
-            className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 filter brightness-[0.4] saturate-[0.8] contrast-[1.1]"
+            className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 filter brightness-[0.95] saturate-[0.85] contrast-[1.0]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-white/85 to-transparent" />
         </div>
       )}
 
@@ -117,12 +117,6 @@ export default function BentoCard({
               <Clock className="h-4 w-4 text-purple-400" />
               <span>{date}</span>
             </div>
-            {likes !== undefined && (
-              <div className="flex items-center gap-1.5 text-zinc-300">
-                <Heart className="h-4 w-4 text-red-500 fill-red-500" />
-                <span>{likes}</span>
-              </div>
-            )}
           </div>
 
         </div>

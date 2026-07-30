@@ -68,9 +68,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             <img
               src={article.image_url}
               alt={article.title}
-              className="h-full w-full object-cover filter brightness-[0.6] saturate-[0.9]"
+              className="h-full w-full object-cover filter brightness-[0.9] saturate-[0.9]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
           </div>
         )}
 

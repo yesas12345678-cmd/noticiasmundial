@@ -1,17 +1,168 @@
 @import "tailwindcss";
 
 :root {
-  --background: #09090b;
-  --foreground: #fafafa;
-  --card: #09090b;
+  --background: #f9fafb;
+  --foreground: #09090b;
+  --card: #ffffff;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   overflow-x: hidden;
 }
+
+/* Force light theme colors on dark theme classes */
+.bg-zinc-950,
+.bg-zinc-950\/40,
+.bg-zinc-950\/60,
+.bg-zinc-950\/70,
+.bg-zinc-950\/80,
+.bg-zinc-950\/90,
+.bg-zinc-950\/10,
+.bg-zinc-950\/20,
+.bg-zinc-900,
+.bg-zinc-900\/80,
+.bg-zinc-900\/60,
+.bg-zinc-900\/40,
+.bg-zinc-900\/20 {
+  background-color: #ffffff !important;
+  color: #09090b !important;
+}
+
+/* Card background custom coloring */
+.bg-zinc-950\/30 {
+  background-color: #ffffff !important;
+  color: #09090b !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+}
+
+.bg-zinc-950\/30:hover {
+  background-color: #ffffff !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Force light colors on dark text classes */
+.text-white,
+.text-zinc-100,
+.text-zinc-200,
+.text-zinc-300,
+.text-zinc-400 {
+  color: #09090b !important;
+}
+
+.text-zinc-500,
+.text-zinc-550,
+.text-zinc-650,
+.text-zinc-600 {
+  color: #71717a !important; /* zinc-500 */
+}
+
+.text-zinc-450 {
+  color: #52525b !important; /* zinc-600 */
+}
+
+/* Borders in light theme */
+.border-zinc-900,
+.border-zinc-900\/60,
+.border-zinc-800,
+.border-zinc-850 {
+  border-color: #e4e4e7 !important; /* zinc-200 */
+}
+
+/* Top bar and header borders */
+header {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  border-color: #e4e4e7 !important;
+}
+
+header span, header a {
+  color: #09090b !important;
+}
+
+/* Hover link in cards */
+.group:hover h4 {
+  color: #7c3aed !important;
+}
+
+/* Category pills in light theme */
+.border-purple-950 {
+  border-color: #e9d5ff !important;
+}
+.bg-purple-950\/20 {
+  background-color: #f3e8ff !important;
+  color: #6b21a8 !important;
+}
+
+.border-emerald-950 {
+  border-color: #a7f3d0 !important;
+}
+.bg-emerald-950\/20 {
+  background-color: #d1fae5 !important;
+  color: #065f46 !important;
+}
+
+.border-blue-950 {
+  border-color: #bfdbfe !important;
+}
+.bg-blue-950\/20 {
+  background-color: #dbeafe !important;
+  color: #1e40af !important;
+}
+
+.border-pink-950 {
+  border-color: #fbcfe8 !important;
+}
+.bg-pink-950\/20 {
+  background-color: #fce7f3 !important;
+  color: #9d174d !important;
+}
+
+.border-orange-950 {
+  border-color: #fed7aa !important;
+}
+.bg-orange-950\/20 {
+  background-color: #ffedd5 !important;
+  color: #9a3412 !important;
+}
+
+/* Active navigation item in header */
+header a.bg-purple-950\/40 {
+  background-color: #f3e8ff !important;
+  color: #7c3aed !important;
+  border-color: #d8b4fe !important;
+}
+
+/* Search bar styling */
+input[name="search"] {
+  background-color: #ffffff !important;
+  border-color: #d4d4d8 !important;
+  color: #09090b !important;
+}
+input[name="search"]::placeholder {
+  color: #a1a1aa !important;
+}
+
+/* Markets widget list items */
+.bg-zinc-950\/30 {
+  background-color: #ffffff !important;
+  border-color: #e4e4e7 !important;
+}
+
+/* Custom load more and search buttons in light theme */
+button.cursor-pointer.bg-zinc-900,
+button.cursor-pointer.bg-purple-600 {
+  background-color: #7c3aed !important;
+  color: #ffffff !important;
+  border-color: #6d28d9 !important;
+}
+button.cursor-pointer.bg-zinc-900:hover,
+button.cursor-pointer.bg-purple-600:hover {
+  background-color: #6d28d9 !important;
+}
+
+
 
 /* Custom futuristic scrollbar */
 .custom-scrollbar::-webkit-scrollbar {

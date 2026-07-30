@@ -63,7 +63,7 @@ export default function BentoGridWrapper({ articles }: BentoGridWrapperProps) {
         <BentoCard 
           title="Cotizaciones de Mercados" 
           category="economia" 
-          className="md:col-span-2 md:row-span-2"
+          className="md:col-span-1 md:row-span-2"
         >
           <LiveMarketsWidget />
         </BentoCard>
@@ -72,7 +72,7 @@ export default function BentoGridWrapper({ articles }: BentoGridWrapperProps) {
         <BentoCard 
           title="Últimas Alertas Informativas" 
           category="internacional" 
-          className="md:col-span-2 md:row-span-3"
+          className="md:col-span-1 md:row-span-2"
         >
           <LatestAlertsWidget />
         </BentoCard>
