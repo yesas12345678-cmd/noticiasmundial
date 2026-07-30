@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { Eye, Heart, Clock, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 
@@ -39,13 +41,19 @@ export default function BentoCard({
   children,
   href,
 }: BentoCardProps) {
+  const [imgError, setImgError] = useState(false);
+
+  const handleClick = () => {
+    if (href) {
+      window.location.href = href;
+    }
+  };
+
   const cat = categoryDetails[category] || { label: 'Fútbol', color: 'text-zinc-400 border-zinc-900 bg-zinc-900/20' };
 
-  const CardContainer = href ? Link : 'div';
-
   return (
-    <CardContainer
-      href={href as any}
+    <div
+      onClick={handleClick}
       className={`group relative overflow-hidden rounded-2xl border border-zinc-900 bg-zinc-950/30 backdrop-blur-sm transition-all duration-350 hover:-translate-y-1 hover:border-purple-500/30 hover:bg-zinc-900/20 hover:shadow-2xl hover:shadow-purple-500/5 flex flex-col justify-between ${className} ${href ? 'cursor-pointer select-none' : ''}`}
     >
       
@@ -56,14 +64,14 @@ export default function BentoCard({
       <span className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-purple-500/0 group-hover:border-purple-400/80 transition-all duration-300 pointer-events-none rounded-br" />
 
       {/* Background Image with Dark Gradient Overlay */}
-      {imageUrl && (
+      {imageUrl && !imgError && (
         <div className="absolute inset-0 -z-20 overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={imageUrl}
             alt={title}
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
+            onError={() => {
+              setImgError(true);
             }}
             className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 filter brightness-[0.95] saturate-[0.85] contrast-[1.0]"
           />
@@ -119,6 +127,6 @@ export default function BentoCard({
         </div>
       )}
 
-    </CardContainer>
+    </div>
   );
 }

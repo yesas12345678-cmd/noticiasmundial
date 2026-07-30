@@ -156,6 +156,15 @@ async function fetchFromUnsplashAPI(category: string): Promise<string[]> {
   return [];
 }
 
+async function isValidImageUrl(url: string): Promise<boolean> {
+  try {
+    const res = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(1500) });
+    return res.status === 200;
+  } catch (err) {
+    return false;
+  }
+}
+
 // Main function to get a unique, non-repeating image URL for a specific category
 export async function getUniqueImage(category: string, usedImages: Set<string>): Promise<string> {
   const normalizedCategory = category.toLowerCase();
@@ -165,9 +174,11 @@ export async function getUniqueImage(category: string, usedImages: Set<string>):
   for (const url of apiUrls) {
     const base = url.split('?')[0];
     if (!usedImages.has(url) && !usedImages.has(base)) {
-      usedImages.add(url);
-      usedImages.add(base);
-      return url;
+      if (await isValidImageUrl(url)) {
+        usedImages.add(url);
+        usedImages.add(base);
+        return url;
+      }
     }
   }
 
@@ -182,16 +193,16 @@ export async function getUniqueImage(category: string, usedImages: Set<string>):
     const base = fullUrl.split('?')[0];
     
     if (!usedImages.has(fullUrl) && !usedImages.has(base)) {
-      usedImages.add(fullUrl);
-      usedImages.add(base);
-      return fullUrl;
+      if (await isValidImageUrl(fullUrl)) {
+        usedImages.add(fullUrl);
+        usedImages.add(base);
+        return fullUrl;
+      }
     }
   }
 
-  // 3. Absolute fallback in the extremely rare event that every single image in the pool was already used.
-  // We append a unique timestamp and random identifier to prevent browser caching duplication.
-  console.warn(`Warning: All pool images for category "${category}" are in use. Generating a mutated fallback URL.`);
+  // 3. Absolute fallback in the event that all validation checks fail (e.g. offline) or every image is used.
+  console.warn(`Warning: All pool images for category "${category}" are in use or offline. Returning first pool image.`);
   const randomFallbackId = poolIds[Math.floor(Math.random() * poolIds.length)];
-  const mutatedUrl = `${makeUnsplashUrl(randomFallbackId)}&unique_seed=${Date.now()}_${Math.floor(Math.random() * 1000)}`;
-  return mutatedUrl;
+  return makeUnsplashUrl(randomFallbackId);
 }
