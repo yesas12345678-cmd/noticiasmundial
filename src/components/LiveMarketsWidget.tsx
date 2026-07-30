@@ -94,7 +94,7 @@ export default function LiveMarketsWidget() {
       </div>
 
       {/* Asset grid/list */}
-      <div className="p-3 space-y-2 max-h-[300px] overflow-y-auto custom-scrollbar flex-grow">
+      <div className="p-3 space-y-2 max-h-[520px] overflow-y-auto custom-scrollbar flex-grow">
         {assets.map((asset) => (
           <div
             key={asset.symbol}

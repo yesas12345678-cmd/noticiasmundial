@@ -106,10 +106,7 @@ export default function BentoGridWrapper({ articles }: BentoGridWrapperProps) {
 
         {/* 5. Additional Articles (Render dynamically up to visible slice) */}
         {displayedSecondary.map((article, index) => {
-          // Asymmetrically size secondary articles for design flow
-          const spanClass = index % 3 === 0 
-            ? 'md:col-span-2 md:row-span-1' 
-            : 'md:col-span-1 md:row-span-1';
+          const spanClass = 'md:col-span-1 md:row-span-1';
             
           return (
             <BentoCard

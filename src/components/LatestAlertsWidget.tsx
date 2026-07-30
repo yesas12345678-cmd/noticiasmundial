@@ -48,7 +48,7 @@ export default function LatestAlertsWidget() {
       </div>
 
       {/* Alerts List */}
-      <div className="p-4 flex-grow space-y-3 max-h-[610px] overflow-y-auto custom-scrollbar">
+      <div className="p-4 flex-grow space-y-3 max-h-[520px] overflow-y-auto custom-scrollbar">
         {alerts.map((alert) => (
           <div
             key={alert.id}

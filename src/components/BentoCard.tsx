@@ -55,9 +55,6 @@ export default function BentoCard({
       <span className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-purple-500/0 group-hover:border-purple-400/80 transition-all duration-300 pointer-events-none rounded-bl" />
       <span className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-purple-500/0 group-hover:border-purple-400/80 transition-all duration-300 pointer-events-none rounded-br" />
 
-      {/* Cyberpunk grid overlay for cards */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f293708_1px,transparent_1px),linear-gradient(to_bottom,#1f293708_1px,transparent_1px)] bg-[size:16px_16px] -z-10 pointer-events-none" />
-
       {/* Background Image with Dark Gradient Overlay */}
       {imageUrl && (
         <div className="absolute inset-0 -z-20 overflow-hidden">
