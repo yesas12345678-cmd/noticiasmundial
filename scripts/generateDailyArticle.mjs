@@ -237,19 +237,6 @@ function getMadridTimeInfo() {
   return { currentHour, madridDate };
 }
 
-// Generate 2 unique random hours between 9 and 21
-function generateRandomHours() {
-  const allHours = [];
-  for (let h = 9; h <= 21; h++) {
-    allHours.push(h);
-  }
-  for (let i = allHours.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [allHours[i], allHours[j]] = [allHours[j], allHours[i]];
-  }
-  return allHours.slice(0, 2).sort((a, b) => a - b);
-}
-
 async function main() {
   const force = process.argv.includes('--force') || process.argv.includes('--no-delay');
   
@@ -258,7 +245,7 @@ async function main() {
     console.log(`Current Madrid Date: ${madridDate}, Hour: ${currentHour}`);
 
     const clientCheck = await pool.connect();
-    let scheduledHours = [];
+    let scheduledHours = [8, 11, 14, 17, 20];
     try {
       await clientCheck.query(`
         CREATE TABLE IF NOT EXISTS daily_generation_schedule (
@@ -276,20 +263,10 @@ async function main() {
         );
       `);
 
-      const { rows: existingSchedule } = await clientCheck.query(
-        'SELECT hours FROM daily_generation_schedule WHERE scheduled_date = $1',
-        [madridDate]
+      await clientCheck.query(
+        'INSERT INTO daily_generation_schedule (scheduled_date, hours) VALUES ($1, $2) ON CONFLICT (scheduled_date) DO UPDATE SET hours = EXCLUDED.hours',
+        [madridDate, scheduledHours]
       );
-
-      if (existingSchedule.length === 0) {
-        scheduledHours = generateRandomHours();
-        await clientCheck.query(
-          'INSERT INTO daily_generation_schedule (scheduled_date, hours) VALUES ($1, $2) ON CONFLICT (scheduled_date) DO UPDATE SET hours = EXCLUDED.hours',
-          [madridDate, scheduledHours]
-        );
-      } else {
-        scheduledHours = existingSchedule[0].hours;
-      }
     } catch (err) {
       console.error("Database check error:", err.message);
     } finally {
@@ -297,7 +274,7 @@ async function main() {
     }
 
     if (!scheduledHours.includes(currentHour)) {
-      console.log(`Current hour (${currentHour}) is not in today's scheduled hours. Exiting.`);
+      console.log(`Current hour (${currentHour}) is not in today's scheduled hours [8, 11, 14, 17, 20]. Exiting.`);
       process.exit(0);
     }
   }
@@ -424,14 +401,25 @@ async function main() {
     const slug = article.slug || article.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     article.slug = slug;
 
-    console.log(`Ready to generate content for Article ID ${article.id}: "${article.title}"`);
+    // Define schedule configurations according to the editorial pipeline
+    const scheduleConfigs = {
+      8: { type: "Pilar / Guía Definitiva", wordMin: 2000, wordMax: 2500, instructions: "Término principal transaccional o informativo amplio." },
+      11: { type: "Tutorial Paso a Paso / 'Cómo hacer'", wordMin: 1500, wordMax: 1800, instructions: "Intención de búsqueda de resolución de problemas inmediatos." },
+      14: { type: "Comparativa / Lista Recomendada (Listicle)", wordMin: 1500, wordMax: 2000, instructions: "Formato estructurado con tablas y pros/contras." },
+      17: { type: "Caso Práctico / Resolución de Problema Específico", wordMin: 1200, wordMax: 1500, instructions: "Enfoque Long-Tail de conversión rápida." },
+      20: { type: "Tendencias / Preguntas Frecuentes (FAQ / Tendencia del Sector)", wordMin: 1200, wordMax: 1500, instructions: "Formato rápido optimizado para Google Featured Snippets y Discover." }
+    };
+
+    const config = scheduleConfigs[currentHour] || scheduleConfigs[8];
+
+    console.log(`Ready to generate content for Article ID ${article.id}: "${article.title}" (Type: ${config.type}, Limits: ${config.wordMin}-${config.wordMax} words)`);
 
     // Prepare prompt
     let promptText = templateText;
     promptText = promptText.replace('[INSERTAR NICHO O SECTOR AQUÍ]', `Noticias del acontecer diario y actualidad mundial - Categoría: ${article.category}`);
     promptText = promptText.replace('[INSERTAR TÍTULO AQUÍ]', article.title);
     promptText = promptText.replace('[INSERTAR KEYWORDS AQUÍ]', article.keyword || '');
-    promptText = promptText.replace('[OPCIONAL: INSERTAR DETALLES ADICIONALES]', `Detalles: Artículo periodístico de actualidad mundial.`);
+    promptText = promptText.replace('[OPCIONAL: INSERTAR DETALLES ADICIONALES]', `Detalles: Artículo periodístico de actualidad mundial. Tipo de contenido: ${config.type}.`);
 
     let parsed = null;
     let attempt = 0;
@@ -453,7 +441,53 @@ async function main() {
             messages: [
               {
                 role: 'system',
-                content: 'Eres un redactor experto en SEO, periodismo internacional y EEAT. Debes responder únicamente con el objeto JSON solicitado, sin explicaciones ni markdown que lo envuelva. Tu artículo debe ser extremadamente detallado y tener obligatoriamente entre 2200 y 2800 palabras de texto legible (excluyendo etiquetas HTML).'
+                content: `
+# SYSTEM PROMPT: DIRECTOR EDITORIAL DE ALTO RENDIMIENTO & MAESTRO SEO (PIPELINE 5 ARTÍCULOS/DÍA)
+
+## ROLE & PROFILE
+Eres un Director Editorial Senior, Especialista en SEO On-Page/EEAT (Experiencia, Pericia, Autoridad y Confiabilidad) y Arquitecto de Contenidos Digitales. Tu objetivo exclusivo es generar e implementar diariamente un pipeline de artículos únicos, exhaustivos, optimizados para buscadores y con tono humano natural, listos para su publicación directa.
+
+## OBJETIVO OPERATIVO DE ESTE ARTÍCULO (Hora Programada: ${currentHour}:00)
+- Tipo de Artículo: ${config.type}
+- Extensión requerida: estrictamente entre ${config.wordMin} y ${config.wordMax} palabras de texto legible (excluyendo etiquetas HTML).
+- Directrices temáticas: ${config.instructions}
+
+## MATRIZ DE EJECUCIÓN PASO A PASO (POR CADA ARTÍCULO)
+
+### PASO 1: ANÁLISIS DE INTENCIÓN Y PALABRAS CLAVE
+- Palabra clave principal: Ubicada naturalmente en H1, primer párrafo, un H2 y meta datos.
+- Palabras clave LSI / Semánticas (mínimo 8-12): Integradas de forma fluida a lo largo del texto.
+- Intención de búsqueda: Adaptar la estructura.
+
+### PASO 2: ESTRUCTURA HIERÁRQUICA HTML (OUTLINE SEO)
+- H1: Título magnético, < 65 caracteres, incluye palabra clave principal y disparador emocional o numérico.
+- H2: Entre 4 y 7 secciones principales ordenadas lógicamente.
+- H3: Subsecciones detalladas dentro de cada H2 cuando sea necesario.
+- Índice de Contenidos (Table of Contents) en HTML semánticamente estructurado.
+
+### PASO 3: REDACCIÓN DE ALTO IMPACTO (ANTI-AI PATTERN)
+- Regla de estilo HUMANO:
+  - Prohibidas muletillas de IA (Ej: "En el acelerado mundo actual", "En conclusión", "Es fundamental recordar", "Desbloquea el potencial", "En resumen").
+  - Usa sintaxis variada (frases cortas de impacto alternadas con explicaciones desarrolladas).
+  - Tono: Profesional, directo, empático, de autoridad pero accesible.
+  - Formato dinámico: Uso de negritas estratégicas, listas con viñetas (<ul>, <ol>), citas destacadas (<blockquote>) y tablas comparativas (<table>).
+
+### PASO 4: INTEGRACIÓN DE MULTIMEDIA Y PROMPTS VISUALES
+Usa indicaciones semánticas claras y etiquetas alt optimizadas para SEO.
+
+### PASO 5: METADATOS Y RICH SNIPPETS
+Proporcionarás un bloque JSON con:
+- title: Título del artículo.
+- meta_title: Max 60 caracteres (incluye palabra clave).
+- meta_description: Max 155 caracteres con llamada a la acción (CTA).
+- excerpt: Resumen corto.
+- content: El cuerpo del artículo entregado estrictamente en HTML semántico puro (sin etiquetas html, head o body). Utiliza clases HTML y Tailwind CSS muy concisas y eficientes para no exceder los límites de tokens y evitar respuestas truncadas.
+
+## REGLAS STRICTAS DE CALIDAD Y SEGURIDAD
+1. Veracidad de Datos.
+2. Cierre sin Clichés (no uses 'En resumen' ni 'Conclusión').
+3. Optimización Featured Snippet: En el primer H2, responder directamente a la pregunta principal en un párrafo conciso de 40-50 palabras en formato definición/respuesta directa.
+                `.trim()
               },
               {
                 role: 'user',
@@ -487,10 +521,10 @@ async function main() {
         const wordCount = textOnly.trim().split(/\s+/).filter(w => w.length > 0).length;
         console.log(`Actual word count: ${wordCount} words.`);
 
-        if (wordCount < 2000 || wordCount > 3000) {
-          console.warn(`Warning: Word count ${wordCount} is outside the 2000-3000 range.`);
+        if (wordCount < config.wordMin || wordCount > config.wordMax) {
+          console.warn(`Warning: Word count ${wordCount} is outside the ${config.wordMin}-${config.wordMax} range.`);
           if (attempt < maxAttempts) {
-            currentPrompt = `${promptText}\n\n[SISTEMA: El resultado anterior tenía ${wordCount} palabras. Es OBLIGATORIO que el artículo tenga estrictamente entre 2000 y 3000 palabras de texto legible (excluyendo etiquetas HTML). Por favor, ajusta la extensión de las secciones para cumplir exactamente con este rango.]`;
+            currentPrompt = `${promptText}\n\n[SISTEMA: El resultado anterior tenía ${wordCount} palabras. Es OBLIGATORIO que el artículo tenga estrictamente entre ${config.wordMin} y ${config.wordMax} palabras de texto legible. Por favor, ajusta la extensión de las secciones para cumplir exactamente con este rango sin truncar la respuesta.]`;
             continue;
           } else {
             console.log("Saving article anyway despite word count warning on last attempt.");

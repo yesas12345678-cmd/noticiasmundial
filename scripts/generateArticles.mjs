@@ -278,7 +278,7 @@ async function main() {
               messages: [
                 {
                   role: 'system',
-                  content: 'Eres un redactor experto en SEO, periodismo internacional y EEAT. Debes responder únicamente con el objeto JSON solicitado, sin explicaciones ni markdown que lo envuelva. Tu artículo debe ser extremadamente detallado y tener obligatoriamente entre 2300 y 3000 palabras de texto legible (excluyendo etiquetas HTML).'
+                  content: 'Eres un redactor experto en SEO, periodismo internacional y EEAT. Debes responder únicamente con el objeto JSON solicitado, sin explicaciones ni markdown que lo envuelva. Tu artículo debe ser extremadamente detallado y tener obligatoriamente entre 2300 y 2500 palabras de texto legible (excluyendo etiquetas HTML). Utiliza clases HTML y Tailwind CSS muy concisas y eficientes para evitar exceder el límite de tokens de respuesta (4096 tokens) y que el JSON se trunque.'
                 },
                 {
                   role: 'user',
@@ -317,7 +317,7 @@ async function main() {
           if (wordCount < 2300 || wordCount > 3000) {
             console.warn(`Warning: Word count ${wordCount} is outside the 2300-3000 range.`);
             if (attempt < maxAttempts) {
-              currentPrompt = `${promptText}\n\n[SISTEMA: El resultado anterior tenía ${wordCount} palabras. Es OBLIGATORIO que el artículo tenga estrictamente entre 2300 y 3000 palabras de texto legible (excluyendo etiquetas HTML). Por favor, ajusta la extensión de las secciones para cumplir exactamente con este rango.]`;
+              currentPrompt = `${promptText}\n\n[SISTEMA: El resultado anterior tenía ${wordCount} palabras. Es OBLIGATORIO que el artículo tenga estrictamente entre 2300 y 2500 palabras de texto legible. Por favor, ajusta la extensión de las secciones para cumplir exactamente con este rango sin truncar la respuesta.]`;
               continue;
             } else {
               console.log("Saving article anyway despite word count warning on last attempt.");
