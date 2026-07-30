@@ -25,19 +25,19 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
           
-          {/* Brand/Niche Column */}
+          {/* Brand/Niche Column (Sobre Nosotros) */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <div className="h-2 w-2 rounded-full bg-purple-500 animate-pulse" />
               <span className="font-mono font-bold tracking-widest text-white text-sm">
-                NOTICIAS MUNDIAL
+                SOBRE NOSOTROS
               </span>
             </div>
-            <p className="text-xs text-zinc-500 max-w-sm leading-relaxed">
-              El centro de control informativo independiente más avanzado de noticias mundiales y actualidad global. Cobertura analítica masiva y alertas de última hora en tiempo real.
+            <p className="text-xs text-zinc-400 max-w-md leading-relaxed font-sans">
+              <strong>Red Informativa Independiente:</strong> Somos un colectivo global de periodistas independientes y analistas de información. Nuestro único fin es reportar con absoluta libertad, inmediatez y rigor las noticias de actualidad internacional, economía, tecnología, cultura y deportes de todo el mundo.
             </p>
-            <div className="text-[10px] font-mono text-zinc-600 bg-zinc-900/40 border border-zinc-900/60 p-2.5 rounded-lg inline-block">
-              // CLASIFICACIÓN DE RED: PÚBLICA e INFORMATIVA
+            <div className="text-[10px] font-mono text-zinc-650 bg-zinc-900/40 border border-zinc-900/60 p-2.5 rounded-lg inline-block">
+              // RED DE REDACCIÓN GLOBAL | 100% INFORMATIVO
             </div>
           </div>
 

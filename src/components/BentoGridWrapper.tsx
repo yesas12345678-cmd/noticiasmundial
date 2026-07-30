@@ -26,9 +26,8 @@ export default function BentoGridWrapper({ articles }: BentoGridWrapperProps) {
   // 1. Hero card (counts as 1)
   // 2. Live results widget (counts as 1)
   // 3. Player stats widget (counts as 1)
-  // 4. Sobre nosotros (counts as 1)
-  // So we show up to `visibleCount - 4` news articles from `otherArticles`.
-  const displayedNewsCount = Math.max(0, visibleCount - 4);
+  // So we show up to `visibleCount - 3` news articles from `otherArticles`.
+  const displayedNewsCount = Math.max(0, visibleCount - 3);
   const displayedSecondary = otherArticles.slice(0, displayedNewsCount);
 
   // Check if there are more articles to load
@@ -76,33 +75,6 @@ export default function BentoGridWrapper({ articles }: BentoGridWrapperProps) {
         >
           <LatestAlertsWidget />
         </BentoCard>
-
-        {/* 4. Sobre Nosotros (Integrated Bento Block) */}
-        <div className="group relative overflow-hidden rounded-2xl border border-purple-900/40 bg-gradient-to-br from-purple-950/20 to-zinc-950/80 p-5 flex flex-col justify-between md:col-span-1 md:row-span-1 shadow-neon-green/5 hover:border-purple-500/40 transition-all duration-300">
-          <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
-            <ShieldCheck className="h-24 w-24 text-purple-400" />
-          </div>
-          
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <div className="h-1.5 w-1.5 rounded-full bg-purple-500 animate-pulse" />
-              <span className="text-[9px] font-mono font-bold tracking-widest text-purple-400 uppercase">
-                SOBRE NOSOTROS
-              </span>
-            </div>
-            <h4 className="text-sm font-bold tracking-tight text-white uppercase">
-              Red Informativa Independiente
-            </h4>
-            <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-              Somos un colectivo global de periodistas independientes y analistas de información. Nuestro único fin es reportar con absoluta libertad, inmediatez y rigor las noticias de actualidad internacional, economía, tecnología, cultura y deportes de todo el mundo.
-            </p>
-          </div>
-          
-          <div className="flex items-center justify-between border-t border-purple-950/40 pt-3 mt-4 text-[9px] font-mono text-zinc-500">
-            <span>RED DE REDACCIÓN GLOBAL</span>
-            <span className="text-purple-500 font-bold">100% INFORMATIVO</span>
-          </div>
-        </div>
 
         {/* 5. Additional Articles (Render dynamically up to visible slice) */}
         {displayedSecondary.map((article, index) => {
