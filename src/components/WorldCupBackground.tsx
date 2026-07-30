@@ -41,10 +41,10 @@ export default function WorldCupBackground() {
   ];
 
   return (
-    <div className="fixed inset-0 -z-50 overflow-hidden pointer-events-none bg-[#09090b]">
+    <div className="fixed inset-0 -z-50 overflow-hidden pointer-events-none bg-[#f9fafb]">
       {/* Background cyber grid & network lines */}
       <svg
-        className="w-full h-full opacity-35 filter saturate-[1.2]"
+        className="w-full h-full opacity-25 filter saturate-[1.0]"
         viewBox="0 0 1000 600"
         preserveAspectRatio="xMidYMid slice"
         xmlns="http://www.w3.org/2000/svg"
@@ -86,10 +86,10 @@ export default function WorldCupBackground() {
         ))}
 
         {/* Global network circles representing latitude/longitude lines */}
-        <circle cx="500" cy="300" r="280" fill="none" stroke="rgba(147, 51, 234, 0.02)" strokeWidth="1" />
-        <circle cx="500" cy="300" r="420" fill="none" stroke="rgba(59, 130, 246, 0.02)" strokeWidth="1" />
-        <ellipse cx="500" cy="300" rx="450" ry="180" fill="none" stroke="rgba(147, 51, 234, 0.015)" strokeWidth="1" />
-        <ellipse cx="500" cy="300" rx="180" ry="280" fill="none" stroke="rgba(59, 130, 246, 0.015)" strokeWidth="1" />
+        <circle cx="500" cy="300" r="280" fill="none" stroke="rgba(147, 51, 234, 0.03)" strokeWidth="1" />
+        <circle cx="500" cy="300" r="420" fill="none" stroke="rgba(59, 130, 246, 0.03)" strokeWidth="1" />
+        <ellipse cx="500" cy="300" rx="450" ry="180" fill="none" stroke="rgba(147, 51, 234, 0.02)" strokeWidth="1" />
+        <ellipse cx="500" cy="300" rx="180" ry="280" fill="none" stroke="rgba(59, 130, 246, 0.02)" strokeWidth="1" />
 
         {/* Definitions for Gradients */}
         <defs>
@@ -110,11 +110,11 @@ export default function WorldCupBackground() {
       <div className="absolute bottom-[-10%] right-[-10%] w-[55%] h-[55%] rounded-full bg-blue-500/5 blur-[130px] pointer-events-none" />
       <div className="absolute top-[30%] right-[10%] w-[35%] h-[35%] rounded-full bg-emerald-500/3 blur-[110px] pointer-events-none" />
 
-      {/* Dark radial overlay to ensure content readability */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(9,9,11,0.15)_0%,rgba(9,9,11,0.75)_60%,rgba(9,9,11,0.96)_95%)]" />
+      {/* Light radial overlay to ensure content readability */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.25)_0%,rgba(249,250,251,0.75)_60%,rgba(249,250,251,0.98)_95%)]" />
 
-      {/* Fine-mesh cyber grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff01_1px,transparent_1px),linear-gradient(to_bottom,#ffffff01_1px,transparent_1px)] bg-[size:32px_32px]" />
+      {/* Fine-mesh cyber grid with faint lines */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000004_1px,transparent_1px),linear-gradient(to_bottom,#00000004_1px,transparent_1px)] bg-[size:32px_32px]" />
     </div>
   );
 }

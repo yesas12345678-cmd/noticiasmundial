@@ -55,9 +55,9 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-zinc-950 text-zinc-100 font-sans selection:bg-purple-500/30 selection:text-purple-300">
+      <body className="min-h-full flex flex-col bg-[#f9fafb] text-[#09090b] font-sans selection:bg-purple-500/30 selection:text-purple-300">
         
         {/* World Cup 2026 Concentric Stripes Background */}
         <WorldCupBackground />
