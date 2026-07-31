@@ -403,11 +403,11 @@ async function main() {
 
     // Define schedule configurations according to the editorial pipeline
     const scheduleConfigs = {
-      8: { type: "Pilar / Guía Definitiva", wordMin: 2000, wordMax: 2500, instructions: "Término principal transaccional o informativo amplio." },
-      11: { type: "Tutorial Paso a Paso / 'Cómo hacer'", wordMin: 1500, wordMax: 1800, instructions: "Intención de búsqueda de resolución de problemas inmediatos." },
-      14: { type: "Comparativa / Lista Recomendada (Listicle)", wordMin: 1500, wordMax: 2000, instructions: "Formato estructurado con tablas y pros/contras." },
-      17: { type: "Caso Práctico / Resolución de Problema Específico", wordMin: 1200, wordMax: 1500, instructions: "Enfoque Long-Tail de conversión rápida." },
-      20: { type: "Tendencias / Preguntas Frecuentes (FAQ / Tendencia del Sector)", wordMin: 1200, wordMax: 1500, instructions: "Formato rápido optimizado para Google Featured Snippets y Discover." }
+      8: { type: "Pilar / Guía Definitiva", wordMin: 2200, wordMax: 3000, instructions: "Término principal transaccional o informativo amplio." },
+      11: { type: "Tutorial Paso a Paso / 'Cómo hacer'", wordMin: 2200, wordMax: 3000, instructions: "Intención de búsqueda de resolución de problemas inmediatos." },
+      14: { type: "Comparativa / Lista Recomendada (Listicle)", wordMin: 2200, wordMax: 3000, instructions: "Formato estructurado con tablas y pros/contras." },
+      17: { type: "Caso Práctico / Resolución de Problema Específico", wordMin: 2200, wordMax: 3000, instructions: "Enfoque Long-Tail de conversión rápida." },
+      20: { type: "Tendencias / Preguntas Frecuentes (FAQ / Tendencia del Sector)", wordMin: 2200, wordMax: 3000, instructions: "Formato rápido optimizado para Google Featured Snippets y Discover." }
     };
 
     const config = scheduleConfigs[currentHour] || scheduleConfigs[8];

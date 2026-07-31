@@ -352,11 +352,11 @@ Devuelve únicamente el objeto JSON.
     const dateYMD = targetDate.toISOString().slice(0, 10); // YYYY-MM-DD
 
     const pipelineSchedule = [
-      { hour: 8, time: "08:00:00", type: "Pilar / Guía Definitiva", wordMin: 2000, wordMax: 2500, instructions: "Término principal transaccional o informativo amplio." },
-      { hour: 11, time: "11:00:00", type: "Tutorial Paso a Paso / 'Cómo hacer'", wordMin: 1500, wordMax: 1800, instructions: "Intención de búsqueda de resolución de problemas inmediatos." },
-      { hour: 14, time: "14:00:00", type: "Comparativa / Lista Recomendada (Listicle)", wordMin: 1500, wordMax: 2000, instructions: "Formato estructurado con tablas y pros/contras." },
-      { hour: 17, time: "17:00:00", type: "Caso Práctico / Resolución de Problema Específico", wordMin: 1200, wordMax: 1500, instructions: "Enfoque Long-Tail de conversión rápida." },
-      { hour: 20, time: "20:00:00", type: "Tendencias / Preguntas Frecuentes (FAQ / Tendencia del Sector)", wordMin: 1200, wordMax: 1500, instructions: "Formato rápido optimizado para Google Featured Snippets y Discover." }
+      { hour: 8, time: "08:00:00", type: "Pilar / Guía Definitiva", wordMin: 2200, wordMax: 3000, instructions: "Término principal transaccional o informativo amplio." },
+      { hour: 11, time: "11:00:00", type: "Tutorial Paso a Paso / 'Cómo hacer'", wordMin: 2200, wordMax: 3000, instructions: "Intención de búsqueda de resolución de problemas inmediatos." },
+      { hour: 14, time: "14:00:00", type: "Comparativa / Lista Recomendada (Listicle)", wordMin: 2200, wordMax: 3000, instructions: "Formato estructurado con tablas y pros/contras." },
+      { hour: 17, time: "17:00:00", type: "Caso Práctico / Resolución de Problema Específico", wordMin: 2200, wordMax: 3000, instructions: "Enfoque Long-Tail de conversión rápida." },
+      { hour: 20, time: "20:00:00", type: "Tendencias / Preguntas Frecuentes (FAQ / Tendencia del Sector)", wordMin: 2200, wordMax: 3000, instructions: "Formato rápido optimizado para Google Featured Snippets y Discover." }
     ];
 
     const usedImages = await getUsedImages(client);

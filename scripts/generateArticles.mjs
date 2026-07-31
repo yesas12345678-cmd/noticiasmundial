@@ -235,11 +235,25 @@ async function main() {
       limitVal = parseInt(limitArg.split('=')[1], 10);
     }
 
-    // Fetch only empty articles to generate (skipping already generated ones)
-    const queryStr = `SELECT id, title, keyword, category, excerpt, published_at FROM articles WHERE content IS NULL OR content = '' OR length(content) <= 100 ORDER BY id ASC` + (limitVal ? ` LIMIT ${limitVal}` : '');
-    const { rows: articlesToGenerate } = await pool.query(queryStr);
+    // Fetch all articles and filter in JS to regenerate empty or too-short (< 2200 words) articles
+    const queryStr = `SELECT id, title, keyword, category, excerpt, content, published_at FROM articles ORDER BY id::int ASC`;
+    const { rows: allArticles } = await pool.query(queryStr);
 
-    console.log(`Found ${articlesToGenerate.length} empty articles to generate (Limit: ${limitVal || 'None'}).`);
+    const articlesToGenerate = [];
+    for (const article of allArticles) {
+      const content = article.content || '';
+      const textOnly = content.replace(/<[^>]*>/g, ' ');
+      const wordCount = textOnly.trim().split(/\s+/).filter(Boolean).length;
+      if (wordCount < 2200) {
+        articlesToGenerate.push(article);
+      }
+    }
+
+    if (limitVal !== null) {
+      articlesToGenerate.splice(limitVal);
+    }
+
+    console.log(`Found ${articlesToGenerate.length} articles to generate/regenerate (Limit: ${limitVal || 'None'}).`);
 
     const usedImages = await getUsedImages(pool);
 
@@ -277,7 +291,7 @@ async function main() {
               messages: [
                 {
                   role: 'system',
-                  content: 'Eres un redactor experto en SEO, periodismo internacional y EEAT. Debes responder únicamente con el objeto JSON solicitado, sin explicaciones ni markdown que lo envuelva. Tu artículo debe ser extremadamente detallado y tener obligatoriamente entre 2300 y 2500 palabras de texto legible (excluyendo etiquetas HTML). Utiliza clases HTML y Tailwind CSS muy concisas y eficientes para evitar exceder el límite de tokens de respuesta (4096 tokens) y que el JSON se trunque.'
+                  content: 'Eres un redactor experto en SEO, periodismo internacional y EEAT. Debes responder únicamente con el objeto JSON solicitado, sin explicaciones ni markdown que lo envuelva. Tu artículo debe ser extremadamente detallado y tener obligatoriamente entre 2200 y 3000 palabras de texto legible (excluyendo etiquetas HTML). Utiliza clases HTML y Tailwind CSS muy concisas y eficientes para evitar exceder el límite de tokens de respuesta (4096 tokens) y que el JSON se trunque.'
                 },
                 {
                   role: 'user',
@@ -313,10 +327,10 @@ async function main() {
           const wordCount = textOnly.trim().split(/\s+/).filter(w => w.length > 0).length;
           console.log(`Actual word count: ${wordCount} words.`);
 
-          if (wordCount < 2300 || wordCount > 3000) {
-            console.warn(`Warning: Word count ${wordCount} is outside the 2300-3000 range.`);
+          if (wordCount < 2200 || wordCount > 3000) {
+            console.warn(`Warning: Word count ${wordCount} is outside the 2200-3000 range.`);
             if (attempt < maxAttempts) {
-              currentPrompt = `${promptText}\n\n[SISTEMA: El resultado anterior tenía ${wordCount} palabras. Es OBLIGATORIO que el artículo tenga estrictamente entre 2300 y 2500 palabras de texto legible. Por favor, ajusta la extensión de las secciones para cumplir exactamente con este rango sin truncar la respuesta.]`;
+              currentPrompt = `${promptText}\n\n[SISTEMA: El resultado anterior tenía ${wordCount} palabras. Es OBLIGATORIO que el artículo tenga estrictamente entre 2200 y 3000 palabras de texto legible. Por favor, ajusta la extensión de las secciones para cumplir exactamente con este rango sin truncar la respuesta.]`;
               continue;
             } else {
               console.log("Saving article anyway despite word count warning on last attempt.");
