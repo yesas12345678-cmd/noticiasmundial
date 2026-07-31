@@ -124,10 +124,10 @@ const PHOTO_ID_POOLS = {
   ],
 };
 
-async function getUsedImages(client) {
+async function getUsedImages(db) {
   const used = new Set();
   try {
-    const { rows } = await client.query('SELECT image_url, content FROM articles');
+    const { rows } = await db.query('SELECT image_url, content FROM articles');
     for (const row of rows) {
       if (row.image_url) {
         used.add(row.image_url);
@@ -227,7 +227,6 @@ async function getUniqueImageForScript(category, usedImages) {
 }
 
 async function main() {
-  const client = await pool.connect();
   try {
     // Support optional --limit argument
     let limitVal = null;
@@ -238,11 +237,11 @@ async function main() {
 
     // Fetch only empty articles to generate (skipping already generated ones)
     const queryStr = `SELECT id, title, keyword, category, excerpt, published_at FROM articles WHERE content IS NULL OR content = '' OR length(content) <= 100 ORDER BY id ASC` + (limitVal ? ` LIMIT ${limitVal}` : '');
-    const { rows: articlesToGenerate } = await client.query(queryStr);
+    const { rows: articlesToGenerate } = await pool.query(queryStr);
 
     console.log(`Found ${articlesToGenerate.length} empty articles to generate (Limit: ${limitVal || 'None'}).`);
 
-    const usedImages = await getUsedImages(client);
+    const usedImages = await getUsedImages(pool);
 
     for (let i = 0; i < articlesToGenerate.length; i++) {
       const article = articlesToGenerate[i];
@@ -363,7 +362,7 @@ async function main() {
         }
 
         console.log("Updating database...");
-        await client.query(
+        await pool.query(
           `UPDATE articles 
            SET title = $1, meta_title = $2, meta_description = $3, excerpt = $4, content = $5, image_url = $6 
            WHERE id = $7`,
@@ -391,7 +390,6 @@ async function main() {
   } catch (err) {
     console.error("Error running generation loop:", err);
   } finally {
-    client.release();
     await pool.end();
   }
 }
