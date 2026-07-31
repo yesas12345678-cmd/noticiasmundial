@@ -236,7 +236,7 @@ async function main() {
     }
 
     // Fetch all articles and filter in JS to regenerate empty or too-short (< 2200 words) articles
-    const queryStr = `SELECT id, title, keyword, category, excerpt, content, published_at FROM articles ORDER BY id::int ASC`;
+    const queryStr = `SELECT id, title, keyword, category, excerpt, content, published_at FROM articles ORDER BY id::int DESC`;
     const { rows: allArticles } = await pool.query(queryStr);
 
     const articlesToGenerate = [];
