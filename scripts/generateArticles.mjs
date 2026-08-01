@@ -278,6 +278,7 @@ async function main() {
 
       while (attempt < maxAttempts) {
         attempt++;
+        parsed = null; // Reset parsed so we don't save a short article if later attempts fail with JSON errors
         try {
           console.log(`Calling DeepSeek API (Attempt ${attempt}/${maxAttempts})...`);
           const response = await fetch('https://api.deepseek.com/chat/completions', {
@@ -291,13 +292,14 @@ async function main() {
               messages: [
                 {
                   role: 'system',
-                  content: 'Eres un redactor experto en SEO, periodismo internacional y EEAT. Debes responder únicamente con el objeto JSON solicitado, sin explicaciones ni markdown que lo envuelva. Tu artículo debe ser extremadamente detallado y tener obligatoriamente entre 2200 y 3000 palabras de texto legible (excluyendo etiquetas HTML). Utiliza clases HTML y Tailwind CSS muy concisas y eficientes para evitar exceder el límite de tokens de respuesta (4096 tokens) y que el JSON se trunque.'
+                  content: 'Eres un redactor experto en SEO, periodismo internacional y EEAT. Debes responder únicamente con el objeto JSON solicitado, sin explicaciones ni markdown que lo envuelva. Tu artículo debe ser extremadamente detallado y tener obligatoriamente entre 2200 y 2400 palabras de texto legible (excluyendo etiquetas HTML). REGLA CRÍTICA DE DISEÑO CONCISO: No uses clases CSS de Tailwind complejas ni divs innecesarios. Usa etiquetas HTML básicas como <p>, <h2>, <ul>, y <table> con un estilo mínimo o clases de Tailwind sumamente reducidas (como "font-bold text-lg") para evitar exceder el límite de tokens de respuesta (4096 tokens) y que la respuesta JSON se corte o trunque.'
                 },
                 {
                   role: 'user',
                   content: currentPrompt
                 }
               ],
+              temperature: 0.2,
               response_format: {
                 type: 'json_object'
               }

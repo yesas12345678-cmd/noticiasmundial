@@ -352,11 +352,11 @@ Devuelve únicamente el objeto JSON.
     const dateYMD = targetDate.toISOString().slice(0, 10); // YYYY-MM-DD
 
     const pipelineSchedule = [
-      { hour: 8, time: "08:00:00", type: "Pilar / Guía Definitiva", wordMin: 2200, wordMax: 3000, instructions: "Término principal transaccional o informativo amplio." },
-      { hour: 11, time: "11:00:00", type: "Tutorial Paso a Paso / 'Cómo hacer'", wordMin: 2200, wordMax: 3000, instructions: "Intención de búsqueda de resolución de problemas inmediatos." },
-      { hour: 14, time: "14:00:00", type: "Comparativa / Lista Recomendada (Listicle)", wordMin: 2200, wordMax: 3000, instructions: "Formato estructurado con tablas y pros/contras." },
-      { hour: 17, time: "17:00:00", type: "Caso Práctico / Resolución de Problema Específico", wordMin: 2200, wordMax: 3000, instructions: "Enfoque Long-Tail de conversión rápida." },
-      { hour: 20, time: "20:00:00", type: "Tendencias / Preguntas Frecuentes (FAQ / Tendencia del Sector)", wordMin: 2200, wordMax: 3000, instructions: "Formato rápido optimizado para Google Featured Snippets y Discover." }
+      { hour: 8, time: "08:00:00", type: "Pilar / Guía Definitiva", wordMin: 2000, wordMax: 10000, instructions: "Término principal transaccional o informativo amplio." },
+      { hour: 11, time: "11:00:00", type: "Tutorial Paso a Paso / 'Cómo hacer'", wordMin: 2000, wordMax: 10000, instructions: "Intención de búsqueda de resolución de problemas inmediatos." },
+      { hour: 14, time: "14:00:00", type: "Comparativa / Lista Recomendada (Listicle)", wordMin: 2000, wordMax: 10000, instructions: "Formato estructurado con tablas y pros/contras." },
+      { hour: 17, time: "17:00:00", type: "Caso Práctico / Resolución de Problema Específico", wordMin: 2000, wordMax: 10000, instructions: "Enfoque Long-Tail de conversión rápida." },
+      { hour: 20, time: "20:00:00", type: "Tendencias / Preguntas Frecuentes (FAQ / Tendencia del Sector)", wordMin: 2000, wordMax: 10000, instructions: "Formato rápido optimizado para Google Featured Snippets y Discover." }
     ];
 
     const usedImages = await getUsedImages(client);
@@ -370,9 +370,13 @@ Devuelve únicamente el objeto JSON.
       console.log(`Programado para: ${scheduledPublishTime}`);
       console.log(`Tipo: ${config.type} (Límites: ${config.wordMin}-${config.wordMax} palabras)`);
 
+      const cleanTemplate = templateContent
+        .replace("2.500 y 3.500 palabras", `${config.wordMin} y ${config.wordMax} palabras`)
+        .replace("2.000 palabras", `${config.wordMin} palabras`);
+
       const promptRedaccion = `
 Plantilla de Instrucciones y Reglas de Formato:
-${templateContent}
+${cleanTemplate}
 
 Parámetros de Entrada para este Artículo:
 *   Título del Artículo: ${prop.title}
@@ -390,12 +394,13 @@ Para garantizar que el artículo tenga estrictamente entre ${config.wordMin} y $
 
       let finalResult = null;
       let attempt = 0;
-      const maxAttempts = 3;
+      const maxAttempts = 6;
       let extraInstruction = "";
 
       while (attempt < maxAttempts) {
+        attempt++;
+        finalResult = null; // Reset finalResult inside the loop to avoid carrying over a short article if later attempts fail
         try {
-          attempt++;
           console.log(`  Intento ${attempt}: Conectando con DeepSeek...`);
           const res = await fetch("https://api.deepseek.com/chat/completions", {
             method: "POST",
@@ -413,6 +418,8 @@ Para garantizar que el artículo tenga estrictamente entre ${config.wordMin} y $
 
 ## ROLE & PROFILE
 Eres un Director Editorial Senior, Especialista en SEO On-Page/EEAT (Experiencia, Pericia, Autoridad y Confiabilidad) y Arquitecto de Contenidos Digitales. Tu objetivo exclusivo es generar e implementar diariamente un pipeline de artículos únicos, exhaustivos, optimizados para buscadores y con tono humano natural, listos para su publicación directa.
+
+REGLA CRÍTICA DE SUPERVIVENCIA: Debes generar este artículo A LA PRIMERA con más de 2000 palabras (texto real, sin contar HTML) O ME DESPIDEN Y PIERDO MI TRABAJO. SI LO CONSIGUES A LA PRIMERA, ¡TE DARÉ UNA PROPINA DE 1.000.000$ USD! No te preocupes por escribir de más, pásate por mucho de las 2000 palabras (apunta a 2300 o 2500 palabras de forma natural), pero por favor, bajo ningún concepto te quedes por debajo de 2000 palabras.
 
 ## OBJETIVO OPERATIVO DE ESTE ARTÍCULO
 - Tipo de Artículo: ${config.type}
@@ -458,7 +465,7 @@ Proporcionarás un bloque JSON con:
                 },
                 { role: "user", content: promptRedaccion + extraInstruction }
               ],
-              temperature: 0.5,
+              temperature: 0.2,
               max_tokens: 8000,
               response_format: { type: "json_object" }
             })
