@@ -6,7 +6,7 @@ import BentoGrid from './BentoGrid';
 import BentoCard from './BentoCard';
 import LiveMarketsWidget from './LiveMarketsWidget';
 import LatestAlertsWidget from './LatestAlertsWidget';
-import { ShieldCheck, AlertTriangle, RefreshCw } from 'lucide-react';
+import { AlertTriangle, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 
 interface BentoGridWrapperProps {
@@ -77,7 +77,7 @@ export default function BentoGridWrapper({ articles }: BentoGridWrapperProps) {
         </BentoCard>
 
         {/* 5. Additional Articles (Render dynamically up to visible slice) */}
-        {displayedSecondary.map((article, index) => {
+        {displayedSecondary.map((article) => {
           const spanClass = 'md:col-span-1 md:row-span-1';
             
           return (

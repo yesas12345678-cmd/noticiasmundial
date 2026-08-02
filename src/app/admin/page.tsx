@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useTransition } from 'react';
-import { getArticlesAction, updateArticleAction, AdminArticle } from './actions';
+import { getArticlesAction, updateArticleAction, loginAction, logoutAction, checkAuthAction, AdminArticle } from './actions';
 import { 
   Lock, KeyRound, Terminal, Search, Filter, Copy, Edit, Eye, 
   CheckCircle, AlertCircle, Loader2, ArrowLeft, RefreshCw, FileText 
@@ -38,46 +38,69 @@ export default function AdminPage() {
   
   const [isPending, startTransition] = useTransition();
 
-  // Check sessionStorage on mount
-  useEffect(() => {
-    const auth = sessionStorage.getItem('admin_authenticated');
-    if (auth === 'true') {
-      setIsAuthenticated(true);
-      fetchArticles();
-    } else {
-      setIsLoading(false);
-    }
-  }, []);
-
   const fetchArticles = async () => {
     setIsLoading(true);
     try {
       const data = await getArticlesAction();
       setArticles(data);
-    } catch (err: any) {
-      setActionError(err.message || 'Error al obtener artículos.');
+    } catch (err) {
+      const errMsg = err instanceof Error ? err.message : 'Error al obtener artículos.';
+      setActionError(errMsg);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'Manuel1214$') {
-      sessionStorage.setItem('admin_authenticated', 'true');
-      setIsAuthenticated(true);
-      setLoginError('');
-      fetchArticles();
-    } else {
-      setLoginError('Código de acceso no autorizado. Intente de nuevo.');
+    setIsLoading(true);
+    setLoginError('');
+    try {
+      const res = await loginAction(password);
+      if (res.success) {
+        setIsAuthenticated(true);
+        setLoginError('');
+        await fetchArticles();
+      } else {
+        setLoginError(res.message);
+        setIsLoading(false);
+      }
+    } catch {
+      setLoginError('Error de conexión con el servidor.');
+      setIsLoading(false);
     }
   };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('admin_authenticated');
-    setIsAuthenticated(false);
-    setPassword('');
+  const handleLogout = async () => {
+    setIsLoading(true);
+    try {
+      await logoutAction();
+      setIsAuthenticated(false);
+      setPassword('');
+    } catch {
+      setActionError('Error al cerrar sesión.');
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  // Check auth state on mount
+  useEffect(() => {
+    const initAuth = async () => {
+      try {
+        const authed = await checkAuthAction();
+        if (authed) {
+          setIsAuthenticated(true);
+          await fetchArticles();
+        } else {
+          setIsLoading(false);
+        }
+      } catch {
+        setIsLoading(false);
+      }
+    };
+    initAuth();
+  }, []);
 
   // Helper: Count words in content body
   const getWordCount = (content: string) => {
@@ -204,7 +227,7 @@ export default function AdminPage() {
               <Lock className="h-5 w-5" />
             </div>
             <h2 className="text-xl font-bold tracking-tight text-white uppercase">Acceso Restringido</h2>
-            <span className="text-[9px] font-mono text-zinc-650 uppercase tracking-widest block">// PORTAL ADMINISTRATIVO</span>
+            <span className="text-[9px] font-mono text-zinc-650 uppercase tracking-widest block">{"// PORTAL ADMINISTRATIVO"}</span>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -275,7 +298,7 @@ export default function AdminPage() {
             <Terminal className="h-5 w-5 text-emerald-500" />
             <h1 className="text-xl font-bold tracking-tight text-white uppercase">Panel de Control Editorial</h1>
           </div>
-          <span className="text-[9px] font-mono text-zinc-550 block tracking-widest uppercase">// 50 ARTÍCULOS DETECTADOS EN SISTEMA</span>
+          <span className="text-[9px] font-mono text-zinc-550 block tracking-widest uppercase">{"// 50 ARTÍCULOS DETECTADOS EN SISTEMA"}</span>
         </div>
         <div className="flex items-center gap-2">
           <button 
@@ -377,7 +400,7 @@ export default function AdminPage() {
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20 space-y-4">
             <Loader2 className="h-8 w-8 text-emerald-500 animate-spin" />
-            <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest">// SINCRONIZANDO ARTÍCULOS</span>
+            <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest">{"// SINCRONIZANDO ARTÍCULOS"}</span>
           </div>
         ) : filteredArticles.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 space-y-3">
@@ -508,7 +531,7 @@ export default function AdminPage() {
             
             <div className="flex items-center justify-between border-b border-zinc-900 pb-4 mb-6">
               <div>
-                <span className="text-[9px] font-mono font-bold text-emerald-500 uppercase">// EDITOR DE REGISTRO</span>
+                <span className="text-[9px] font-mono font-bold text-emerald-500 uppercase">{"// EDITOR DE REGISTRO"}</span>
                 <h3 className="text-base font-bold text-white mt-1 uppercase">Editar Artículo #{editingArticle.id}</h3>
               </div>
               <button 

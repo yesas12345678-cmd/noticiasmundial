@@ -1,7 +1,11 @@
 import { Pool } from 'pg';
 import { getUniqueImage } from './imageFetcher';
 
-const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:cugh0qsq8uaeawz5@187.127.233.89:5435/postgres';
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  throw new Error('DATABASE_URL environment variable is not defined.');
+}
 
 export const pool = new Pool({
   connectionString,

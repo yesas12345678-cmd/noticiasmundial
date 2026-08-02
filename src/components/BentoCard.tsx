@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Eye, Heart, Clock, ArrowUpRight } from 'lucide-react';
-import Link from 'next/link';
+import { Clock, ArrowUpRight } from 'lucide-react';
 
 interface BentoCardProps {
   title: string;
@@ -33,10 +32,7 @@ export default function BentoCard({
   category,
   imageUrl,
   date,
-  readTime,
   trending,
-  author,
-  likes,
   className = '',
   children,
   href,

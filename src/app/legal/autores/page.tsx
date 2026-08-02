@@ -74,7 +74,7 @@ export default function AutoresPage() {
             Equipo Editorial y Autores
           </h1>
         </div>
-        <span className="text-[9px] font-mono text-zinc-550 uppercase block tracking-wider">// EXPEDIENTES DE REDACCIÓN COMPILADOS</span>
+        <span className="text-[9px] font-mono text-zinc-550 uppercase block tracking-wider">{"// EXPEDIENTES DE REDACCIÓN COMPILADOS"}</span>
       </div>
 
       {/* Authors Profiles Grid */}

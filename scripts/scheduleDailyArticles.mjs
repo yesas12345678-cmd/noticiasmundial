@@ -27,8 +27,13 @@ for (const file of envFiles) {
   }
 }
 
-const connectionString = process.env.DATABASE_URL || "postgresql://postgres:cugh0qsq8uaeawz5@187.127.233.89:5435/postgres";
+const connectionString = process.env.DATABASE_URL;
 const apiKey = process.env.DEEPSEEK_API_KEY;
+
+if (!connectionString) {
+  console.error("Error: DATABASE_URL is not defined.");
+  process.exit(1);
+}
 
 const pool = new Pool({
   connectionString,

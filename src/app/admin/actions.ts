@@ -2,6 +2,48 @@
 
 import { pool } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
+import crypto from 'crypto';
+
+const SESSION_COOKIE = 'admin_session';
+
+function getSessionSignature() {
+  const secret = process.env.SESSION_SECRET || 'noticiasmundial-session-secret-xyz-789';
+  return crypto.createHmac('sha256', secret).update('admin-logged-in').digest('hex');
+}
+
+export async function checkAuth(): Promise<boolean> {
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get(SESSION_COOKIE);
+  if (!sessionCookie) return false;
+  return sessionCookie.value === getSessionSignature();
+}
+
+export async function loginAction(password: string): Promise<{ success: boolean; message: string }> {
+  const expectedPassword = process.env.ADMIN_PASSWORD || 'Manuel1214$';
+  if (password === expectedPassword) {
+    const cookieStore = await cookies();
+    cookieStore.set(SESSION_COOKIE, getSessionSignature(), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24, // 1 day
+      path: '/',
+    });
+    return { success: true, message: 'Autenticado correctamente.' };
+  }
+  return { success: false, message: 'Código de acceso no autorizado.' };
+}
+
+export async function logoutAction(): Promise<{ success: boolean }> {
+  const cookieStore = await cookies();
+  cookieStore.delete(SESSION_COOKIE);
+  return { success: true };
+}
+
+export async function checkAuthAction(): Promise<boolean> {
+  return await checkAuth();
+}
 
 export interface AdminArticle {
   id: string;
@@ -23,6 +65,9 @@ export interface AdminArticle {
 }
 
 export async function getArticlesAction(): Promise<AdminArticle[]> {
+  if (!(await checkAuth())) {
+    throw new Error('No autorizado');
+  }
   const client = await pool.connect();
   try {
     const { rows } = await client.query('SELECT * FROM articles ORDER BY published_at DESC');
@@ -53,6 +98,9 @@ export async function updateArticleAction(
     content?: string; // allow editing the content body (word count calculation)
   }
 ): Promise<{ success: boolean; message: string }> {
+  if (!(await checkAuth())) {
+    throw new Error('No autorizado');
+  }
   const client = await pool.connect();
   try {
     // Check if the keyword would collide (except for this article)

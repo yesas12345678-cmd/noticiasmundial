@@ -142,10 +142,10 @@ async function fetchFromUnsplashAPI(category: string): Promise<string[]> {
     });
 
     if (response.ok) {
-      const data = (await response.json()) as any;
+      const data = (await response.json()) as { results?: Array<{ urls: { raw: string } }> };
       if (data && data.results) {
         console.log(`Successfully fetched ${data.results.length} images from Unsplash API for category: ${category}`);
-        return data.results.map((item: any) => `${item.urls.raw}&auto=format&fit=crop&q=80&w=1200`);
+        return data.results.map((item) => `${item.urls.raw}&auto=format&fit=crop&q=80&w=1200`);
       }
     } else {
       console.warn(`Unsplash API query failed: ${response.status} ${response.statusText}`);
@@ -160,7 +160,7 @@ async function isValidImageUrl(url: string): Promise<boolean> {
   try {
     const res = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(1500) });
     return res.status === 200;
-  } catch (err) {
+  } catch {
     return false;
   }
 }

@@ -65,7 +65,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         <div className="flex items-center justify-between border-b border-zinc-900 pb-4">
           <div>
             <span className="text-xs font-mono font-bold tracking-widest text-emerald-500 uppercase">
-              // CANAL DE COMUNICACIÓN
+              {"// CANAL DE COMUNICACIÓN"}
             </span>
             <h3 className="text-2xl font-bold tracking-tight text-white mt-1">
               Enviar Mensaje

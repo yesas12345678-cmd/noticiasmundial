@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, Suspense } from 'react';
-import { Menu, X, Globe, Activity } from 'lucide-react';
+import { Menu, X, Globe } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
@@ -13,9 +13,9 @@ function NavbarContent() {
 
   React.useEffect(() => {
     if (typeof document !== 'undefined') {
-      const savedSize = localStorage.getItem('text-size') as any;
+      const savedSize = localStorage.getItem('text-size') as 'small' | 'medium' | 'large' | 'xlarge' | null;
       if (savedSize && ['small', 'medium', 'large', 'xlarge'].includes(savedSize)) {
-        setTextSize(savedSize);
+        setTimeout(() => setTextSize(savedSize), 0);
         document.documentElement.setAttribute('data-text-size', savedSize);
       }
     }

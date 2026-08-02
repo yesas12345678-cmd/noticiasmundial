@@ -18,7 +18,7 @@ export default function CookiesPage() {
           <h1 className="text-3xl font-black tracking-tight text-white uppercase mt-2">
             Política de Cookies
           </h1>
-          <span className="text-[9px] font-mono text-zinc-550 uppercase block tracking-wider">// PANEL DE CONTROL DE RASTREO TÉCNICO</span>
+          <span className="text-[9px] font-mono text-zinc-550 uppercase block tracking-wider">{"// PANEL DE CONTROL DE RASTREO TÉCNICO"}</span>
         </div>
 
         <div className="space-y-6 text-xs text-zinc-400 leading-relaxed font-sans border-t border-zinc-900/60 pt-6">

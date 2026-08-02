@@ -37,7 +37,7 @@ export default function Footer() {
               <strong>Red Informativa Independiente:</strong> Somos un colectivo global de periodistas independientes y analistas de información. Nuestro único fin es reportar con absoluta libertad, inmediatez y rigor las noticias de actualidad internacional, economía, tecnología, cultura y deportes de todo el mundo.
             </p>
             <div className="text-[10px] font-mono text-zinc-650 bg-zinc-900/40 border border-zinc-900/60 p-2.5 rounded-lg inline-block">
-              // RED DE REDACCIÓN GLOBAL | 100% INFORMATIVO
+              {"// RED DE REDACCIÓN GLOBAL | 100% INFORMATIVO"}
             </div>
           </div>
 

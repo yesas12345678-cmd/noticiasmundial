@@ -1,23 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { ShieldAlert, Check, X, Info } from 'lucide-react';
+import { ShieldAlert, Check, Info } from 'lucide-react';
 import Link from 'next/link';
 
 export default function CookieBanner() {
   const [showBanner, setShowBanner] = useState(false);
-
-  useEffect(() => {
-    // Check if user has already made a choice
-    const consent = localStorage.getItem('cookie_consent');
-    if (!consent) {
-      setShowBanner(true);
-    } else if (consent === 'accepted') {
-      enableCookies();
-    } else {
-      disableCookies();
-    }
-  }, []);
 
   const enableCookies = () => {
     // Save consent
@@ -26,7 +14,15 @@ export default function CookieBanner() {
     // Set a tracking/analytical cookie as example
     document.cookie = "analytics_consent=true; max-age=31536000; path=/; SameSite=Lax";
     
-    // Here we would dynamically initialize Google AdSense / Analytics scripts
+    // Here we dynamically initialize Google AdSense script in a GDPR compliant way
+    if (!document.getElementById('google-adsense-script')) {
+      const script = document.createElement('script');
+      script.id = 'google-adsense-script';
+      script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5406670795382768";
+      script.async = true;
+      script.crossOrigin = "anonymous";
+      document.head.appendChild(script);
+    }
     console.log("Cookies habilitadas: Cargando scripts analíticos y publicitarios.");
   };
 
@@ -40,6 +36,18 @@ export default function CookieBanner() {
     
     console.log("Cookies rechazadas: Borrando rastros analíticos.");
   };
+
+  useEffect(() => {
+    // Check if user has already made a choice
+    const consent = localStorage.getItem('cookie_consent');
+    if (!consent) {
+      setTimeout(() => setShowBanner(true), 0);
+    } else if (consent === 'accepted') {
+      enableCookies();
+    } else {
+      disableCookies();
+    }
+  }, []);
 
   const handleAccept = () => {
     enableCookies();

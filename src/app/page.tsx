@@ -1,7 +1,8 @@
 import React from 'react';
 import { mockArticles, Article } from '../data/mockData';
 import BentoGridWrapper from '../components/BentoGridWrapper';
-import { Flame, Cpu, Network } from 'lucide-react';
+
+import { Network } from 'lucide-react';
 import Link from 'next/link';
 import { pool, initDB } from '@/lib/db';
 
@@ -28,7 +29,7 @@ export default async function Home({ searchParams }: PageProps) {
         id: row.id,
         title: row.title,
         excerpt: row.excerpt,
-        category: row.category as any,
+        category: row.category as 'internacional' | 'economia' | 'tecnologia' | 'cultura' | 'deportes',
         imageUrl: row.image_url,
         date: row.date,
         readTime: row.read_time,

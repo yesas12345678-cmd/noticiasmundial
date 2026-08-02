@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { AlertCircle, ChevronRight, Bell, Zap } from 'lucide-react';
+import { ChevronRight, Bell, Zap } from 'lucide-react';
 
 interface NewsAlert {
   id: string;
